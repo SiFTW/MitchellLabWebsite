@@ -15,22 +15,28 @@ subtitle = ""
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
 
 [[feature]]
-  icon = "r-project"
-  icon_pack = "fab"
-  name = "R"
-  description = "90%"
+  icon = "square-root-alt"
+  icon_pack = "fas"
+  name = "Mathematics"
+  description = "to represent cell signaling"
   
 [[feature]]
-  icon = "chart-line"
+  icon = "laptop-code"
   icon_pack = "fas"
-  name = "Statistics"
-  description = "100%"  
+  name = "Computing"
+  description = "to simulate disease"  
+
+[[feature]]
+  icon = "vial"
+  icon_pack = "fas"
+  name = "Lab Experiments"
+  description = "to test predictions"  
   
 [[feature]]
-  icon = "camera-retro"
+  icon = "prescription-bottle-alt"
   icon_pack = "fas"
-  name = "Photography"
-  description = "10%"
+  name = "Medicine"
+  description = "to improve treatments"
 
 # Uncomment to use emoji icons.
 # [[feature]]
