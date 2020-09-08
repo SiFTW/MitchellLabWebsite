@@ -1,5 +1,5 @@
 ---
-title: A regulatory circuit controlling the dynamics of NF$ąppa$B cRel transitions
+title: A regulatory circuit controlling the dynamics of NFκB cRel transitions
   B cells from proliferation to plasma cell differentiation
 date: '2019-01-01'
 draft: false
