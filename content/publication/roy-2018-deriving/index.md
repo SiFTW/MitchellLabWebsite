@@ -2,7 +2,7 @@
 title: Deriving Quantitative Cell Biological Information from Dye-Dilution Lymphocyte
   Proliferation Experiments
 date: '2018-01-01'
-draft: true
+draft: false
 publishDate: '2020-09-08T16:00:28.604640Z'
 authors:
 - Koushik Roy
