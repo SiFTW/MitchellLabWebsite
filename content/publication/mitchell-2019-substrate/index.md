@@ -1,6 +1,6 @@
 ---
-title: Substrate complex competition is a regulatory motif that allows NF$ąppa$B RelA
-  to license but not amplify NF$p̨pa$B RelB
+title: Substrate complex competition is a regulatory motif that allows NFκB RelA
+  to license but not amplify NFκB RelB
 date: '2019-01-01'
 draft: false
 publishDate: '2020-09-08T16:00:29.160904Z'
