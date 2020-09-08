@@ -5,7 +5,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 10  # Order that this section will appear.
 
-title = "Academic"
+title = "Job Opportunities"
 
 # Hero image (optional). Enter filename of an image in the `static/media/` folder.
 hero_media = "hero-academic.png"
@@ -37,22 +37,21 @@ hero_media = "hero-academic.png"
 #   Display link(s) by specifying a URL and label below. Icon is optional for `[cta]`.
 #   Remove a link/note by deleting a cta/note block.
 [cta]
-  url = "mailto:S.A.Mitchell@bsms.ac.uk"
-  label = "Get in Touch"
+  url = "#contact"
+  label = "Fill in the contact form"
   icon_pack = "fas"
   icon = "envelope"
   
 [cta_alt]
-  url = "www.twitter.com/SiFTW"
-  label = "or reach out on Twitter"
+  url = "mailto:simon@mitchell.science
+  label = "or email me"
 
 # Note. An optional note to show underneath the links.
-[cta_note]
-  label = 'Contact for an informal chat prior to applying.'
+#[cta_note]
+#  label = 'Contact for an informal chat prior to applying.'
 +++
 
 **The Mitchell group is hiring**
 
-Come and work on tackling cancer with systems biology.
+Come and work on tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring multiple postdocs, both entirely computational and 50/50 wet/dry lab.
 
-<span style="text-shadow: none;">We're currently hiring multiple postdocs, both entirely computational and 50/50 wet/dry lab.</span>
