@@ -19,7 +19,7 @@ abstract: 'Humoral immunity depends on efficient activation of B cells and their
 featured: true
 publication: '*Immunity*'
 header:
-  image: "immunityFig.jpg"
+  image: "immunityFig.png"
   caption: "graphical abstract"
 ---
 
