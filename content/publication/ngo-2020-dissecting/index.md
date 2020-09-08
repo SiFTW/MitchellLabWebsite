@@ -2,7 +2,7 @@
 title: Dissecting the Regulatory Strategies of NF-$ąppa$B RelA Target Genes in the
   Inflammatory Response Reveals Differential Transactivation Logics
 date: '2020-01-01'
-draft: true
+draft: false
 publishDate: '2020-09-08T16:00:29.384282Z'
 authors:
 - Kim A Ngo
