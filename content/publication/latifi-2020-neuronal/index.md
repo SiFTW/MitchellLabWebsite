@@ -1,7 +1,7 @@
 ---
 title: Neuronal Network Topology Indicates Distinct Recovery Processes after Stroke
 date: '2020-01-01'
-draft: true
+draft: false
 publishDate: '2020-09-08T16:00:29.458412Z'
 authors:
 - Shahrzad Latifi
