@@ -43,7 +43,7 @@ title = "Job Opportunities"
   icon = "envelope"
   
 [cta_alt]
-  url = "mailto:simon@mitchell.science
+  url = "mailto:simon@mitchell.science"
   label = "or email me"
 
 # Note. An optional note to show underneath the links.
