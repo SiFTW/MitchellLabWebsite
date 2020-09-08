@@ -1,5 +1,5 @@
 ---
-title: Dissecting the Regulatory Strategies of NF-$ąppa$B RelA Target Genes in the
+title: Dissecting the Regulatory Strategies of NF-κB RelA Target Genes in the
   Inflammatory Response Reveals Differential Transactivation Logics
 date: '2020-01-01'
 draft: false
