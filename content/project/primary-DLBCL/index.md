@@ -1,5 +1,5 @@
 ---
-title: "A Systems Biology Approach to Tailoring Therapy for Diffuse Large B-Cell Lymphoma (Funder: Leukaemia UK)"
+title: "A Systems Biology Approach to Tailoring Therapy for Diffuse Large B-Cell Lymphoma"
 date: 2020-09-08T17:07:13+01:00
 draft: false
 profile: false
