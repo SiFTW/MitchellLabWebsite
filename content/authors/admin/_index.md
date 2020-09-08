@@ -1,6 +1,6 @@
 ---
 # Display name
-title: Nelson Bighetti
+title: Simon Mitchell
 
 # Username (this should match the folder name)
 authors:
@@ -10,32 +10,29 @@ authors:
 superuser: true
 
 # Role/position
-role: Professor of Artificial Intelligence
+role: Lecturer in Cancer Research
 
 # Organizations/Affiliations
 organizations:
-- name: Stanford University
-  url: ""
+- name: Brighton and Sussex Medical School, University of Sussex
+  url: "http://www.bsms.ac.uk"
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include distributed robotics, mobile computing and programmable matter.
+bio: My primary research focus is in understanding how intracellular, molecular signalling networks control immune cell fate, and how misregulation of these molecular networks lead to haematological malignancies. My combination of immunology and haematological training lead to a particular interest in B-cell lymphomas.
 
 interests:
-- Artificial Intelligence
-- Computational Linguistics
-- Information Retrieval
+- Systems Biology
+- Computational/Mathematical Biology
+- B-cell Lymphoma
 
 education:
   courses:
-  - course: PhD in Artificial Intelligence
-    institution: Stanford University
-    year: 2012
-  - course: MEng in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
+  - course: PhD in Systems Biology
+    institution: University of Manchester
+    year: 2013
+  - course: BSc in Computer Science and Mathematics
+    institution: University of Manchester
     year: 2009
-  - course: BSc in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2008
 
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
@@ -44,16 +41,16 @@ education:
 social:
 - icon: envelope
   icon_pack: fas
-  link: '#contact'  # For a direct email link, use "mailto:test@example.org".
+  link: '#contact'  # For a direct email link, use "mailto:simon@mitchell.science".
 - icon: twitter
   icon_pack: fab
-  link: https://twitter.com/GeorgeCushen
+  link: https://twitter.com/SiFTW
 - icon: google-scholar
   icon_pack: ai
-  link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
+  link: https://scholar.google.com/citations?user=lsKnTVoAAAAJ&hl=en
 - icon: github
   icon_pack: fab
-  link: https://github.com/gcushen
+  link: https://github.com/SiFTW
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 # - icon: cv
@@ -66,10 +63,13 @@ email: ""
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- Researchers
-- Visitors
+- Pi
 ---
 
-Nelson Bighetti is a professor of artificial intelligence at the Stanford AI Lab. His research interests include distributed robotics, mobile computing and programmable matter. He leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.
+Simon’s primary research focus is in understanding how intracellular, molecular signalling networks control immune cell fate, and how misregulation of these molecular networks lead to haematological malignancies. His combination of immunology and haematological training lead to a particular interest in B-cell lymphomas. 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+Simon combines data across temporal and spatial scales into computational simulations to explore how molecular events (taking <1 second at the nanometre scale) propagate through signalling dynamics and cell-population responses to contribute to whole-body outcomes (taking >1 month at scales of > 1 meter).
+
+Simon has particular interest in the regulation of transcription factor NF-κB and its contribution to cell fate decisions in cancer, immunity and inflammation. His long-term ambition is to develop simulations capable of being parameterized from patient-specific data to be used in the clinic for personalized therapeutic guidance.
+
+He also contributes computational systems biology approaches to many productive collaborations from neuroscience to iron regulation and is always looking for new collaborations where exciting biological questions require novel analytical approaches.
