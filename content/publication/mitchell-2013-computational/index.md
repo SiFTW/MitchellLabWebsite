@@ -1,7 +1,7 @@
 ---
 title: A computational model of liver iron metabolism
 date: '2013-01-01'
-draft: true
+draft: false
 publishDate: '2020-09-08T16:00:28.302493Z'
 authors:
 - Simon Mitchell
