@@ -29,7 +29,7 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
 [[feature]]
   icon = "vial"
   icon_pack = "fas"
-  name = "Lab Experiments"
+  name = "Experiments"
   description = "to test predictions"  
   
 [[feature]]
