@@ -1,7 +1,7 @@
 ---
 title: Studying NF-$ąppa$B signaling with mathematical models
 date: '2015-01-01'
-draft: true
+draft: false
 publishDate: '2020-09-08T16:00:28.461250Z'
 authors:
 - Simon Mitchell
