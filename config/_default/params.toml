@@ -97,7 +97,7 @@ address = {street = "Medical Research Building, University of Sussex", city = "F
 
 # Geographic coordinates
 # To get your coordinates, right-click on Google Maps and choose "What's here?". The coords will show up at the bottom.
-coordinates = {latitude = "50.864028", longitude = "-0.084734"}, 
+coordinates = {latitude = "50.864028", longitude = "-0.084734"}
 
 # Directions for visitors to locate you.
 directions = "Enter the medical research building and call reception. We are on the second floor through the security door."
