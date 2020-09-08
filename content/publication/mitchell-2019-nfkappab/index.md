@@ -1,5 +1,5 @@
 ---
-title: 'An NF$ąppa$B activity calculator to delineate signaling crosstalk: type I
+title: 'An NFκB activity calculator to delineate signaling crosstalk: type I
   and II interferons enhance NFκB via distinct mechanisms'
 date: '2019-01-01'
 draft: false
