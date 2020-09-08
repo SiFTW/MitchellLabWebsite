@@ -5,8 +5,8 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 30  # Order that this section will appear.
 
-title = "Skills"
-subtitle = ""
+title = "What we do"
+subtitle = "Our interdisciplinary approach aims to bring systems biology approaches to the clinic"
 
 # Showcase personal skills or business features.
 # 
