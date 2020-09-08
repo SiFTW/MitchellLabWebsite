@@ -100,7 +100,7 @@ address = {street = "Medical Research Building, University of Sussex", city = "F
 coordinates = {latitude = "50.864028", longitude = "-0.084734"}
 
 # Directions for visitors to locate you.
-directions = "Enter the medical research building and call reception. We are on the second floor through the security door."
+directions = "Enter the Medical Research Building (note this is behind the Medical Teaching Building) and call reception. We are on the second floor, up the stairs through the security door."
 
 # Office hours
 # A list of your office hours. To remove, set to an empty list `[]`.
