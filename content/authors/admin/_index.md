@@ -22,8 +22,10 @@ bio: My primary research focus is in understanding how intracellular, molecular 
 
 interests:
 - Systems Biology
-- Computational/Mathematical Biology
 - B-cell Lymphoma
+- Immunity
+- Cell Signaling
+- NF-κB
 
 education:
   courses:
