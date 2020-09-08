@@ -14,7 +14,7 @@ abstract: 'Rapid antibody production in response to invading pathogens requires 
 featured: true
 publication: '*Proceedings of the National Academy of Sciences*'
 header:
-  image: "pnasFig.jpg"
+  image: "pnasFig.png"
   caption: "[Figure 3](https://www.pnas.org/content/115/12/E2888)"
 ---
 
