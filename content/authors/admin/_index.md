@@ -63,7 +63,7 @@ email: ""
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- Pi
+- Principal Investigator
 ---
 
 Simon’s primary research focus is in understanding how intracellular, molecular signalling networks control immune cell fate, and how misregulation of these molecular networks lead to haematological malignancies. His combination of immunology and haematological training lead to a particular interest in B-cell lymphomas. 
