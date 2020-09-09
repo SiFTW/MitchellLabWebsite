@@ -29,8 +29,11 @@ interests:
 
 education:
   courses:
+  - course: Postdoc in Quantitative Computational Biology
+    institution: University of California, Los Angeles (PI: Prof Alexander Hoffmann)
+    year: 2014-2019
   - course: PhD in Systems Biology
-    institution: University of Manchester
+    institution: University of Manchester (PI: Prof Pedro Mendes)
     year: 2013
   - course: BSc in Computer Science and Mathematics
     institution: University of Manchester
