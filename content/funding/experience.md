@@ -40,4 +40,5 @@ date_format = "Jan 2006"
   date_end = "2022-12-01"
   description = """
   A systems biology approach to tailoring therapy for diffuse large B-cell lymphoma.
+  """
 +++
