@@ -6,7 +6,7 @@ active = true  # Activate this widget? true/false
 weight = 50  # Order that this section will appear.
 
 title = "Funding"
-subtitle = "Previous and ongoing grant funding received."
+subtitle = "Previous and ongoing funding."
 
 # Date format
 #   Refer to https://sourcethemes.com/academic/docs/customization/#date-format
@@ -20,13 +20,13 @@ date_format = "Jan 2006"
 
 [[item]]
   organization = "Beat Cancer"
-  organization_url = "https://www.beatcacner.info"
+  organization_url = "https://www.beatcancer.info"
   title = "Research Grant (£1000)"
   url = ""
   certificate_url = ""
   date_start = "2019-10-01"
   date_end = ""
-  description = "Seed Funding for computational equipment and preliminary data generation."
+  description = "Seed funding for computational equipment and preliminary data generation."
 
 [[item]]
   organization = "Leukaemia UK"
@@ -36,6 +36,10 @@ date_format = "Jan 2006"
   certificate_url = ""
   date_start = "2020-12-01"
   date_end = "2022-12-01"
-  description = "A systems biology approach to tailoring therapy for diffuse large B-cell lymphoma. [see project info](project/primary-dlbcl/)"
+  description = """
+  A systems biology approach to tailoring therapy for diffuse large B-cell lymphoma. 
+  
+  [see project info](../project/primary-dlbcl/)
+  """
   
 +++
