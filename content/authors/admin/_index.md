@@ -18,7 +18,7 @@ organizations:
   url: "http://www.bsms.ac.uk"
 
 # Short bio (displayed in user profile at end of posts)
-bio: My primary research focus is in understanding how intracellular, molecular signalling networks control immune cell fate, and how misregulation of these molecular networks lead to haematological malignancies. My combination of immunology and haematological training lead to a particular interest in B-cell lymphomas.
+bio: My primary research focus is in understanding how intracellular, molecular signalling networks control immune cell fate, and how misregulation of these molecular networks leads to haematological malignancies. My combination of immunology and haematological training lead to a particular interest in B-cell lymphomas.
 
 interests:
 - Systems Biology
