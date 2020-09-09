@@ -5,4 +5,6 @@ draft: false
 profile: false
 
 ---
-This work, [Funded my Leukaemia UK](https://www.leukaemiauk.org.uk/lymphoma-using-virtual-patients-to-find-new-ways-to-treat-diffuse-large-b-cell-lymphoma) aims to model mutations that give rise to DLBCL and identify targets to treat the disease.
+This work is [funded my Leukaemia UK](https://www.leukaemiauk.org.uk/lymphoma-using-virtual-patients-to-find-new-ways-to-treat-diffuse-large-b-cell-lymphoma) and aims to model mutations that give rise to DLBCL in order to identify new targets to treat the disease.
+
+{{<youtube XCG8XCAx1sQ>}} 
