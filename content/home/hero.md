@@ -51,7 +51,9 @@ title = "Job Opportunities"
 #  label = 'Contact for an informal chat prior to applying.'
 +++
 
-**The Mitchell group is hiring**
+**The Mitchell Lab is hiring**
 
-Come and work on tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring multiple postdocs, both entirely computational and 50/50 wet/dry lab.
+Come and work on tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring multiple postdocs: 
+2 x entirely computational,
+1x 50/50 wet and dry lab.
 
