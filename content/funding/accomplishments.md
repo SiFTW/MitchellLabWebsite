@@ -34,8 +34,8 @@ date_format = "Jan 2006"
   title = "John Goldmann Fellowship (£123k)"
   url = "https://www.leukaemiauk.org.uk/lymphoma-using-virtual-patients-to-find-new-ways-to-treat-diffuse-large-b-cell-lymphoma"
   certificate_url = ""
-  date_start = "2019-12-01"
-  date_end = "2020-12-01"
+  date_start = "2020-12-01"
+  date_end = "2022-12-01"
   description = "A systems biology approach to tailoring therapy for diffuse large B-cell lymphoma. [see project info](project/primary-dlbcl/)"
   
 +++
