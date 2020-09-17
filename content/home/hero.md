@@ -37,14 +37,14 @@ title = "Job Opportunities"
 #   Display link(s) by specifying a URL and label below. Icon is optional for `[cta]`.
 #   Remove a link/note by deleting a cta/note block.
 [cta]
-  url = "#contact"
-  label = "Fill in the contact form"
+  url = "https://www.sussex.ac.uk/about/jobs/research-fellow-in-systems-biology-cancer-research"
+  label = "Apply Here"
   icon_pack = "fas"
   icon = "envelope"
   
 [cta_alt]
-  url = "mailto:simon@mitchell.science"
-  label = "or email me"
+  url = "#contact"
+  label = "or contact me"
 
 # Note. An optional note to show underneath the links.
 #[cta_note]
