@@ -16,8 +16,10 @@ role: Lecturer in Cancer Research
 organizations:
  - name: Brighton and Sussex Medical School
    url: "http://www.bsms.ac.uk"
- - name: test Brighton and Sussex Medical School
-   url: "http://www.bsms.ac.uk"
+ - name: Leukaemia UK John Goldman Fellow
+   url: "https://www.leukaemiauk.org.uk/lymphoma-using-virtual-patients-to-find-new-ways-to-treat-diffuse-large-b-cell-lymphoma"
+ - name: UKRI Future Leaders Fellow
+   url: "https://www.bsms.ac.uk/about/news/2020/10-15-bsms-researcher-receives-prestigious-fellowship.aspx"
 
 
 # Short bio (displayed in user profile at end of posts)
@@ -73,9 +75,6 @@ email: ""
 user_groups:
 - Principal Investigator
 ---
-
-* Leukaemia UK John Goldman Fellow.
-* UKRI Future Leaders Fellow.
 
 Simon’s primary research focus is in understanding how intracellular, molecular signalling networks control immune cell fate, and how misregulation of these molecular networks lead to haematological malignancies. His combination of immunology and haematological training lead to a particular interest in B-cell lymphomas. 
 
