@@ -11,7 +11,7 @@ superuser: true
 
 # Role/position
 role: 
-- "Lecturer in Cancer Research - Leukaemia UK John Goldman Fellow - UKRI Future Leaders Fellow"
+- '''Lecturer in Cancer Research - Leukaemia UK John Goldman Fellow - UKRI Future Leaders Fellow'''
 
 # Organizations/Affiliations
 organizations:
