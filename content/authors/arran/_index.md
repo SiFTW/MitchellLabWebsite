@@ -21,11 +21,11 @@ organizations:
 bio: Arran studied Biochemistry at Leeds, then took an MSc in Systems and Synthetic Biology in Edinburgh. Now he is fully converted to systems biology, on the attractive premise that simulated biological systems can answer questions that physical experimentation cannot.
 
 interests:
-- studying noise, 
+- studying noise
 - B cell lymphomas 
 - B cell differentiation and mutation
 - multi-scale modelling
-- optimal experimental design.
+- optimal experimental design
  
 
 # Social/Academic Networking
@@ -60,3 +60,4 @@ user_groups:
 - PhD Students
 ---
  
+Arran studied Biochemistry at Leeds, then took an MSc in Systems and Synthetic Biology in Edinburgh. Now he is fully converted to systems biology, on the attractive premise that simulated biological systems can answer questions that physical experimentation cannot.
