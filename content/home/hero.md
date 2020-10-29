@@ -37,14 +37,14 @@ title = "Job Opportunities"
 #   Display link(s) by specifying a URL and label below. Icon is optional for `[cta]`.
 #   Remove a link/note by deleting a cta/note block.
 [cta]
-  url = "https://www.sussex.ac.uk/about/jobs/research-fellow-in-systems-biology-cancer-research"
-  label = "Apply Here"
+  url = "#contact"
+  label = "Contact"
   icon_pack = "fas"
   icon = "envelope"
   
-[cta_alt]
-  url = "#contact"
-  label = "or contact me"
+#[cta_alt]
+#  url = "#contact"
+#  label = "or contact me"
 
 # Note. An optional note to show underneath the links.
 #[cta_note]
@@ -53,9 +53,9 @@ title = "Job Opportunities"
 
 **The Mitchell Lab is hiring**
 
-Come and work on tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring multiple postdocs: 
+Come and work as part of a prestigious UKRI Future Leaders Fellowship team, tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring multiple postdocs: 
 
-2 x entirely computational,
+1 x entirely computational,
 
 1x 50/50 wet and dry lab.
 
