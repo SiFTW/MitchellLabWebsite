@@ -14,7 +14,7 @@ role:
 - Lecturer in Cancer Research
 
 # Organizations/Affiliations
- organizations:
+organizations:
  - name: Brighton and Sussex Medical School, University of Sussex
    url: "http://www.bsms.ac.uk"
  - name: Leukaemia UK John Goldman Fellow
