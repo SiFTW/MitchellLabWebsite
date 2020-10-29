@@ -10,7 +10,10 @@ authors:
 superuser: true
 
 # Role/position
-role: Lecturer in Cancer Research
+role: 
+- Lecturer in Cancer Research
+- Leukaemia UK John Goldman Fellow
+- UKRI Future Leaders Fellow
 
 # Organizations/Affiliations
 organizations:
