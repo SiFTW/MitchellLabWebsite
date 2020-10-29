@@ -14,7 +14,7 @@ role:
 - Lecturer in Cancer Research
 
 # Organizations/Affiliations
-organization = [{name="Brighton and Sussex Medical School", url='http://www.bsms.ac.uk'},{name="Leukaemia UK John Goldman Fellow", url="https://www.leukaemiauk.org.uk/lymphoma-using-virtual-patients-to-find-new-ways-to-treat-diffuse-large-b-cell-lymphoma"},{name="UKRI Future Leaders Fellow",url="https://www.bsms.ac.uk/about/news/2020/10-15-bsms-researcher-receives-prestigious-fellowship.aspx"}]
+organization : [{name="Brighton and Sussex Medical School", url='http://www.bsms.ac.uk'},{name="Leukaemia UK John Goldman Fellow", url="https://www.leukaemiauk.org.uk/lymphoma-using-virtual-patients-to-find-new-ways-to-treat-diffuse-large-b-cell-lymphoma"},{name="UKRI Future Leaders Fellow",url="https://www.bsms.ac.uk/about/news/2020/10-15-bsms-researcher-receives-prestigious-fellowship.aspx"}]
 # organizations:
 # - name: Brighton and Sussex Medical School, University of Sussex
 #  url: "http://www.bsms.ac.uk"
