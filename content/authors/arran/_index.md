@@ -18,16 +18,16 @@ organizations:
   url: "http://www.bsms.ac.uk"
 
 # Short bio (displayed in user profile at end of posts)
-bio: TBC
+bio: Arran studied Biochemistry at Leeds, then took an MSc in Systems and Synthetic Biology in Edinburgh. Now he is fully converted to systems biology, on the attractive premise that simulated biological systems can answer questions that physical experimentation cannot.
 
 interests:
-- TBC
+- studying noise, 
+- B cell lymphomas 
+- B cell differentiation and mutation
+- multi-scale modelling
+- optimal experimental design.
  
-education:
-  courses:
-  - course: TBC
-    institution: TBC
-    year: TBC
+
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
 #   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
