@@ -10,13 +10,15 @@ authors:
 superuser: true
 
 # Role/position
-role: 
-- Lecturer in Cancer Research
+role: Lecturer in Cancer Research
 
 # Organizations/Affiliations
 organizations:
  - name: Brighton and Sussex Medical School
    url: "http://www.bsms.ac.uk"
+ - name: test Brighton and Sussex Medical School
+   url: "http://www.bsms.ac.uk"
+
 
 # Short bio (displayed in user profile at end of posts)
 bio: My primary research focus is in understanding how intracellular, molecular signalling networks control immune cell fate, and how misregulation of these molecular networks leads to haematological malignancies. My combination of immunology and haematological training lead to a particular interest in B-cell lymphomas.
