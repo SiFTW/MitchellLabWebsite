@@ -42,4 +42,18 @@ date_format = "Jan 2006"
   [see project info](../project/primary-dlbcl/)
   """
   
+  [[item]]
+  organization = "UKRI"
+  organization_url = "https://www.ukri.org/funding/funding-opportunities/future-leaders-fellowships/"
+  title = "Future leaders Fellowship (£1.2m)"
+  url = "https://www.bsms.ac.uk/about/news/2020/10-15-bsms-researcher-receives-prestigious-fellowship.aspx"
+  certificate_url = ""
+  date_start = "2021-01-01"
+  date_end = "2024-12-31"
+  description = """
+  Simulation, prevention and therapeutic targeting of refractory/relapsed diffuse large B-cell lymphoma through systems biology.
+  
+  [see project info](../project/rr-dlbcl/)
+  """
+  
 +++
