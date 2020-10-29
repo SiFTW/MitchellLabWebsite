@@ -1,6 +1,6 @@
 ---
-title: "Interview about Leukaemia UK award"
-date: 2020-09-08T17:07:13+01:00
+title: "UKRI Futuer Leaders Fellowship Awarded"
+date: 2020-10-20T17:07:13+01:00
 draft: false
 ---
 Dr Mitchell was recently awarded a prestigious £1.2m UKRI Future Leaders Fellowship to tackle Relapsed/Refractory DLBCL with Systems Biology approaches.
