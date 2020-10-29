@@ -15,10 +15,8 @@ role:
 
 # Organizations/Affiliations
 organizations:
- - name: Brighton and Sussex Medical School, University of Sussex
+ - name: Brighton and Sussex Medical School, University of Sussex, Leukaemia UK John Goldman Fellow, UKRI Future Leaders Fellow.
    url: "http://www.bsms.ac.uk"
- - name: Leukaemia UK John Goldman Fellow
-   url: "https://www.leukaemiauk.org.uk/lymphoma-using-virtual-patients-to-find-new-ways-to-treat-diffuse-large-b-cell-lymphoma"
 
 # Short bio (displayed in user profile at end of posts)
 bio: My primary research focus is in understanding how intracellular, molecular signalling networks control immune cell fate, and how misregulation of these molecular networks leads to haematological malignancies. My combination of immunology and haematological training lead to a particular interest in B-cell lymphomas.
