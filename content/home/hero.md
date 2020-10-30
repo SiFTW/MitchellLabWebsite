@@ -42,14 +42,9 @@ title = "Job Opportunities"
   label = "Apply (comp bio)"
   icon_pack = "fas"
   icon = "envelope"
-[cta]
+[cta_alt]
   url = "https://www.sussex.ac.uk/about/jobs/research-fellow-in-laboratory-and-computational"
   label = "Apply (wet lab + comp bio)"
-  icon_pack = "fas"
-  icon = "envelope"
-[cta_alt]
-  url = "#contact"
-  label = "Contact"
   icon_pack = "fas"
   icon = "envelope"
   
@@ -59,7 +54,7 @@ title = "Job Opportunities"
 
 # Note. An optional note to show underneath the links.
 [cta_note]
-  label = 'Feel free to contact for an informal chat prior to applying.'
+  label = 'Feel free to <a href="/#contact">contact</a> for an informal chat prior to applying.'
 +++
 
 **The Mitchell Lab is hiring**
