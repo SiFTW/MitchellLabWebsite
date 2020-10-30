@@ -36,7 +36,18 @@ title = "Job Opportunities"
 # Call to action links (optional).
 #   Display link(s) by specifying a URL and label below. Icon is optional for `[cta]`.
 #   Remove a link/note by deleting a cta/note block.
+
 [cta]
+  url = "https://www.sussex.ac.uk/about/jobs/research-fellow-in-computational-systems-biology"
+  label = "Apply (comp bio)"
+  icon_pack = "fas"
+  icon = "envelope"
+[cta]
+  url = "https://www.sussex.ac.uk/about/jobs/research-fellow-in-laboratory-and-computational"
+  label = "Apply (wet lab + comp bio)"
+  icon_pack = "fas"
+  icon = "envelope"
+[cta_alt]
   url = "#contact"
   label = "Contact"
   icon_pack = "fas"
@@ -47,8 +58,8 @@ title = "Job Opportunities"
 #  label = "or contact me"
 
 # Note. An optional note to show underneath the links.
-#[cta_note]
-#  label = 'Contact for an informal chat prior to applying.'
+[cta_note]
+  label = 'Feel free to contact for an informal chat prior to applying.'
 +++
 
 **The Mitchell Lab is hiring**
