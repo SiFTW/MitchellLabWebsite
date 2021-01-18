@@ -2,7 +2,7 @@
 title: An incoherent feedforward loop interprets NF$ąppa$B/RelA dynamics to determine
   TNF-induced necroptosis decisions
 date: '2020-01-01'
-draft: true
+draft: false
 publishDate: '2021-01-18T16:11:12.344428Z'
 authors:
 - Marie Oliver Metzig
