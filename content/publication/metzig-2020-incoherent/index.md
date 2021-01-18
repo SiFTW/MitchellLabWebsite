@@ -16,6 +16,6 @@ publication_types:
 - 2
 abstract: ''
 featured: false
-publication: '*bioRxiv*'
+publication: '*Molecular Systems Biology*'
 ---
 
