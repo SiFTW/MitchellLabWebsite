@@ -39,7 +39,7 @@ social:
 - icon: twitter
   icon_pack: fab
   link: https://twitter.com/ielyaas_cloete
-- icon: google-scholar
+- icon: semantic-scholar
   icon_pack: ai
   link: https://www.semanticscholar.org/author/Ielyaas-Cloete/108812359
 #- icon: github
