@@ -18,7 +18,7 @@ organizations:
   url: "http://www.bsms.ac.uk"
 
 # Short bio (displayed in user profile at end of posts)
-bio: Ielyaas trained at the University of Aukland where he worked on models of Calcium signalling in Hepatocytes. He joined BSMS to work on studying diffuse large B-cell lymphoma with funding from Leukaemia UK.
+bio: Ielyaas trained at the University of Aukland where he worked on models of Calcium signalling in Hepatocytes. He joined BSMS to work on [studying Diffuse Large B-Cell Lymphoma]({{< ref "/project/primary-dlbcl" >}} "studying Diffuse Large B-Cell Lymphoma") with funding from Leukaemia UK.
 
 interests:
 - mathematical modelling
@@ -60,4 +60,4 @@ user_groups:
 - Postdoctoral Researchers
 ---
  
-Arran studied Biochemistry at Leeds, then took an MSc in Systems and Synthetic Biology in Edinburgh. Now he is fully converted to systems biology, on the attractive premise that simulated biological systems can answer questions that physical experimentation cannot.
+Ielyaas trained at the University of Aukland where he worked on models of Calcium signalling in Hepatocytes. He joined BSMS to work on [studying Diffuse Large B-Cell Lymphoma]({{< ref "/project/primary-dlbcl" >}} "studying Diffuse Large B-Cell Lymphoma") with funding from Leukaemia UK.
