@@ -56,5 +56,7 @@ title = "Job Opportunities"
 
 Come and work as part of a prestigious UKRI Future Leaders Fellowship team, tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring a postdoc: 
 
-1 x Computational systems biology postdoc (4 years, with the opportunity to extend to 7).
+1 x Computational systems biology postdoc.
+4 years, with the opportunity to extend to 7.
+
 
