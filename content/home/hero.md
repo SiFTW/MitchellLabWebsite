@@ -54,10 +54,6 @@ title = "Job Opportunities"
 
 **The Mitchell Lab is hiring**
 
-Come and work as part of a [prestigious UKRI Future Leaders Fellowship team](/project/rr-dlbcl/), tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring a postdoc: 
-
-1 x Computational systems biology postdoc.
-Work alongside experimental and clinical scientists.
-4 years, with the opportunity to extend to 7.
+Come and work as part of a [prestigious UKRI Future Leaders Fellowship team](/project/rr-dlbcl/), tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring a computational systems biology postdoc. Work alongside experimental and clinical scientists. 4 years, with the opportunity to extend to 7.
 
 
