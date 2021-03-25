@@ -2,7 +2,7 @@
 # Hero widget.
 widget = "hero"  # See https://sourcethemes.com/academic/docs/page-builder/
 headless = true  # This file represents a page section.
-active = false  # Activate this widget? true/false
+active = true  # Activate this widget? true/false
 weight = 10  # Order that this section will appear.
 
 title = "Job Opportunities"
@@ -39,18 +39,13 @@ title = "Job Opportunities"
 
 [cta]
   url = "https://www.sussex.ac.uk/about/jobs/research-fellow-in-computational-systems-biology"
-  label = "Apply (comp bio)"
-  icon_pack = "fas"
-  icon = "envelope"
-[cta_alt]
-  url = "https://www.sussex.ac.uk/about/jobs/research-fellow-in-laboratory-and-computational"
-  label = "Apply (wet lab + comp bio)"
+  label = "Apply "
   icon_pack = "fas"
   icon = "envelope"
   
-#[cta_alt]
-#  url = "#contact"
-#  label = "or contact me"
+[cta_alt]
+  url = "#contact"
+  label = "or contact us"
 
 # Note. An optional note to show underneath the links.
 [cta_note]
@@ -59,9 +54,7 @@ title = "Job Opportunities"
 
 **The Mitchell Lab is hiring**
 
-Come and work as part of a prestigious UKRI Future Leaders Fellowship team, tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring multiple postdocs: 
+Come and work as part of a prestigious UKRI Future Leaders Fellowship team, tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring a postdoc: 
 
-1 x entirely computational,
-
-1x 50/50 wet and dry lab.
+1 x Computational systems biology postdoc (4 years, with the opportunity to extend to 7).
 
