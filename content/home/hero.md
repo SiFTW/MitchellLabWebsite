@@ -49,7 +49,7 @@ title = "Job Opportunities"
 
 # Note. An optional note to show underneath the links.
 [cta_note]
-  label = 'Feel free to <a href="/#contact">contact</a> for an informal chat prior to applying.'
+  label = 'We believe a good group is a diverse group, so applications are particularly welcome from candidates those under-represented in computational biology.'
 +++
 
 **The Mitchell Lab is hiring**
