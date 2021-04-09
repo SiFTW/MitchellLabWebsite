@@ -48,7 +48,7 @@ local_business_type = ""
 org_name = "Mitchell Lab"
 
 # Description for social sharing and search engines. If undefined, superuser role is used in place.
-description = "The Mitchell Lab are using computational systems biology approaches to tackle health and disease with a particularl focus on B-cell cancer and lymphoma."
+description = "Using mathematics, computational systems biology, molecular biology and translational approaches to tackle health and disease with a focus on B-cell cancers."
 
 ############################
 ## Site Features
