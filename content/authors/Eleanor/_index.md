@@ -18,15 +18,15 @@ organizations:
   url: "http://www.bsms.ac.uk"
 
 # Short bio (displayed in user profile at end of posts)
-bio: Eleanor studied her PhD in Chemistry at the University of Warwick, and has qualifications in Molecular Cell Biology (Sussex) and Biochemistry (Manchester). She has experience working with both computer simulations and laboratory experiments, and enjoys working on biological problems using a variety of techniques.
+bio: Eleanor studied her PhD in Chemistry at the University of Warwick, and has qualifications in Molecular Cell Biology (Sussex) and Biochemistry (Manchester). She has experience working with both computer simulations and laboratory experiments, and enjoys working on biological problems using a variety of techniques.Eleanor is working on [Therapeutic targeting of refractory relapsed diffuse large B-cell lymphoma through systems biology]({{< ref "/project/rr-dlbcl" >}} "Therapeutic targeting of refractory relapsed diffuse large B-cell lymphoma through systems biology") with funding from a UKRI Future Leaders Fellowship.
 
 interests:
--	Biochemical basis of disease
--	Simulating biological systems and molecules
--	Cell signalling
--	Molecular biology
--	Multidisciplinary approaches 
-
+- Biochemical basis of disease
+- Simulating biological systems and molecules
+- Cell signalling
+- Molecular biology
+- Multidisciplinary approaches 
+- 
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
 #   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
