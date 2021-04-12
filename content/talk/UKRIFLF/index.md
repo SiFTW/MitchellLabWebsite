@@ -1,5 +1,5 @@
 ---
-title: "UKRI Futuer Leaders Fellowship Awarded"
+title: "UKRI Future Leaders Fellowship Awarded"
 date: 2020-10-20T17:07:13+01:00
 draft: false
 ---
