@@ -10,7 +10,7 @@ authors:
 superuser: true
 
 # Role/position
-role: Lecturer in Cancer Research
+role: Senior Lecturer in Cancer Research
 
 # Organizations/Affiliations
 organizations:
