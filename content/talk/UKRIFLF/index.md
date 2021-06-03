@@ -1,5 +1,5 @@
 ---
-title: "Mitchell group will be at eSMB 2021"
+title: "UKRI Future Leaders Fellowship Awarded"
 date: 2020-10-20T17:07:13+01:00
 draft: false
 ---
