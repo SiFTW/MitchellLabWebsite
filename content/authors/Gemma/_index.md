@@ -18,7 +18,7 @@ organizations:
   url: "http://www.bsms.ac.uk"
 
 # Short bio (displayed in user profile at end of posts)
-bio: Gemma provides administrative, financial and travel support to all the projects and people in the Mitchell Lab. In addition to our roles with us Gemma provides support to our wider Haematology and Oncology research groups including the groups of Chris and Andrea Pepper. Gemma is also BSMS HTA Governance Officer.
+bio: Gemma provides administrative, financial and travel support to all the projects and people in the Mitchell Lab. In addition to her roles with us, Gemma provides support to our wider Haematology and Oncology research groups including the groups of Chris and Andrea Pepper. Gemma is also BSMS HTA Governance Officer.
 
 
 # Social/Academic Networking
@@ -56,4 +56,8 @@ email: ""
 user_groups:
 - Administration
 ---
-Gemma provides administrative, financial and travel support to all the projects and people in the Mitchell Lab. In addition to our roles with us Gemma provides support to our wider Haematology and Oncology research groups including the groups of Chris and Andrea Pepper. Gemma is also BSMS HTA Governance Officer.
+Gemma provides administrative, financial and travel support to all the projects and people in the Mitchell Lab. 
+
+In addition to our roles with us Gemma provides support to our wider Haematology and Oncology research groups including the groups of Chris and Andrea Pepper. 
+
+Gemma is also BSMS HTA Governance Officer.
