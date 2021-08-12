@@ -2,7 +2,7 @@
 # Hero widget.
 widget = "hero"  # See https://sourcethemes.com/academic/docs/page-builder/
 headless = true  # This file represents a page section.
-active = false  # Activate this widget? true/false
+active = true  # Activate this widget? true/false
 weight = 10  # Order that this section will appear.
 
 title = "Job Opportunities"
@@ -24,7 +24,7 @@ title = "Job Opportunities"
   # gradient_end = "#2b94c3"
   
   # Background image.
-   image = "brighton.jpg"  # Name of image in `static/media/`.
+   image = "SMLAB16.jpg"  # Name of image in `static/media/`.
    image_darken = 0.5  # Darken the image? Range 0-1 where 0 is transparent and 1 is opaque.
   # image_size = "cover"  #  Options are `cover` (default), `contain`, or `actual` size.
   # image_position = "center"  # Options include `left`, `center` (default), or `right`.
@@ -37,23 +37,26 @@ title = "Job Opportunities"
 #   Display link(s) by specifying a URL and label below. Icon is optional for `[cta]`.
 #   Remove a link/note by deleting a cta/note block.
 
+#[cta]
+#  url = "https://www.sussex.ac.uk/about/jobs/research-fellow-in-computational-systems-biology"
+#  label = "Apply "
+#  icon_pack = "fas"
+#  icon = "envelope"
+  
 [cta]
-  url = "https://www.sussex.ac.uk/about/jobs/research-fellow-in-computational-systems-biology"
-  label = "Apply "
+  url = "#contact"
+  label = "Contact us"
   icon_pack = "fas"
   icon = "envelope"
   
-[cta_alt]
-  url = "#contact"
-  label = "or contact us"
-
+  
 # Note. An optional note to show underneath the links.
-[cta_note]
-  label = 'We believe a good group is a diverse group, so applications are particularly welcome from those under-represented in computational biology.'
+#[cta_note]
+ # label = 'We believe a good group is a diverse group, so applications are particularly welcome from those under-represented in computational biology.'
 +++
 
 **The Mitchell Lab is hiring**
 
-Come and work as part of a [prestigious UKRI Future Leaders Fellowship team](/project/rr-dlbcl/), tackling cancer with systems biology, in the beautiful and diverse city of Brighton. We're currently hiring a computational systems biology postdoc. Work alongside experimental and clinical scientists. 4 years, with the opportunity to extend to 7.
+Welcome to the Mitchell Lab. We're tackling cancer with systems biology, in the beautiful city of Brighton, UK.
 
 
