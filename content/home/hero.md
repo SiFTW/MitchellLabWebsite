@@ -3,9 +3,9 @@
 widget = "hero"  # See https://sourcethemes.com/academic/docs/page-builder/
 headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
-weight = 10  # Order that this section will appear.
+weight = 1  # Order that this section will appear.
 
-title = "Job Opportunities"
+title = "Mitchell Lab"
 
 # Hero image (optional). Enter filename of an image in the `static/media/` folder.
 #hero_media = "hero-academic.png"
@@ -55,8 +55,8 @@ title = "Job Opportunities"
  # label = 'We believe a good group is a diverse group, so applications are particularly welcome from those under-represented in computational biology.'
 +++
 
-**The Mitchell Lab is hiring**
+**Welcome to the Mitchell Lab**
 
-Welcome to the Mitchell Lab. We're tackling cancer with systems biology, in the beautiful city of Brighton, UK.
+We're tackling cancer with systems biology, in the beautiful city of Brighton, UK.
 
 
