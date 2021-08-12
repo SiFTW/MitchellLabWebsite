@@ -5,7 +5,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 1  # Order that this section will appear.
 
-title = "Mitchell Lab"
+title = "Welcome to the Mitchell Lab"
 
 # Hero image (optional). Enter filename of an image in the `static/media/` folder.
 #hero_media = "hero-academic.png"
@@ -55,7 +55,7 @@ title = "Mitchell Lab"
  # label = 'We believe a good group is a diverse group, so applications are particularly welcome from those under-represented in computational biology.'
 +++
 
-**Welcome to the Mitchell Lab**
+**At Brighton and Sussex Medical School, The University of Sussex**
 
 We're tackling cancer with systems biology, in the beautiful city of Brighton, UK.
 
