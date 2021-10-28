@@ -12,4 +12,4 @@ The Mitchell group are participating the European School of Haematology's 6th Tr
 
 [Arran Pack](../../author/arran-pack/) is presenting his recent work incorporating receptor-proximal mutations frequntly found in DLBCL into models of B-cell receptor signalling and TLR signalling.
 
-[Eleanor Jayawant](../../author/eleanor-jayawant/) is presenting her latest work, using a novel flow cytommetry pipeline she has developed, to characterise NF-κB differences between B-cell lymphoma cells. Eleanor's work is [funded by a UKRI FLF](project/rr-dlbcl/).
+[Eleanor Jayawant](../../author/eleanor-jayawant/) is presenting her latest work, using a novel flow cytommetry pipeline she has developed, to characterise NF-κB differences between B-cell lymphoma cells. Eleanor's work is [funded by a UKRI FLF](project/rr-dlbcl/), and was done in close collaboration with [Prof Andrea Pepper](https://www.bsms.ac.uk/about/contact-us/staff/professor-andrea-pepper.aspx) and [Prof Chris Pepper](https://www.bsms.ac.uk/about/contact-us/staff/professor-chris-pepper.aspx).
