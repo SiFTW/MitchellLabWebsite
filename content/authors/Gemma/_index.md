@@ -28,7 +28,7 @@ bio: Gemma provides administrative, financial and travel support to all the proj
 social:
 - icon: envelope
   icon_pack: fas
-  link: 'mailto:g.hamilton@bsms.ac.uk'  # For a direct email link, use "mailto:".
+  link: 'mailto:Haem-Oncology@bsms.ac.uk'  # For a direct email link, use "mailto:".
 #- icon: twitter
 #  icon_pack: fab
 #  link: https://twitter.com/rnorris1620
