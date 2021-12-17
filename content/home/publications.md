@@ -8,10 +8,7 @@ active = false  # Activate this widget? true/false
 weight = 90  # Order that this section will appear.
 
 title = "Recent Publications"
-subtitle = "For links to all the recent publications from the team please click on the links below: 
-
-https://profiles.sussex.ac.uk/p414640-andrea-pepper/publications
-https://profiles.sussex.ac.uk/p416557-christopher-pepper/publications"
+subtitle = ""
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
