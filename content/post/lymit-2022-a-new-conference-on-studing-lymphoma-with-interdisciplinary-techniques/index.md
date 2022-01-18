@@ -5,6 +5,8 @@ subtitle: Tuesday June 21st 2021.
 date: 2022-01-12T16:33:43.384Z
 draft: false
 featured: false
+authors:
+  - HaemOncology
 image:
   filename: featured
   focal_point: Smart
