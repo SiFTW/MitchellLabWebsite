@@ -8,7 +8,7 @@ featured: false
 authors:
   - HaemOncology
 image:
-  filename: featured
+  filename: savethedate.png
   focal_point: Smart
   preview_only: false
 ---
