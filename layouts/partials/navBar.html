@@ -1,6 +1,6 @@
 {{ $show_navbar := site.Params.header.navbar.enable | default true }}
 {{ if $show_navbar }}
-{{ if .Param.hideNavBar | default false}}
+{{ if .Params.hideNavBar | default false}}
 {{else}}
 {{ $current_page := . }}
 {{ $highlight_active_link := site.Params.header.navbar.highlight_active_link | default true }}
