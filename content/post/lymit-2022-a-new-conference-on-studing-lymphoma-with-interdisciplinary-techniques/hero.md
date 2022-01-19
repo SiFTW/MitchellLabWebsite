@@ -44,15 +44,15 @@ title = "LyMIT 2022"
 #  icon = "envelope"
   
 [cta]
-  url = "#people"
+  url = "#"
   label = "Register"
   icon_pack = "fas"
   icon = "clipboard-check"
   
   
 # Note. An optional note to show underneath the links.
-#[cta_note]
- # label = 'We believe a good group is a diverse group, so applications are particularly welcome from those under-represented in computational biology.'
+[cta_note]
+ label = 'Registration is free.'
 +++
 
 **Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT)**
