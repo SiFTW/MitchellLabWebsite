@@ -5,8 +5,7 @@ draft: false
 share: true
 commentable: false
 editable: false
-type: "custom"
-layout: "conference"
+show_navbar: false
 # Optional header image (relative to `static/media/` folder).
 header:
   caption: ""
