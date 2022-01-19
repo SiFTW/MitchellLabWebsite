@@ -25,7 +25,7 @@ title = "LyMIT 2022"
   
   # Background image.
    image = "campus.jpg"  # Name of image in `static/media/`.
-   image_darken = 0.2  # Darken the image? Range 0-1 where 0 is transparent and 1 is opaque.
+   image_darken = 0.4  # Darken the image? Range 0-1 where 0 is transparent and 1 is opaque.
    image_size = "cover"  #  Options are `cover` (default), `contain`, or `actual` size.
    image_position = "center"  # Options include `left`, `center` (default), or `right`.
    image_parallax = true  # Use a fun parallax-like fixed background effect? true/false
@@ -58,7 +58,9 @@ title = "LyMIT 2022"
 **Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT)**
 
 A new meeting focused on highlighting exciting novel research that uses interdisciplinary techniques to understand blood cancer. 
+
 Unviersity of Sussex. 
+
 21st June 2022.
 
 
