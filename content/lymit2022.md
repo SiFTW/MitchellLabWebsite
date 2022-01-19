@@ -5,7 +5,7 @@ draft: false
 share: true
 commentable: false
 editable: false
-show_navbar: false
+hideNavBar: true
 # Optional header image (relative to `static/media/` folder).
 header:
   caption: ""
