@@ -15,5 +15,7 @@ image:
   caption: ""
 aliases:
   - /lymit2022
+  - /lymit22
+  - /lymit
 ---
 
