@@ -7,6 +7,8 @@ summary: ""
 draft: false
 featured: false
 hideNavBar: true
+aliases:
+    - /lymit2022
 
 authors:
   - 
@@ -15,4 +17,4 @@ image:
   focal_point: Smart
   preview_only: false
 ---
-![](savethedate.png)
+
