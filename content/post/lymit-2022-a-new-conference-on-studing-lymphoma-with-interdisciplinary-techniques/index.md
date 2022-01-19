@@ -7,6 +7,7 @@ authors: [Haematology-Oncology]
 hideNavBar: true
 title: LyMIT 2022 - Lymphoma with Interdisciplinary Techniques.
 subtitle: 10am Tuesday June 21st 2021 - University of Sussex
+type : "widget_page"
 image:
   filename: campus.jpg
   focal_point: Smart
