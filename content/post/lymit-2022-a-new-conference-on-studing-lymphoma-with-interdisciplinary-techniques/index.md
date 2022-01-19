@@ -13,4 +13,4 @@ image:
   focal_point: Smart
   preview_only: false
 ---
-Content here
+![](savethedate.png)
