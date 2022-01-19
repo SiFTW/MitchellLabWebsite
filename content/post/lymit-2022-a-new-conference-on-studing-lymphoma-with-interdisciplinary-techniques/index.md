@@ -3,8 +3,6 @@ date: 2022-01-19T15:43:26.016Z
 summary: ""
 draft: false
 featured: false
-authors:
-  - null
 hideNavBar: true
 title: LyMIT 2022 - A new conference on studing Lymphoma with Interdisciplinary
   Techniques.
