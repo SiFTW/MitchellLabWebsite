@@ -18,4 +18,4 @@ aliases:
 ---
 ![](savethedate2.png)
 
-Hosted by [the Mitchell Group](www.mitchell.science) At Brighton and Sussex Medical School, the University of Sussex
+Hosted by [the Mitchell Group](/) At Brighton and Sussex Medical School, the University of Sussex
