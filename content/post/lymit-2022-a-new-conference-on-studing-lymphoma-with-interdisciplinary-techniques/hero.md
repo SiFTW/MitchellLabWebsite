@@ -31,7 +31,7 @@ title = "LyMIT 2022"
    image_parallax = true  # Use a fun parallax-like fixed background effect? true/false
   
   # Text color (true=light or false=dark).
-  text_color_light = false
+  text_color_light = true
 
 # Call to action links (optional).
 #   Display link(s) by specifying a URL and label below. Icon is optional for `[cta]`.
@@ -57,6 +57,8 @@ title = "LyMIT 2022"
 
 **Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT)**
 
-A new meeting focused on highlighting exciting novel research that uses interdisciplinary techniques to understand blood cancer. Unviersity of Sussex. 21st June 2022.
+A new meeting focused on highlighting exciting novel research that uses interdisciplinary techniques to understand blood cancer. 
+Unviersity of Sussex. 
+21st June 2022.
 
 
