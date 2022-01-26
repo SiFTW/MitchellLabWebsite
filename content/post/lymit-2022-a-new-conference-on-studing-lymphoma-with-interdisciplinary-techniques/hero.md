@@ -59,7 +59,7 @@ title = "LyMIT 2022"
 
 A new meeting focused on highlighting exciting novel research that uses interdisciplinary techniques to understand blood cancer. 
 
-Unviersity of Sussex. 
+University of Sussex. 
 
 21st June 2022.
 
