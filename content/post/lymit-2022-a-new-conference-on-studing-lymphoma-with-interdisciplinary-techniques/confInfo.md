@@ -20,15 +20,24 @@ We look forward to seeing you all in June!
 
 ## Registration
 
-Registration will be free, and opening here soon.
+Registration is free! [Click here to register](https://www.eventbrite.co.uk/e/lymphoid-malignancies-with-interdisciplinary-techniques-lymit-tickets-256778329897?utm_campaign=post_publish&utm_medium=email&utm_source=eventbrite&utm_content=shortLinkNewEmail)
 
 ## Speaker Lineup.
 
-The lineup is to be confirmed but includes representatives of many groups leading interdisciplinary approaches to studying lymphoma.
+The lineup is to be confirmed but includes representatives of many groups leading interdisciplinary approaches to studying lymphoma, including:
+Dr Chun (Jade) Gong - Daniel Hodson's Group - Cambridge
+Megan Della	- Jessica Okosun's group - Queen Mary University of London
+Dr Emma Kennedy - Dr Andrea Pepper's group - Brighton and Sussex Medical School
+Professor Nasir Rajpoot - University of Warwick
+Professor Ulf Klein	- University of Leeds
+Dr Anna Maria Tsakiroglou	- Spotlight Pathology Ltd
+Dr Ielyaas Cloete - Simon Mitchell's group - Brighton and Sussex Medical School
+
 
 ## Agenda
-
-10am-4:30pm.
+Resitration: 9:15-10am.
+Talks: 10am-5:15.
+Drink until 6pm.
 
 ## Getting here
 
