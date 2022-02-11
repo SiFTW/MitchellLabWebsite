@@ -35,9 +35,9 @@ Dr Ielyaas Cloete - Simon Mitchell's group - Brighton and Sussex Medical School
 
 
 ## Agenda
-Resitration: 9:15-10am.
+Registration: 9:15-10am.
 Talks: 10am-5:15.
-Drink until 6pm.
+Drinks: until 6pm.
 
 ## Getting here
 
