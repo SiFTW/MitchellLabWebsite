@@ -39,9 +39,9 @@ The lineup is to be confirmed but includes representatives of many groups leadin
 
 
 ## Agenda
-Registration: 9:15-10am.
-Talks: 10am-5:15.
-Drinks: until 6pm.
+- Registration: 9:15-10am.
+- Talks: 10am-5:15.
+- Drinks: until 6pm.
 
 ## Getting here
 
