@@ -44,15 +44,13 @@ title = "LyMIT 2022"
 #  icon = "envelope"
   
 [cta]
-  url = "#"
-  label = "Register"
+  url = "https://www.eventbrite.co.uk/e/lymphoid-malignancies-with-interdisciplinary-techniques-lymit-tickets-256778329897"
+  label = "Free Registration"
   icon_pack = "fas"
   icon = "clipboard-check"
   
   
 # Note. An optional note to show underneath the links.
-[cta_note]
- label = 'Registration is free.'
 +++
 
 **Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT)**
