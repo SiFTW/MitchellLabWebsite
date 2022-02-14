@@ -53,15 +53,47 @@ Bramber House. University of Sussex, Brighton, BN1 9QU.
 
 #### By Train
 
-Train info
+Buy a ticket through to Falmer Station.
+
+Visitors travelling via London and the West need to change trains at Brighton Station for Falmer - the journey to Falmer Station from Brighton takes about nine minutes.
+
+Falmer Station is well served by frequent local trains which run between Brighton and Lewes. You can also travel to Falmer Station from London and the east via Lewes.
+
+For train times, please consult [Southern Railway](https://www.southernrailway.com/)
 
 #### By Car
 
 Parking will be available for free on site.
 
+The Falmer junction for the University of Sussex is on the A27 road between Brighton and Lewes, about four miles (six kilometres) from the centre of Brighton.
+
+Visitors driving from London and the north should follow the M23/A23 road towards Brighton. Before you reach Brighton town centre, take the A27 eastbound (joining visitors travelling from West) which is signposted to Lewes.
+
+Then:
+
+Exit A27 at Falmer and turn left at the first roundabout into the campus.
+
+Drivers from the east going south on the A27. Exit at Falmer junction.
+
+Then:
+
+Exit A27 then turn right (second exit) at mini roundabout. Over bridge and straight on at next roundabout.
+
+### By Taxi
+
+Taxis are available at Brighton and Lewes Railway Stations and in central Brighton; it is about four miles (six kilometres) from the centre of Brighton to the University of Sussex. (There is no taxi service at Falmer Station.) Please note that traffic in Brighton can be congested and it is often quicker to take the train to and from Falmer (journey time about nine minutes).
+
 ### By Bus
 
-Bus route info
+Bus numbers 25 (or 25a) and 5B run between the centre of Brighton and the universities - from Churchill Square and Old Steine - bringing passengers directly onto the campuses. The 23 bus runs to and from the universities and Brighton Marina via the Kemptown.
+
+In addition, bus services 28, 29, 728 and 729 operate between Brighton (Old Steine) and destinations east of Falmer. These stop outside the University of Sussex.
+
+[Consult Brighton & Hove Bus and Coach Company for times and further details](https://www.buses.co.uk/)
+
+## Accomodation
+
+[View University of Sussex approved hotels and discounts.](https://www.sussex.ac.uk/about/directions/wheretostay)
 
 ## Contact
 
