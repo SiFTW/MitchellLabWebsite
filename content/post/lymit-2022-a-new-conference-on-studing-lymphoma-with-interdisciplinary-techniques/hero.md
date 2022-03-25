@@ -51,7 +51,8 @@ title = "LyMIT 2022"
   
   
 # Note. An optional note to show underneath the links.
-Registration deadline: 2nd May 2022
+[cta_note]
+  label = 'Registration deadline: 2nd May 2022'
 +++
 
 **Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT)**
