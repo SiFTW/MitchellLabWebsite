@@ -51,7 +51,7 @@ title = "LyMIT 2022"
   
   
 # Note. An optional note to show underneath the links.
-Registration deadling: 2nd May 2022
+Registration deadline: 2nd May 2022
 +++
 
 **Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT)**
