@@ -1,0 +1,144 @@
+#ARG BASE_IMAGE=jupyterhub/singleuser:1.0.0
+ARG BASE_IMAGE=jupyterhub/singleuser:latest
+FROM ${BASE_IMAGE}
+
+
+# Install jupyterlab
+
+RUN conda update --all
+RUN conda upgrade ipykernel
+RUN conda config --set channel_priority strict
+RUN conda install -c conda-forge ruamel.yaml
+RUN conda install -c conda-forge jupyterlab
+RUN conda install -c conda-forge openmm
+#RUN conda install -c conda-forge julia
+RUN conda install -c conda-forge nb_conda_kernels
+RUN conda install -c conda-forge numpy
+RUN conda install -c conda-forge psutil
+RUN conda install -c conda-forge toolz
+RUN conda install -c conda-forge matplotlib
+RUN conda install -c conda-forge dill
+RUN conda install -c conda-forge pandas
+RUN conda install -c conda-forge partd
+RUN conda install -c conda-forge bokeh
+RUN conda install -c conda-forge dask
+RUN conda install -c conda-forge nglview
+RUN conda install -c conda-forge MDAnalysis
+
+# RUN pip install jupyterlab
+
+RUN jupyter serverextension enable --py jupyterlab --sys-prefix
+# Julia dependencies
+# install Julia packages in /opt/julia
+#ENV JULIA_DEPOT_PATH=/opt/julia \
+#    JULIA_PKGDIR=/opt/julia \
+#    JULIA_VERSION="${julia_version}" \
+#    JULIA_NUM_THREADS=4 \
+#    IJULIA_DEBUG=true
+#WORKDIR /tmp
+#USER root
+#RUN mkdir /opt/julia
+#RUN chmod 777 /opt/julia
+
+
+#USER jovyan
+#RUN /opt/conda/bin/conda create -n julia_env -c conda-forge julia
+#RUN source activate julia_env
+#RUN echo "source activate julia_env" > ~/.bashrc
+#RUN source activate julia_env
+#RUN source deactivate julia_env
+#RUN conda deactivate
+
+# Fix DL4006
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+USER root
+
+# Julia installation
+# Default values can be overridden at build time
+# (ARGS are in lower case to distinguish them from ENV)
+# Check https://julialang.org/downloads/
+ARG julia_version="1.6.2"
+# SHA256 checksum
+#ARG julia_checksum="7c888adec3ea42afbfed2ce756ce1164a570d50fa7506c3f2e1e2cbc49d52506"
+ARG julia_checksum="3eb4b5775b0df1ad38f6c409e989501ab445c95bcb01ab02bd60f5bd1e823240"
+ARG CONDA_DIR="/opt/conda"
+ARG HOME="/home/user/jovyan"
+
+# R pre-requisites
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends \
+    fonts-dejavu \
+    gfortran \
+    gcc && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Julia dependencies
+# install Julia packages in /opt/julia instead of ${HOME}
+ENV JULIA_DEPOT_PATH=/opt/julia \
+    JULIA_PKGDIR=/opt/julia \
+    JULIA_VERSION="${julia_version}" \
+    JULIA_NUM_THREADS=32 \
+    IJULIA_DEBUG=true
+WORKDIR /tmp
+
+# hadolint ignore=SC2046
+RUN mkdir "/opt/julia-${JULIA_VERSION}" && \
+    wget -q https://julialang-s3.julialang.org/bin/linux/x64/$(echo "${JULIA_VERSION}" | cut -d. -f 1,2)"/julia-${JULIA_VERSION}-linux-x86_64.tar.gz" && \
+    echo "${julia_checksum} *julia-${JULIA_VERSION}-linux-x86_64.tar.gz" | sha256sum -c - && \
+    tar xzf "julia-${JULIA_VERSION}-linux-x86_64.tar.gz" -C "/opt/julia-${JULIA_VERSION}" --strip-components=1 && \
+    rm "/tmp/julia-${JULIA_VERSION}-linux-x86_64.tar.gz" && \
+    ln -fs /opt/julia-*/bin/julia /usr/local/bin/julia
+
+# Show Julia where conda libraries are \
+RUN mkdir /etc/julia && \
+    echo "push!(Libdl.DL_LOAD_PATH, \"${CONDA_DIR}/lib\")" >> /etc/julia/juliarc.jl && \
+    # Create JULIA_PKGDIR \
+    mkdir "${JULIA_PKGDIR}" && \
+    chown "${NB_USER}" "${JULIA_PKGDIR}"
+
+
+
+USER jovyan
+RUN julia -e 'import Pkg; Pkg.add(Pkg.PackageSpec(;name="WebIO", version="0.8.16"))' && \
+    julia -e 'using Pkg; Pkg.add("IJulia"); Pkg.build("IJulia");' && \
+    julia -e 'using Pkg; Pkg.add("CSV");' && \
+    julia -e 'using Pkg; Pkg.add("DifferentialEquations");' && \
+    julia -e 'using Pkg; Pkg.add("DataFrames");' && \
+    julia -e 'using Pkg; Pkg.add("Plots");' && \
+    julia -e 'using Pkg; Pkg.add("Sundials"); ' && \
+    julia -e 'using Pkg; Pkg.add("JLD2");' && \
+    julia -e 'using Pkg; Pkg.add("OrdinaryDiffEq");' && \
+    julia -e 'using Pkg; Pkg.add("DelimitedFiles");' && \
+    julia -e 'using Pkg; Pkg.add("FileIO");' && \
+    julia -e 'using Pkg; Pkg.add("StatsPlots");'
+    
+    
+RUN julia -e 'using Pkg; Pkg.precompile();'
+
+#USER root
+#    # move kernelspec out of home 
+#RUN mv "/home/user/jovyan/.local/share/jupyter/kernels/julia"* "/opt/conda/share/jupyter/kernels/" && \
+#    chmod -R go+rx "/opt/conda/share/jupyter" && \
+#    rm -rf "/home/user/jovyan/.local"
+
+RUN mv "${HOME}/.local/share/jupyter/kernels/julia"* "${CONDA_DIR}/share/jupyter/kernels/" && \
+    chmod -R go+rx "${CONDA_DIR}/share/jupyter" && \
+    rm -rf "${HOME}/.local" && \
+    fix-permissions "${JULIA_PKGDIR}" "${CONDA_DIR}/share/jupyter"
+
+#RUN chmod -R 777 /home/jovyan/.local/share/
+#RUN cp -R /home/jovyan/.local/share/jupyter/kernels/julia* /opt/conda/share/jupyter/kernels/
+RUN chmod -R 777 /opt/conda/share/jupyter
+RUN chmod -R 777 /opt/julia
+#RUN rm -rf /home/joyvan/.local/share
+
+USER root
+#RUN ln -s /opt/conda/bin/julia /usr/local/bin/julia
+RUN apt-get update
+RUN apt-get --assume-yes install git
+#USER jovyan
+WORKDIR /home/user/jovyan
+RUN git clone https://github.com/SiFTW/MitchellLabTeachingPop.git popModelling
+RUN git clone https://github.com/SiFTW/MitchellLabTeachingCancer.git cancerModelling
+RUN git clone https://github.com/SiFTW/MitchellLabTeachingMD.git MDModelling
