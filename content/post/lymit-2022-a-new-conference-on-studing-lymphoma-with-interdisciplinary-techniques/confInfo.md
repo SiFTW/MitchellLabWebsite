@@ -29,7 +29,7 @@ Registration is free! [Click here to register](https://www.eventbrite.co.uk/e/ly
 
 ## Speaker Lineup.
 
-The lineup is to be confirmed but includes representatives of many groups leading interdisciplinary approaches to studying lymphoma. The latest lineup is shown below:
+The lineup is to be confirmed but includes representatives of many groups leading interdisciplinary approaches to studying lymphoma. The latest lineup is shown below, and can be [downloaded to print here](https://mitchell.science/Lymit-programme.pdf).
 ![](lineupImage.jpg)
 
 
