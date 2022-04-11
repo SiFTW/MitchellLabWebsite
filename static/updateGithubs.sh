@@ -10,7 +10,7 @@ function updateGH {
 	    mv $f/_data/cancerModelling $f/_data/oldFolders/$(date +"%H%M-%d-%m-%Y")-cancerModelling
 	    mv $f/_data/popModelling $f/_data/oldFolders/$(date +"%H%M-%d-%m-%Y")-popModelling
 	    git clone https://github.com/SiFTW/MitchellLabTeachingPop.git $f/_data/popModelling
-	    git clone https://github.com/SiFTW/MitchellLabTeachingCancer.git $f/_data/cancerModellingModelling
+	    git clone https://github.com/SiFTW/MitchellLabTeachingCancer.git $f/_data/cancerModelling
 	    git clone https://github.com/SiFTW/MitchellLabTeachingMD.git $f/_data/MDModelling
 	    chmod 777 -R $f/_data/
         fi;  
