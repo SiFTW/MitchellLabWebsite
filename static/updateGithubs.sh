@@ -12,6 +12,7 @@ function updateGH {
 	    git clone https://github.com/SiFTW/MitchellLabTeachingPop.git $f/_data/popModelling
 	    git clone https://github.com/SiFTW/MitchellLabTeachingCancer.git $f/_data/cancerModellingModelling
 	    git clone https://github.com/SiFTW/MitchellLabTeachingMD.git $f/_data/MDModelling
+	    chmod 777 -R $f/_data/
         fi;  
     done;  
 };
