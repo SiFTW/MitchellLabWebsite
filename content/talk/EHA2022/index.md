@@ -1,0 +1,11 @@
+---
+title: "The Mitchell lab will present two projects at EHA 2021"
+date: 2021-04-28T17:07:13+01:00
+draft: false
+profile: false 
+---
+We're excited to share that the Mitchell Lab have had two abstracts accepted for the [European Haematology Associations annual congress, EHA2022, June 9th-12th 2022](https://ehaweb.org/congress/eha2022-hybrid/eha2022-congress/).
+
+[Eleanor](../../eleanor-jayawant/) will present her project titled "FLOW CYTOMETRY COMBINED WITH SYSTEMS BIOLOGY ENABLES RATIONAL TARGETING OF NFKB IN DLBCL". Produced in the first year of her project: [Therapeutic targeting of refractory relapsed diffuse large B-cell lymphoma through systems biology]({{< ref "/project/rr-dlbcl" >}} "Therapeutic targeting of refractory relapsed diffuse large B-cell lymphoma through systems biology"), funded by our [UKRI Future Leaders Fellowship](https://www.bsms.ac.uk/about/news/2020/10-15-bsms-researcher-receives-prestigious-fellowship.aspx). She has developed an exciting Flow Cytommetry pipeline to assess NFκB with unprecedented detail in DLBCL cells. The pipline informs computational modelling work to enable predictions of which cells will respond to targetted therapies. The work is part of an exciting collaboration with [Andrea and Chris Pepper](https://www.pepper.science/).
+
+[Simon](../../author/simon-mitchell/) will present a project lead by [Ielyaas](../../author/ielyaas-cloete/), as part of a new collaboration with [Victoria Smith, Ross Jackson and Martin Dyer](https://www2.le.ac.uk/centres/cancer/people/prof-martin-dyer), and [Andrea and Chris Pepper](https://www.pepper.science/). In this project, titled: "PREDICTING THE RESPONSE OF DLBCL CELLS TO BH3-MIMETICS USING SYSTEMS BIOLOGY", we have created a new computational systems biology model of apoptosis that accurately predicts how DLBCL cells will respond to BH3-Mimetics. The model is validated by extensive experimental data and accurately predicts which cells respond to which drugs. This work is part of a [A Systems Biology Approach to Tailoring Therapy for Diffuse Large B-Cell Lymphoma]({{< ref "/project/primary-dlbcl/" >}} project/primary-dlbcl/ funded by [Leuakaemi UK](../../project/primary-dlbcl/) and Simon is funded by a [UKRI Future Leaders Fellowship](../../project/rr-dlbcl/).
