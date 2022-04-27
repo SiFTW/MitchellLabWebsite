@@ -1,6 +1,6 @@
 ---
 title: "The Mitchell lab will present two projects at EHA 2022"
-date: 2022-04-28T17:07:13+01:00
+date: 2022-06-10T15:30:00+01:15
 draft: false
 profile: false 
 ---
