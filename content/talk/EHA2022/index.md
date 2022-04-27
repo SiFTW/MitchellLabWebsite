@@ -1,8 +1,10 @@
 ---
 title: "The Mitchell lab will present two projects at EHA 2022"
-date: 2022-06-10T15:30:00+01:15
+date: 2022-04-27T00:00:00
 draft: false
 profile: false 
+event_start:2022-06-10T16:30:00
+event_end:2022-06-10T17:45:00
 ---
 We're excited to share that the Mitchell Lab have had two abstracts accepted for the [European Haematology Associations annual congress, EHA2022, June 9th-12th 2022](https://ehaweb.org/congress/eha2022-hybrid/eha2022-congress/).
 
