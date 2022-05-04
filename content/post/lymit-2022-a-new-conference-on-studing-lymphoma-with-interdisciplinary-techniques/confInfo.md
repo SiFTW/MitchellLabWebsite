@@ -26,7 +26,8 @@ We look forward to seeing you all in June!
 Registration is free! [Click here to register](https://www.eventbrite.co.uk/e/lymphoid-malignancies-with-interdisciplinary-techniques-lymit-tickets-256778329897?utm_campaign=post_publish&utm_medium=email&utm_source=eventbrite&utm_content=shortLinkNewEmail)
 
 ~~Register by the 2nd May 2022 to receive lunch and refreshments.~~
-**Registration deadline extended to 31st may 2022.~~
+
+**Registration deadline extended to 31st may 2022.**
 
 ## Speaker Lineup.
 
