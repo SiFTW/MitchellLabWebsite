@@ -3,10 +3,32 @@ title: "The Mitchell lab will present two projects at EHA 2022"
 date: 2022-04-27T00:00:00
 draft: false
 profile: false 
-event_start: 2022-06-10T16:30:00
-event_end: 2022-06-10T17:45:00
+
+event: EHA 2022
+event_url: https://ehaweb.org/congress/eha2022-hybrid/eha2022-congress/
+
+location: Vienna
+address:
+  street: Messe Wien Exhibition & Congress Center
+  city: Vienna
+  region: 
+  postcode: 
+  country: Austria
+
+summary: The Mitchell lab will present two projects at EHA 2022
+abstract: 'We are excited to share that the Mitchell Lab have had two abstracts accepted for the European Haematology Associations annual congress, EHA2022, June 9th-12th 2022.
+'
+
+# Talk start and end times.
+#   End time can optionally be hidden by prefixing the line with `#`.
+date: '2022-06-10T16:30:00Z'
+date_end: '2022-06-10T17:45:00Z'
+all_day: true
+
+# Schedule page publish date (NOT talk date).
+publishDate: 2022-04-27T00:00:00
+
 ---
-We're excited to share that the Mitchell Lab have had two abstracts accepted for the [European Haematology Associations annual congress, EHA2022, June 9th-12th 2022](https://ehaweb.org/congress/eha2022-hybrid/eha2022-congress/).
 
 [Eleanor](../../author/eleanor-jayawant/) will present her project titled "FLOW CYTOMETRY COMBINED WITH SYSTEMS BIOLOGY ENABLES RATIONAL TARGETING OF NFKB IN DLBCL". This work represents her first year of progress on the project: [Therapeutic targeting of refractory relapsed diffuse large B-cell lymphoma through systems biology](../../project/rr-dlbcl/), funded by our [UKRI Future Leaders Fellowship](https://www.bsms.ac.uk/about/news/2020/10-15-bsms-researcher-receives-prestigious-fellowship.aspx). She has developed an exciting Flow Cytommetry pipeline to assess NFκB with unprecedented detail in DLBCL cells. The pipline informs computational modelling work to enable predictions of which cells will respond to targetted therapies. The work is part of an exciting collaboration with [Andrea and Chris Pepper](https://www.pepper.science/). The abstract code for this work is: P1266.
 
