@@ -15,14 +15,13 @@ address:
   postcode: 
   country: Austria
 
-summary: The Mitchell lab will present two projects at EHA 2022
-abstract: 'We are excited to share that the Mitchell Lab have had two abstracts accepted for the European Haematology Associations annual congress, EHA2022, June 9th-12th 2022.
-'
+summary: We are excited to share that the Mitchell Lab have had two abstracts accepted for the European Haematology Associations annual congress, EHA2022, June 9th-12th 2022.
+abstract: 
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: '2022-06-10T16:30:00Z'
-date_end: '2022-06-10T17:45:00Z'
+date: '2022-06-9T16:30:00Z'
+date_end: '2022-12-10T17:45:00Z'
 all_day: true
 
 # Schedule page publish date (NOT talk date).
