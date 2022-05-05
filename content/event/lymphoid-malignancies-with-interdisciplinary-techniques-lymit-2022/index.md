@@ -26,3 +26,4 @@ image:
   focal_point: Smart
   preview_only: false
 ---
+The aim of the meeting is to learn about the wide range of interdisciplinary methodologies being used to better understand and treat lymphoid malignancies. There will be talks on advances ranging from experimental model systems to computational biology. This event will take place in-person at the University of Sussex in Brighton. [More info here.](https://mitchell.science/post/lymit-2022-a-new-conference-on-studing-lymphoma-with-interdisciplinary-techniques/)
