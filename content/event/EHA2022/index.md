@@ -10,7 +10,7 @@ location: Vienna
 address:
   street: Messe Wien Exhibition & Congress Center
   city: Vienna
-  region: 
+  region: Austria
   postcode: 
   country: Austria
 
