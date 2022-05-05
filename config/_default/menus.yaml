@@ -20,7 +20,7 @@ main:
     url: '#featured'
     weight: 50
   - name: Funding
-    url: '#Fundingd'
+    url: '/funding'
     weight: 60
   - name: Contact
     url: '#contact'
