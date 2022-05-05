@@ -1,15 +1,12 @@
 ---
 title: Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT) 2022
-abstract: We are hosting a new meeting we are hosting on research into Lymphoid
-  Malignancies with Interdisciplinary Techniques (LyMIT), which will take place
-  on 21st June 2022. The aim of the meeting is to learn about the wide range of
-  interdisciplinary methodologies being used to better understand and treat
-  lymphoid malignancies. There will be talks on advances ranging from
-  experimental model systems to computational biology. This event will take
-  place in-person at the University of Sussex in Brighton.
+abstract: 
+summary: We are hosting a new meeting we are hosting on research into Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT), which will take place
+  on 21st June 2022. 
 location: University of Sussex
 date: 2022-06-21T08:30:08.521Z
 date_end: 2022-06-21T17:00:00.000Z
+profile: false
 all_day: false
 links:
   - url: https://www.eventbrite.co.uk/e/lymphoid-malignancies-with-interdisciplinary-techniques-lymit-tickets-256778329897
