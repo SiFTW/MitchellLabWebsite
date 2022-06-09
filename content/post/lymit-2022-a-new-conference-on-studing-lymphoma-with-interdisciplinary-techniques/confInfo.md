@@ -15,7 +15,7 @@ design:
 
 Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT) is a new meeting focused on highlighting exciting novel research that uses interdisciplinary techniques to understand blood cancer. The biological focus is on lymphocyte biology and malignancy, however the techniques are broad – spanning computational biology, animal models, molecular techniques, and everything in between. The meeting is organised by [the Mitchell Group](/) at Brighton and Sussex Medical School (University of Sussex). We have lined up a diverse and exciting lineup of talks and there will be a poster session with prizes for the best poster presentations.
 
-We look forward to seeing you all in ~~June~~ August!
+We look forward to seeing you all in ~~June~~ September!
 
 ## Registration
 
