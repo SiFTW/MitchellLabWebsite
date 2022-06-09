@@ -61,6 +61,6 @@ A new meeting focused on highlighting exciting novel research that uses interdis
 
 University of Sussex. 
 
-16th Auguest 2022.
+16th August 2022.
 
 
