@@ -52,7 +52,7 @@ title = "LyMIT 2022"
   
 # Note. An optional note to show underneath the links.
 [cta_note]
-  label = 'Registration deadline: 2nd May 2022'
+  label = 'Registration deadline: 31st July 2022'
 +++
 
 **Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT)**
@@ -61,6 +61,6 @@ A new meeting focused on highlighting exciting novel research that uses interdis
 
 University of Sussex. 
 
-21st June 2022.
+16th Auguest 2022.
 
 
