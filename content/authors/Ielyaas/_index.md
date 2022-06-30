@@ -10,7 +10,7 @@ authors:
 superuser: false
 
 # Role/position
-role: Alumni
+role: Postdoctoral Researcher
 
 # Organizations/Affiliations
 organizations:
@@ -56,7 +56,7 @@ email: ""
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- Postdoctoral Researchers
+- Alumni
 ---
  
 Ielyaas trained at the University of Aukland where he worked on models of Calcium signalling in Hepatocytes. He joined BSMS to work on [studying Diffuse Large B-Cell Lymphoma]({{< ref "/project/primary-dlbcl" >}} "studying Diffuse Large B-Cell Lymphoma") with funding from Leukaemia UK.
