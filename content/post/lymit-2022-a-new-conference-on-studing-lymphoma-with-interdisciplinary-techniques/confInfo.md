@@ -19,11 +19,7 @@ We look forward to seeing you all in ~~June~~ September!
 
 ## Registration
 
-Registration is free! [Click here to register](https://www.eventbrite.co.uk/e/lymphoid-malignancies-with-interdisciplinary-techniques-lymit-tickets-256778329897?utm_campaign=post_publish&utm_medium=email&utm_source=eventbrite&utm_content=shortLinkNewEmail)
-
-~~Register by the 2nd May 2022 to receive lunch and refreshments.~~
-
-**Registration deadline extended to 31st July 2022.**
+Registration is now closed. If you wish to attend please contact Gemma Hamilton ([HAEM-Oncology@bsms.ac.uk](mailto:HAEM-Oncology@bsms.ac.uk))
 
 ## Speaker Lineup.
 
