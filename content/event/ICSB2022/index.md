@@ -3,7 +3,7 @@ title: "The Mitchell lab will presenting multiple projects at ICSB 2022 in Berli
 draft: false
 profile: false 
 
-event: ICSB2022
+event: ICSB 2022
 event_url: https://www.icsb2022.berlin/
 
 location: Berlin
@@ -14,7 +14,7 @@ address:
   postcode: 
   country: Germany
 
-summary: We have had two projects accepted for talks and two projects accepted for posters at ICSB 2022. The 21st International Conference on Systems Biology.
+summary: We have had two projects accepted for talks and two projects accepted for posters at ICSB 2022, the 21st International Conference on Systems Biology.
 abstract: 
 
 # Talk start and end times.
@@ -24,7 +24,7 @@ date_end: '2022-10-12T17:00:00Z'
 all_day: true
 
 # Schedule page publish date (NOT talk date).
-publishDate: 2022-10-2T00:00:00
+publishDate: 2022-05-1T00:00:00
 
 ---
 We have had two abstracts accepted for talks, and two for posters at [ICSB 2022: The 21st International Conference on Systems Biology ICSB 2022](https://www.icsb2022.berlin/).
