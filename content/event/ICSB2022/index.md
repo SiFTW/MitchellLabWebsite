@@ -24,7 +24,7 @@ date_end: '2022-10-12T17:00:00Z'
 all_day: true
 
 # Schedule page publish date (NOT talk date).
-publishDate: 2022-10-3T00:00:00
+publishDate: 2022-10-2T00:00:00
 
 ---
 We are excited to share that the Mitchell Lab have had two abstracts accepted for talks at [ICSB 2022: The 21st International Conference on Systems Biology ICSB 2022](https://www.icsb2022.berlin/).
