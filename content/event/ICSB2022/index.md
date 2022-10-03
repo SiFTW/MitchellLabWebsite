@@ -27,7 +27,7 @@ all_day: true
 publishDate: 2022-10-2T00:00:00
 
 ---
-We are excited to share that the Mitchell Lab have had two abstracts accepted for talks at [ICSB 2022: The 21st International Conference on Systems Biology ICSB 2022](https://www.icsb2022.berlin/).
+We have had two abstracts accepted for talks, and two for posters at [ICSB 2022: The 21st International Conference on Systems Biology ICSB 2022](https://www.icsb2022.berlin/).
 
 [Eleanor](../../authors/eleanor/) will present her project titled "Flow Cytometry Combined with Systems Biology Modelling Reveals Heterogeneous 'NFkB Fingerprints' in DLBCL". This work is part of her project: [Therapeutic targeting of refractory relapsed diffuse large B-cell lymphoma through systems biology](../../project/rr-dlbcl/), funded by our [UKRI Future Leaders Fellowship](https://www.bsms.ac.uk/about/news/2020/10-15-bsms-researcher-receives-prestigious-fellowship.aspx). Her presentation will be part of Session 15: CANCER SYSTEMS BIOLOGY, and she will share her exciting interdisciplinary approach combining computational biology with Flow Cytommetry pipeline to assess NFκB with unprecedented detail in DLBCL cells.The work is part of an exciting collaboration with [Andrea and Chris Pepper](https://www.pepper.science/). The abstract for this work is available [here](https://easychair.org/smart-program/ICSB2022/2022-10-11.html#talk:202875).
 
