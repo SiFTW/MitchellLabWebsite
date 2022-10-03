@@ -3,7 +3,7 @@ title: "The Mitchell lab will presenting multiple projects at ICSB 2022 in Berli
 draft: false
 profile: false 
 
-event: EHA 2022
+event: ICSB2022
 event_url: https://www.icsb2022.berlin/
 
 location: Berlin
