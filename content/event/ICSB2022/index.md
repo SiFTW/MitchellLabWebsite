@@ -15,7 +15,6 @@ address:
   country: Germany
 
 summary: We have had two projects accepted for talks and two projects accepted for posters at ICSB 2022. The 21st International Conference on Systems Biology.
-Berlin, Germany, October 8-12, 2022
 abstract: 
 
 # Talk start and end times.
