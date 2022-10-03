@@ -13,19 +13,20 @@ address:
   region: Austria
   postcode: 
   country: Austria
-
+featured: false
 summary: We are excited to share that the Mitchell Lab have had two abstracts accepted for the European Haematology Associations annual congress, EHA2022, June 9th-12th 2022.
 abstract: 
-
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
 date: '2022-06-9T16:30:00Z'
 date_end: '2022-06-12T17:45:00Z'
 all_day: true
-
 # Schedule page publish date (NOT talk date).
 publishDate: 2022-04-27T00:00:00
-
+image:
+  filename: featured
+  focal_point: Smart
+  preview_only: false
 ---
 We are excited to share that the Mitchell Lab have had two abstracts accepted for the [European Haematology Associations annual congress, EHA2022, June 9th-12th 2022](https://ehaweb.org/congress/eha2022-hybrid/eha2022-congress/).
 
