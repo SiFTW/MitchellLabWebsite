@@ -54,4 +54,3 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
-[Mitchell Lab Alumni](https://mitchell.science/alumni)
