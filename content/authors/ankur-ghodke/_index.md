@@ -6,7 +6,7 @@ bio: University of Sussex, MSc Student, Department of Life Sciences.
 interests: []
 superuser: false
 user_groups:
-  - MSc Students
+  - Alumni
 
 organizations:
 - name: Brighton and Sussex Medical School, University of Sussex
