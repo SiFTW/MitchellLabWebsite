@@ -30,7 +30,8 @@ subtitle = ""
     category = ""
     publication_type = ""
     author = ""
-  
+    featured_only= true
+    
 [design]
   # Toggle between the various page layout types.
   #   1 = List
