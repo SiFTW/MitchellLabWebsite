@@ -57,8 +57,8 @@ content:
       icon_pack: ai
       name: Google Scholar
       link: 'https://scholar.google.com/citations?user=lsKnTVoAAAAJ&hl=en'
-    - icon: fa-mastodon
-      icon_pack: fa-brands
+    - icon: mastodon
+      icon_pack: fab
       name: Mastadon
       link: 'https://mstdn.science/web/@Mitchell'
 
