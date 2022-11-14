@@ -26,7 +26,6 @@ module:
     - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-reveal
     - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy/v5
 
-
 ############################
 ## ADVANCED
 ############################
@@ -45,8 +44,7 @@ permalinks:
   publication_types: '/publication-type/:slug/'
 disableAliases: true
 outputs:
-#  home: [HTML, RSS, JSON, WebAppManifest, headers, redirects]
-  home: [HTML, RSS, JSON, headers, redirects]
+  home: [HTML, RSS, JSON, WebAppManifest, headers, redirects]
   section: [HTML, RSS]
 imaging:
   resampleFilter: lanczos
