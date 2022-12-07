@@ -35,10 +35,10 @@ interests:
 social:
 - icon: envelope
   icon_pack: fas
-  link: 'mailto:E.Jayawant@bsms.ac.uk'  # For a direct email link, use "mailto:".
+  link: 'mailto:A.Vareli@bsms.ac.uk'  # For a direct email link, use "mailto:".
 - icon: linkedin
   icon_pack: fab
-  link: www.linkedin.com/in/aimilia-vareli-ba42551b9
+  link: https://www.linkedin.com/in/aimilia-vareli-ba42551b9
 #- icon: github
 #  icon_pack: fab
 #  link: https://github.com/SiFTW
