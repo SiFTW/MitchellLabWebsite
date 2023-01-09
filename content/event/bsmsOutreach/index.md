@@ -1,6 +1,6 @@
 ---
 title: "Dr Mitchell gives BSMS outreach lecture."
-date: 2020-09-08T17:07:13+01:00
+date: 2023-01-09T09:00:00+01:00
 draft: false
 ---
 Dr Mitchell recently gave a BSMS outreach lecture, where he answered: 
