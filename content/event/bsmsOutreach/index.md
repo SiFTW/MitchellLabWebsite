@@ -1,5 +1,5 @@
 ---
-title: "Dr Mitchell gives BSMS outreach lecture."
+title: "Dr Mitchell gives BSMS outreach lecture. Watch the video here."
 date: 2023-01-09T09:00:00+01:00
 draft: false
 ---
