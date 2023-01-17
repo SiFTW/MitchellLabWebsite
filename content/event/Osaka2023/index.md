@@ -11,7 +11,7 @@ address:
   postcode: 
   country: Japan
 featured: false
-summary: Dr Mitchell will deliver a seminar titled: "A systems biology approach to understanding B cell fate decisions in health and lymphoma."
+summary: Dr Mitchell will deliver a seminar on using systems biology approaches to understanding B cell fate decisions in health and lymphoma.
 
 abstract: 
 # Talk start and end times.
