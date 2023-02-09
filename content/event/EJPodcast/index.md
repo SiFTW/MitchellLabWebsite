@@ -1,5 +1,5 @@
 ---
-title: "Dr Eleanor Jayawant is a podcast guest discussing being an autistic person in academia, and all things diversity!a"
+title: "Dr Eleanor Jayawant is a podcast guest discussing being an autistic person in academia, and all things diversity!"
 date: 2023-02-09T09:00:00+01:00
 draft: false
 ---
