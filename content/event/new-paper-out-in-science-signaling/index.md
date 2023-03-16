@@ -8,6 +8,7 @@ event_url: https://mitchell.science/publication/the-nf-%CE%BAb-multidimer-system
 publishDate: 2023-03-16T13:59:40.780Z
 draft: false
 featured: false
+author: false
 image:
   filename: featured.png
   focal_point: Smart
