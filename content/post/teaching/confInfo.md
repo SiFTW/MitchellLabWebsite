@@ -18,4 +18,18 @@ design:
 
 # Links to slides
 
-[Week 1 - Population scale modeling](Week1.pptx)
+[Week 1 - Population scale modelling](Week1.pptx)
+
+Week 2 - Cancer modelling 1
+
+Week 3 - Cancer modelling 2
+
+Week 4 - Molecular dynamics modelling  1
+
+Week 5 - Molecular dynamics modelling  2
+
+Week 6 - Prepare for assessment (no slides)
+
+Week 7 - Assessment week 1
+
+Week 8 - Assessment week 2
