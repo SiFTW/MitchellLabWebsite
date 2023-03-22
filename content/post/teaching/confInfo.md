@@ -11,11 +11,11 @@ design:
   columns: '1'
 ---
 
-# Link to teaching
+# Link to computational environment.
 
-(Link to teaching server)[http://139.184.170.218:9001/]. This link will only work on campus.
+[Link to teaching server](http://139.184.170.218:9001/). This link will only work on campus.
 
 
-## Link to slides
+# Links to slides
 
-(Week 1 - Population scale modeling)[Week1.pptx]
+[Week 1 - Population scale modeling](Week1.pptx)
