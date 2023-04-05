@@ -20,7 +20,7 @@ design:
 
 [Week 1 - Population scale modelling](Week1.pptx)
 
-Week 2 - Cancer modelling 1
+[Week 2 - Cancer modelling 1](Week2.pptx)
 
 Week 3 - Cancer modelling 2
 
