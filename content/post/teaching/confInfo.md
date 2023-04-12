@@ -22,7 +22,7 @@ design:
 
 [Week 2 - Cancer modelling 1](Week2.pptx)
 
-Week 3 - Cancer modelling 2
+[Week 3 - Cancer modelling 2](Week3.pptx)
 
 Week 4 - Molecular dynamics modelling  1
 
