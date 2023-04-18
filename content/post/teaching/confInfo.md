@@ -24,7 +24,7 @@ design:
 
 [Week 3 - Cancer modelling 2](Week3.pptx)
 
-Week 4 - Molecular dynamics modelling  1
+[Week 4 - Molecular dynamics modelling  1](Week4.pptx)
 
 Week 5 - Molecular dynamics modelling  2
 
