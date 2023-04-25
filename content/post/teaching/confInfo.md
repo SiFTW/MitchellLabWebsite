@@ -26,10 +26,10 @@ design:
 
 [Week 4 - Molecular dynamics modelling  1](Week4.pptx)
 
-Week 5 - Molecular dynamics modelling  2
+[Week 5 - Molecular dynamics modelling  2](Week5.pptx)
 
-Week 6 - Prepare for assessment (no slides)
+Week 6 - Prepare for assessment (no slides, no session)
 
-Week 7 - Assessment week 1
+Week 7 - Assessment week 1 (all attend)
 
-Week 8 - Assessment week 2
+Week 8 - Assessment week 2 (all attend)
