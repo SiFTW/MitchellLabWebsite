@@ -13,16 +13,13 @@ design:
 
 # Link to computational environment.
 
-(Link to computational server)[http://139.184.170.218:8000]. If you don't know the username/password ask Simon.
+[Link to computational server](http://139.184.170.218:8000). If you don't know the username/password ask Simon.
 
 
-# Links to flow pre-processing software to get CSV files to make fingerprints
-
-[floReada](https://floreada.io/analysis)
 
 # How to make fingerprints:
 
-- Go to the above link and gate out your cells. You can probably do this is FlowJo too.
+- Go to [FloReada](https://floreada.io/analysis) and gate out your cells. You can probably do this using FlowJo too.
 
 - Export the cells within the gate as a CSV file, this should give you a CSV file that looks like this when you open it in Excel:
 
@@ -30,7 +27,7 @@ design:
 
 - Do this for every cell populations (FCS) file that you want to analyse to create a bunch of CSV files and save them somewhere on your computer.
 
-- Login to the computational server with the fingerprints user. (Link to computational server)[http://139.184.170.218:8000].
+- Login to the computational server with the fingerprints user. [Link to computational server](http://139.184.170.218:8000).
 
 - Click on your user folder.
 
@@ -38,4 +35,4 @@ design:
 
 - Open "Fingerprinting.ipynb"
 
-- Follow the instructions in the file, which will tell you how to update the file depending on what you want to plot. Use shift + enter to run each cell.
+- Follow the instructions in the file, which will tell you how what to change based on your plotting requirements. Use shift + enter to run each cell.
