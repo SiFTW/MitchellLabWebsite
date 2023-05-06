@@ -22,12 +22,12 @@ design:
 - Convert your FCS file to a CSV file of events
   - Go to [FloReada](https://floreada.io/analysis) 
   - Upload your FCS file (drag and drop will work.
-  - Set the axes on FSC and SSC to logicl
-  - ![Axes](axes.png)
+  - Set the axes on FSC and SSC to "logicle" by clicking on the axes and choosing it from the drop down.
+    ![Axes](axes.png)
   - Create a polgygon gate around your cells
-  - ![polyGate](polyGate.png)
+    ![polyGate](polyGate.png)
   - Export the cells by right clicking on your gate and choosing export events
-  - ![export](events.png)
+    ![export](events.png)
   - Save this file somewhere sensible and repeat for all FCS files you want to analyse (each condition and replicate).
  
 - Generate fingerprints using our server
