@@ -19,22 +19,21 @@ design:
 
 # How to make fingerprints:
 
-- Go to [FloReada](https://floreada.io/analysis) and gate out your cells. You can probably do this using FlowJo too.
-
-- Export the cells within the gate as a CSV file, this should give you a CSV file that looks like this when you open it in Excel:
-
-![CSV Flow image](csvFlow.png)
-
-- Do this for every cell populations (FCS) file that you want to analyse to create a bunch of CSV files and save them somewhere on your computer.
-
-- Login to the computational server with the fingerprints user. [Link to computational server](http://139.184.170.218:8000).
-
-- Click on your user folder.
-
-- Drag and drop the CSV files you created into your folder and click upload wen asked.
-
-- Open "Fingerprinting.ipynb"
-
-- Follow the instructions in the file, which will tell you how what to change based on your plotting requirements. Use shift + enter to run each cell. 
-
-- When you run the final cell it will generate your fingerprints. You can copy and paste these out of the notebook you're running or they will be saved in your user folder and you can download them.
+- Convert your FCS file to a CSV file of events
+  - Go to [FloReada](https://floreada.io/analysis) 
+  - Upload your FCS file (drag and drop will work.
+  - Set the axes on FSC and SSC to logicl
+  - ![Axes](axes.png)
+  - Create a polgygon gate around your cells
+  - ![polyGate](polyGate.png)
+  - Export the cells by right clicking on your gate and choosing export events
+  - ![export](events.png)
+  - Save this file somewhere sensible and repeat for all FCS files you want to analyse (each condition and replicate).
+ 
+- Generate fingerprints using our server
+  - Login to the computational server with the fingerprints user. [Link to computational server](http://139.184.170.218:8000).
+  - Click on your user folder.
+  - Drag and drop the CSV files you created into your folder and click upload wen asked.
+  - Open "Fingerprinting.ipynb"
+  - Follow the instructions in the file, which will tell you how what to change based on your plotting requirements. Use shift + enter to run each cell. 
+  - When you run the final cell it will generate your fingerprints. You can copy and paste these out of the notebook you're running or they will be saved in your user folder and you can download them.
