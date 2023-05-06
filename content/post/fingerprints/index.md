@@ -14,9 +14,9 @@ image:
   preview_only: false
   caption: ""
 aliases:
-  - /teaching
-  - /Teaching
-  - /ssc
+  - /fingerprints
+  - /fingerprinting
+  - /fingerprint
 ---
 
 (Link to computational server)[http://139.184.170.218:8000]. If you don't know the username/password ask Simon.
