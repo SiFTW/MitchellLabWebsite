@@ -35,4 +35,6 @@ design:
 
 - Open "Fingerprinting.ipynb"
 
-- Follow the instructions in the file, which will tell you how what to change based on your plotting requirements. Use shift + enter to run each cell.
+- Follow the instructions in the file, which will tell you how what to change based on your plotting requirements. Use shift + enter to run each cell. 
+
+- When you run the final cell it will generate your fingerprints. You can copy and paste these out of the notebook you're running or they will be saved in your user folder and you can download them.
