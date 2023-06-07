@@ -1,6 +1,4 @@
 ---
-title: NF-κB fingerprinting reveals heterogeneous NF-κB composition in diffuse
-  large B-cell lymphoma
 publication_types:
   - "2"
 authors:
@@ -13,18 +11,42 @@ authors:
   - Chris Pepper
   - Andrea Pepper
   - Simon Mitchell
-doi: https://doi.org/10.3389/fonc.2023.1181660
+  - ""
+abstract:
+  Introduction: Improving treatments for Diffuse Large B-Cell Lymphoma (DLBCL) is
+    challenged by the vast heterogeneity of the disease. Nuclear factor-κB
+    (NF-κB) is frequently aberrantly activated in DLBCL. Transcriptionally
+    active NF-κB is a dimer containing either RelA, RelB or cRel, but the
+    variability in the composition of NF-κB between and within DLBCL cell
+    populations is not known.
+draft: false
+Discussion: Our results show that the composition of NF-κB is highly
+  heterogeneous in DLBCL and predictive of how DLBCL cells will respond to
+  microenvironmental stimuli. We find that commonly occurring mutations in the
+  NF-κB signaling pathway reduce DLBCL’s response to microenvironmental stimuli.
+  NF-κB fingerprinting is a widely applicable analysis technique to quantify
+  NF-κB heterogeneity in B cell malignancies that reveals functionally
+  significant differences in NF-κB composition within and between cell
+  populations.
 publication: Frontiers in Oncology
 publication_short: Front. Oncol.
-abstract:
-  Introduction: Improving treatments for Diffuse Large B-Cell Lymphoma (DLBCL) is challenged by the vast heterogeneity of the disease. Nuclear factor-κB (NF-κB) is frequently aberrantly activated in DLBCL. Transcriptionally active NF-κB is a dimer containing either RelA, RelB or cRel, but the variability in the composition of NF-κB between and within DLBCL cell populations is not known.
-
-Results: Here we describe a new flow cytometry-based analysis technique termed “NF-κB fingerprinting” and demonstrate its applicability to DLBCL cell lines, DLBCL core-needle biopsy samples, and healthy donor blood samples. We find each of these cell populations has a unique NF-κB fingerprint and that widely used cell-of-origin classifications are inadequate to capture NF-κB heterogeneity in DLBCL. Computational modeling predicts that RelA is a key determinant of response to microenvironmental stimuli, and we experimentally identify substantial variability in RelA between and within ABC-DLBCL cell lines. We find that when we incorporate NF-κB fingerprints and mutational information into computational models we can predict how heterogeneous DLBCL cell populations respond to microenvironmental stimuli, and we validate these predictions experimentally.
-
-Discussion: Our results show that the composition of NF-κB is highly heterogeneous in DLBCL and predictive of how DLBCL cells will respond to microenvironmental stimuli. We find that commonly occurring mutations in the NF-κB signaling pathway reduce DLBCL’s response to microenvironmental stimuli. NF-κB fingerprinting is a widely applicable analysis technique to quantify NF-κB heterogeneity in B cell malignancies that reveals functionally significant differences in NF-κB composition within and between cell populations.
-
-draft: false
 featured: true
+date: 2023-06-07T08:52:33.502Z
+Results: Here we describe a new flow cytometry-based analysis technique termed
+  “NF-κB fingerprinting” and demonstrate its applicability to DLBCL cell lines,
+  DLBCL core-needle biopsy samples, and healthy donor blood samples. We find
+  each of these cell populations has a unique NF-κB fingerprint and that widely
+  used cell-of-origin classifications are inadequate to capture NF-κB
+  heterogeneity in DLBCL. Computational modeling predicts that RelA is a key
+  determinant of response to microenvironmental stimuli, and we experimentally
+  identify substantial variability in RelA between and within ABC-DLBCL cell
+  lines. We find that when we incorporate NF-κB fingerprints and mutational
+  information into computational models we can predict how heterogeneous DLBCL
+  cell populations respond to microenvironmental stimuli, and we validate these
+  predictions experimentally.
+title: NF-κB fingerprinting reveals heterogeneous NF-κB composition in diffuse
+  large B-cell lymphoma
+doi: https://doi.org/10.3389/fonc.2023.1181660
 projects:
   - primary-dlbcl
   - RR-DLBCL
@@ -33,7 +55,6 @@ image:
   filename: featured.png
   focal_point: Smart
   preview_only: false
-date: 2023-06-07T08:52:33.502Z
 ---
 NF-κB (my favourite pathway!) is often overly active in lymphoma. But it's really complicated: 2 pathways, 5 proteins, 15 dimers, feedback loops! Different pathways + dimers are active in different patients. Can simulations predict how cells behave, despite this variability?
 
