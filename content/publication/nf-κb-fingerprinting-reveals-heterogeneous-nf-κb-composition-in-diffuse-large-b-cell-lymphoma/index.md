@@ -67,10 +67,11 @@ Yes! Interestingly, we previously measured variability in healthy B-cells, with 
 
 Arran had to extend the model to capture mutations (see paper). The model predicts that the response to signal is totally different from baseline activation: the most responsive cells are the least active. So we experimentally test this, and find the models work!
 
-So:\
-- Fingerprinting lets us compare NF-κB in cell lines and blood samples \
-- It reveals a "boat load" of variability, even within one cell line \
-- Simulations can match these finerprints \
-- These simulations accurately predict how cells will respond, despite all this variability!
+So:
+
+* Fingerprinting lets us compare NF-κB in cell lines and blood samples \
+* It reveals a "boat load" of variability, even within one cell line \
+* Simulations can match these finerprints \
+* These simulations accurately predict how cells will respond, despite all this variability!
 
 Moving forward, we think simulations provide a unique tool to combine mutational data, and molecular data, to predict how individual patients will respond to therapy. Keep your eyes peeled for more on this soon!
