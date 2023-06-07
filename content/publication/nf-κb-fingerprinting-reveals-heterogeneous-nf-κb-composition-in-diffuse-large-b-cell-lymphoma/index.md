@@ -11,7 +11,6 @@ authors:
   - Chris Pepper
   - Andrea Pepper
   - Simon Mitchell
-  - ""
 abstract:
   Introduction: Improving treatments for Diffuse Large B-Cell Lymphoma (DLBCL) is
     challenged by the vast heterogeneity of the disease. Nuclear factor-κB
