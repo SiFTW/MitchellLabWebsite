@@ -16,7 +16,7 @@ authors:
 doi: https://doi.org/10.3389/fonc.2023.1181660
 publication: Frontiers in Oncology
 publication_short: Front. Oncol.
-abstract: >-
+abstract:
   Introduction: Improving treatments for Diffuse Large B-Cell Lymphoma (DLBCL)
   is challenged by the vast heterogeneity of the disease. Nuclear factor-κB
   (NF-κB) is frequently aberrantly activated in DLBCL. Transcriptionally active
@@ -57,7 +57,10 @@ Flow is amazing, but it is hard to visualise differences in cell populations. St
 
 ![](fx2o6uowcami8ml.png)
 
-Each cell population we tried had a distinct fingerprint: - Healthy B-cells sit nicely at the bottom left (low NF-κB) - Cell lines are highly variable (Despite these all being ABC-DLBCL lines, they are very different). - DLBCL patient cells are distinct again Can we model this?
+Each cell population we tried had a distinct fingerprint: 
+- Healthy B-cells sit nicely at the bottom left (low NF-κB) 
+- Cell lines are highly variable (Despite these all being ABC-DLBCL lines, they are very different). 
+- DLBCL patient cells are distinct again Can we model this?
 
 ![](featured.png)
 
@@ -69,9 +72,9 @@ Arran had to extend the model to capture mutations (see paper). The model predic
 
 So:
 
-* Fingerprinting lets us compare NF-κB in cell lines and blood samples \
-* It reveals a "boat load" of variability, even within one cell line \
-* Simulations can match these finerprints \
+* Fingerprinting lets us compare NF-κB in cell lines and blood samples
+* It reveals a "boat load" of variability, even within one cell line
+* Simulations can match these finerprints
 * These simulations accurately predict how cells will respond, despite all this variability!
 
 Moving forward, we think simulations provide a unique tool to combine mutational data, and molecular data, to predict how individual patients will respond to therapy. Keep your eyes peeled for more on this soon!
