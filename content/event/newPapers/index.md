@@ -16,3 +16,5 @@ image:
   preview_only: false
 ---
 Two papers published within 4 days of each other. One in Frontiers in Oncology, lead by Eleanor Jayawant and in NPJ Systems Biology and Applications lead by Ielyaas Cloete.
+
+Check out the links above to each paper, or see [all of our publications here](https://mitchell.science/publication/).
