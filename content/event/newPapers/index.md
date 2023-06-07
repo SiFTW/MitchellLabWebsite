@@ -1,6 +1,5 @@
 ---
 title: Two new papers out now! >-
-  Two papers published within 4 days of each other. One in Frontiers in Oncology, lead by Eleanor Jayawant and in NPJ Systems Biology and Applications lead by Ielyaas Cloete.
 location: University of Sussex and BSMS
 links:
   - url: https://mitchell.science/publication/computational-modeling-of-dlbcl-predicts-response-to-bh3-mimetics/
@@ -16,3 +15,4 @@ image:
   focal_point: Smart
   preview_only: false
 ---
+Two papers published within 4 days of each other. One in Frontiers in Oncology, lead by Eleanor Jayawant and in NPJ Systems Biology and Applications lead by Ielyaas Cloete.
