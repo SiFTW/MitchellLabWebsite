@@ -11,15 +11,16 @@ authors:
   - Chris Pepper
   - Andrea Pepper
   - Simon Mitchell
+draft: false
 abstract:
-  Introduction: Improving treatments for Diffuse Large B-Cell Lymphoma (DLBCL) is
+  Introduction. Improving treatments for Diffuse Large B-Cell Lymphoma (DLBCL) is
     challenged by the vast heterogeneity of the disease. Nuclear factor-κB
     (NF-κB) is frequently aberrantly activated in DLBCL. Transcriptionally
     active NF-κB is a dimer containing either RelA, RelB or cRel, but the
     variability in the composition of NF-κB between and within DLBCL cell
     populations is not known.
-draft: false
-Discussion: Our results show that the composition of NF-κB is highly
+
+Discussion. Our results show that the composition of NF-κB is highly
   heterogeneous in DLBCL and predictive of how DLBCL cells will respond to
   microenvironmental stimuli. We find that commonly occurring mutations in the
   NF-κB signaling pathway reduce DLBCL’s response to microenvironmental stimuli.
@@ -27,11 +28,8 @@ Discussion: Our results show that the composition of NF-κB is highly
   NF-κB heterogeneity in B cell malignancies that reveals functionally
   significant differences in NF-κB composition within and between cell
   populations.
-publication: Frontiers in Oncology
-publication_short: Front. Oncol.
-featured: true
-date: 2023-06-07T08:52:33.502Z
-Results: Here we describe a new flow cytometry-based analysis technique termed
+  
+Results. Here we describe a new flow cytometry-based analysis technique termed
   “NF-κB fingerprinting” and demonstrate its applicability to DLBCL cell lines,
   DLBCL core-needle biopsy samples, and healthy donor blood samples. We find
   each of these cell populations has a unique NF-κB fingerprint and that widely
@@ -43,6 +41,11 @@ Results: Here we describe a new flow cytometry-based analysis technique termed
   information into computational models we can predict how heterogeneous DLBCL
   cell populations respond to microenvironmental stimuli, and we validate these
   predictions experimentally.
+publication: Frontiers in Oncology
+publication_short: Front. Oncol.
+featured: true
+date: 2023-06-07T08:52:33.502Z
+
 title: NF-κB fingerprinting reveals heterogeneous NF-κB composition in diffuse
   large B-cell lymphoma
 doi: https://doi.org/10.3389/fonc.2023.1181660
