@@ -19,7 +19,6 @@ abstract:
     active NF-κB is a dimer containing either RelA, RelB or cRel, but the
     variability in the composition of NF-κB between and within DLBCL cell
     populations is not known.
-
 Discussion. Our results show that the composition of NF-κB is highly
   heterogeneous in DLBCL and predictive of how DLBCL cells will respond to
   microenvironmental stimuli. We find that commonly occurring mutations in the
@@ -28,7 +27,6 @@ Discussion. Our results show that the composition of NF-κB is highly
   NF-κB heterogeneity in B cell malignancies that reveals functionally
   significant differences in NF-κB composition within and between cell
   populations.
-  
 Results. Here we describe a new flow cytometry-based analysis technique termed
   “NF-κB fingerprinting” and demonstrate its applicability to DLBCL cell lines,
   DLBCL core-needle biopsy samples, and healthy donor blood samples. We find
