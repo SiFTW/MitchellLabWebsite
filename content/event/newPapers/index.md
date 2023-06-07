@@ -6,7 +6,7 @@ links:
     name: Check out the NPJ Sys Bio papers here.
   - url: https://mitchell.science/publication/nf-%CE%BAb-fingerprinting-reveals-heterogeneous-nf-%CE%BAb-composition-in-diffuse-large-b-cell-lymphoma/
     name: Check out the Frontiers in Oncology Paper here!
-publishDate: 2023-06-07T11:59:40.780Z
+publishDate: 2023-06-06
 draft: false
 featured: false
 authors: false
