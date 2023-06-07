@@ -1,5 +1,5 @@
 ---
-title: Two new papers out now! >-
+title: Two new papers out now!
 location: University of Sussex and BSMS
 links:
   - url: https://mitchell.science/publication/computational-modeling-of-dlbcl-predicts-response-to-bh3-mimetics/
