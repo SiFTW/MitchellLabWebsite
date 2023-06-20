@@ -4,7 +4,7 @@ location: University of Sussex
 links:
   - url: https://staff.sussex.ac.uk/news/article/61202-phd-researchers-awarded-for-outstanding-impact
     name: Check out the new story here.
-publishDate: 2023-19-06
+publishDate: 2023-06-19
 draft: false
 featured: false
 authors: false
