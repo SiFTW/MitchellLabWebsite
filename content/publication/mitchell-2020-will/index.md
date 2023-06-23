@@ -11,5 +11,9 @@ publication_types:
 abstract: ''
 featured: false
 publication: '*Frontiers in Cell and Developmental Biology*'
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 ---
 
