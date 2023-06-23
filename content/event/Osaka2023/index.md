@@ -24,6 +24,10 @@ image:
   filename: featured
   focal_point: Smart
   preview_only: false
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 
 ---
 The talk is open to the public and will be available on Zoom.
