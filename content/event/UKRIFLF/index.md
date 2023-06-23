@@ -2,6 +2,8 @@
 title: "UKRI Future Leaders Fellowship Awarded"
 date: 2020-10-20T17:07:13+01:00
 draft: false
+projects:
+  - RR-DLBCL
 ---
 Dr Mitchell was recently awarded a prestigious £1.2m UKRI Future Leaders Fellowship to tackle Relapsed/Refractory DLBCL with Systems Biology approaches. The UKRI Future Leaders scheme invests in early career researchers and innovators with outstanding potential, helping them to develop their careers while tackling ambitious challenges. 
 
