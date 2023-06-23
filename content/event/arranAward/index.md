@@ -12,6 +12,8 @@ image:
   filename: featured.png
   focal_point: Smart
   preview_only: false
+projects:
+  - NF-kBSignaling
 ---
 Arran Pack has been recognised for game-changing work and outstanding impact.
 
