@@ -27,6 +27,10 @@ image:
   filename: featured
   focal_point: Smart
   preview_only: false
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 ---
 We are excited to share that the Mitchell Lab have had two abstracts accepted for the [European Haematology Associations annual congress, EHA2022, June 9th-12th 2022](https://ehaweb.org/congress/eha2022-hybrid/eha2022-congress/).
 
