@@ -40,7 +40,7 @@ abstract: B-cell progenitor fate determinant interferon regulatory factor 4
 draft: false
 featured: false
 projects:
-  - primary-dlbcl
+  - primary-DLBCL
 image:
   filename: featured.png
   focal_point: top
