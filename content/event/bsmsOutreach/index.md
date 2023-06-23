@@ -2,6 +2,9 @@
 title: "Dr Mitchell gives BSMS outreach lecture. Watch the video here."
 date: 2023-01-09T09:00:00+01:00
 draft: false
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
 ---
 Dr Mitchell recently gave a BSMS outreach lecture, where he answered: 
 - What is systems biology?
