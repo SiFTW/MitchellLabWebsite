@@ -21,6 +21,9 @@ image:
   filename: featured
   focal_point: Smart
   preview_only: false
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
 ---
 LyMIT 2022 was hosting on the 6th September at the University of Sussex and attracted an international lineup of speakers and attendee. Feedback was overwhelmingly positive with calls to make the event a recurring event, so watch this space!
 Congratulations to the poster prize winners:
