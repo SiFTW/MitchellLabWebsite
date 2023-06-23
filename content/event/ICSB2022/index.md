@@ -27,6 +27,10 @@ image:
   filename: featured
   focal_point: Smart
   preview_only: false
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 ---
 
 We have had two abstracts accepted for talks, and two for posters at [ICSB 2022: The 21st International Conference on Systems Biology ICSB 2022](https://www.icsb2022.berlin/).
