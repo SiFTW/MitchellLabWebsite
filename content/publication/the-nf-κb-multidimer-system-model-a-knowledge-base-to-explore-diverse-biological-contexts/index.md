@@ -35,7 +35,7 @@ abstract: The nuclear factor κB (NF-κB) system is critical for various
 draft: false
 featured: true
 projects:
-  - primary-dlbcl
+  - primary-DLBCL
   - RR-DLBCL
   - NF-kBSignaling
 image:
