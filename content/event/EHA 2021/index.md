@@ -3,6 +3,10 @@ title: "Dr Mitchell to present at EHA 2021"
 date: 2020-10-20T17:07:13+01:00
 draft: false
 profile: false 
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 ---
 Simon has been invited to present at the [European Haematology Associations annual congress, June 9th-17th 2021](https://ehaweb.org/congress/eha-congress-2021/key-information/).
 
