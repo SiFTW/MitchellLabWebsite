@@ -25,4 +25,8 @@ image:
   focal_point: Smart
   preview_only: false
 date: 2022-03-22T17:50:04.029Z
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 ---
