@@ -24,7 +24,7 @@ title: NF-κB fingerprinting reveals heterogeneous NF-κB composition in diffuse
   large B-cell lymphoma
 doi: https://doi.org/10.3389/fonc.2023.1181660
 projects:
-  - primary-dlbcl
+  - primary-DLBCL
   - RR-DLBCL
   - NF-kBSignaling
 image:
