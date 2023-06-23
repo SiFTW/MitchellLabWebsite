@@ -3,6 +3,10 @@ title: " Mitchell Lab at ESH 2021"
 date: 2021-10-14T17:07:13+01:00
 draft: false
 profile: false 
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 ---
 The Mitchell group are participating the European School of Haematology's 6th Translational Research Conference on Lymphoid Malignancies (ESH Lymphoid 2021) (Oct 14-17 2021). A number of our members presenting research updates, which are available to view now!
  
