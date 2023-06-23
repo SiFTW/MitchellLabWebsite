@@ -13,6 +13,10 @@ image:
   filename: featured.png
   focal_point: Smart
   preview_only: false
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 ---
 In "The NF-κB multidimer system model: A knowledge base to explore diverse biological contexts" we answer how a highly conserved system can do very different things in different contexts.
 
