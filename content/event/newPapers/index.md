@@ -14,6 +14,10 @@ image:
   filename: featured.png
   focal_point: Smart
   preview_only: false
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 ---
 Two papers published within 4 days of each other. One in Frontiers in Oncology, lead by Eleanor Jayawant and in NPJ Systems Biology and Applications lead by Ielyaas Cloete.
 
