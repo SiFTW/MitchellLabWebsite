@@ -32,6 +32,10 @@ abstract: Chronic lymphocytic leukemia (CLL) is the most prevalent type of
   knowledge is being translated in the development of new therapeutics.
 draft: false
 featured: false
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - NF-kBSignaling
 image:
   filename: featured.png
   focal_point: Smart
