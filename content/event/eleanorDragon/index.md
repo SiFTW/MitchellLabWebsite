@@ -1,10 +1,11 @@
 ---
-title: Eleanor Jayawant receives £1,500 "Dragon's Den" research award.
+title: Eleanor Jayawant receives £1,500 "Dragon's Den" research award
 location: University of Sussex
 links:
   - url: http://www.sussex.ac.uk/staff/research/researchstaff/community/ecr-symposium/ecr_dragons_den
     name: More info on the event here.
 publishDate: 2023-07-06
+all_day: true
 draft: false
 featured: false
 authors: false
