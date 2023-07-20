@@ -1,4 +1,4 @@
-  ---
+---
 title: Simon Mitchell receives Emerging Impact award.
 location: University of Sussex
 publishDate: 2023-07-19
@@ -6,7 +6,7 @@ draft: false
 featured: false
 authors: false
 image:
-  filename: featured.png
+  filename: featured.jpg
   focal_point: Smart
   preview_only: false
 projects:
