@@ -1,5 +1,5 @@
 ---
-title: "The Mitchell lab will present multiple projects at ICSB 2022 in Berlin"
+title: "Richard Norris received travel grant to share his latest findings at EMBO in Spain."
 draft: false
 profile: false 
 
@@ -14,7 +14,7 @@ address:
   postcode: 
   country: Spain
 featured: false
-summary: Richard Norris receives travel grant to share his latest findings at EMBO in Spain.
+summary: Richard has received a funding award to travel to EMBO Computational Models of Life 2023 and to share his latest findings in Spain.
 abstract: 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
