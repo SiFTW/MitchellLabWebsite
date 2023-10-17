@@ -4,12 +4,12 @@ draft: false
 profile: false 
 
 event: EMBO Computational Models of Life 2023
-event_url: [https://www.icsb2022.berlin/](https://meetings.embo.org/event/23-comp-models-life)
+event_url: https://meetings.embo.org/event/23-comp-models-life
 
 location: Spain
 address:
   street:
-  city: Sant Feliu de Guíxols
+  city: Sant Feliu de Guixols
   region: 
   postcode: 
   country: Spain
