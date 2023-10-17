@@ -1,5 +1,5 @@
 ---
-title: "Richard Norris received travel grant to share his latest findings at EMBO in Spain."
+title: "Richard Norris receives a travel grant to share his latest findings at EMBO in Spain."
 draft: false
 profile: false 
 
