@@ -27,7 +27,7 @@ To help us develop this template and software sustainably under the MIT license,
 
 [![Screenshot](https://raw.githubusercontent.com/wowchemy/wowchemy-hugo-modules/master/academic.png)](https://wowchemy.com)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5e8b0df2-8522-49c2-9d85-3821de3d5b1f/deploy-status)](https://app.netlify.com/sites/angry-williams-7fe742/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/560086f8-1a3e-4391-8c42-329327bb467c/deploy-status)](https://app.netlify.com/sites/mitchellscience/deploys)
 
 <!--
 [![Analytics](https://ga-beacon.appspot.com/UA-78646709-2/academic-kickstart/readme?pixel)](https://github.com/igrigorik/ga-beacon)
