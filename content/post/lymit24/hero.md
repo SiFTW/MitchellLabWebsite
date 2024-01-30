@@ -57,7 +57,7 @@ title = "LyMIT 2024"
 
 **Lymphoid and Myeloid malignancies with Interdisciplinary Techniques (LyMIT)**
 
-A new meeting focused on highlighting exciting novel research that uses interdisciplinary techniques to understand blood cancer. 
+An interdisciplinary meeting focused on highlighting exciting novel research that uses new approaches to understand blood cancer. 
 
 University of Sussex. 
 
