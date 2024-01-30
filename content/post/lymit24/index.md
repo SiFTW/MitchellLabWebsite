@@ -5,7 +5,7 @@ draft: false
 featured: true
 authors: [Haematology-Oncology]
 hideNavBar: true
-title: LyMIT 2022 - Lymphoid Malignancies with Interdisciplinary Techniques.
+title: LyMIT 2024 - Lymphoid and Myeloid malignancies with Interdisciplinary Techniques.
 subtitle: 10am Tuesday 16th August 2021 - University of Sussex
 type : "widget_page"
 image:
@@ -14,7 +14,7 @@ image:
   preview_only: false
   caption: ""
 aliases:
-  - /lymit2022
-  - /lymit22
-  - /lymit
+  - /lymit2024
+  - /lymit24
+  - /lymit2
 ---
