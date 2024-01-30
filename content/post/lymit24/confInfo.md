@@ -13,19 +13,23 @@ design:
 
 # Event Info
 
-Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT) is a new meeting focused on highlighting exciting novel research that uses interdisciplinary techniques to understand blood cancer. The biological focus is on lymphocyte biology and malignancy, however the techniques are broad – spanning computational biology, animal models, molecular techniques, and everything in between. The meeting is organised by [the Mitchell Group](/) at Brighton and Sussex Medical School (University of Sussex). We have lined up a diverse and exciting lineup of talks and there will be a poster session with prizes for the best poster presentations.
+Lymphoid and Myeloid malignancies with Interdisciplinary Techniques (LyMIT) was established in 2022 focused on highlighting exciting novel research that uses interdisciplinary techniques to understand blood cancer. The biological focus is on lymphoid and myeloid biology and malignancy, however the techniques are broad – spanning computational biology, animal models, new molecular techniques, 3D culture systesm, and everything in between. The meeting is organised by [the Mitchell Group](/) at Brighton and Sussex Medical School (University of Sussex). We have lined up a diverse and exciting lineup of talks and there will be a poster session with prizes for the best poster presentations.
 
-We look forward to seeing you all in ~~June~~ September!
+We look forward to seeing you all in June!
 
 ## Registration
 
-Registration is now closed. If you wish to attend please contact Gemma Hamilton ([HAEM-Oncology@bsms.ac.uk](mailto:HAEM-Oncology@bsms.ac.uk))
+Registration is free, with limited capacity, and open now. 
+
+If you have any questions about registration please contact Gemma Hamilton ([HAEM-Oncology@bsms.ac.uk](mailto:HAEM-Oncology@bsms.ac.uk))
 
 ## Speaker Lineup.
 
-The lineup is to be confirmed but includes representatives of many groups leading interdisciplinary approaches to studying lymphoma. The latest lineup is shown below, and can be [downloaded to print here](https://mitchell.science/Lymit-programme.pdf).
-![](lineupImage.jpg)
+The speaker lineup is currently being finalised but includes representatives of many groups leading interdisciplinary approaches to studying lymphoma. 
 
+## Speaker Lineup.
+
+Poster presentations. We encourage all attendees to present posters, as there will be prizes for the best poster presentations and amnple scheduled time for poster presentations and discussions.
 
 ## Agenda
 - Registration: 9:15-10am.
