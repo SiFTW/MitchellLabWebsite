@@ -5,7 +5,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 1  # Order that this section will appear.
 
-title = "LyMIT 2022"
+title = "LyMIT 2024"
 
 # Hero image (optional). Enter filename of an image in the `static/media/` folder.
 #hero_media = "hero-academic.png"
@@ -52,15 +52,15 @@ title = "LyMIT 2022"
   
 # Note. An optional note to show underneath the links.
 [cta_note]
-  label = 'Registration deadline: 31st July 2022'
+  label = 'Registration deadline: 31st May 2024'
 +++
 
-**Lymphoid Malignancies with Interdisciplinary Techniques (LyMIT)**
+**Lymphoid and Myeloid malignancies with Interdisciplinary Techniques (LyMIT)**
 
 A new meeting focused on highlighting exciting novel research that uses interdisciplinary techniques to understand blood cancer. 
 
 University of Sussex. 
 
-6th September 2022.
+25th June 2024.
 
 
