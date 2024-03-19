@@ -20,13 +20,13 @@ design:
 
 [Week 1 - Population scale modelling](Week1.pptx)
 
-[Week 2 - Cancer modelling 1](Week2.pptx)
+Week 2 - Modelling signalling
 
-[Week 3 - Cancer modelling 2](Week3.pptx)
+Week 3 - Molecular dynamics modelling 1
 
-[Week 4 - Molecular dynamics modelling  1](Week4.pptx)
+Week 4 - Molecular dynamics modelling 2
 
-[Week 5 - Molecular dynamics modelling  2](Week5.pptx)
+Week 5 - Cancer modelling 
 
 Week 6 - Prepare for assessment (no slides, no session)
 
