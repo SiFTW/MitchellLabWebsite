@@ -111,9 +111,12 @@ RUN julia -e 'import Pkg; Pkg.add(Pkg.PackageSpec(;name="WebIO", version="0.8.16
     julia -e 'using Pkg; Pkg.add("OrdinaryDiffEq");' && \
     julia -e 'using Pkg; Pkg.add("DelimitedFiles");' && \
     julia -e 'using Pkg; Pkg.add("FileIO");' && \
+    julia -e 'using Pkg; Pkg.add("Distributions");' && \
+    julia -e 'using Pkg; Pkg.add("Random");' && \
+    julia -e 'using Pkg; Pkg.add("Statistics");' && \
     julia -e 'using Pkg; Pkg.add("StatsPlots");'
     
-    
+
 RUN julia -e 'using Pkg; Pkg.precompile();'
 
 #USER root
