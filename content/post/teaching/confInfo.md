@@ -18,9 +18,9 @@ design:
 
 # Links to slides
 
-[Week 1 - Population scale modelling](Week1.pptx)
+[Week 1 - Population scale modelling](Week1-Intro-SM.pptx)
 
-Week 2 - Modelling signalling
+[Week 2 - Modelling signalling](NFkBModelling.pptx)
 
 Week 3 - Molecular dynamics modelling 1
 
