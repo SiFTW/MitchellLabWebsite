@@ -22,9 +22,9 @@ design:
 
 [Week 2 - Modelling signalling](NFkBModelling.pptx)
 
-Week 3 - Molecular dynamics modelling 1
+[Week 3 - Molecular dynamics modelling 1](2024_SSC_MD_EJ_1.pptx)
 
-Week 4 - Molecular dynamics modelling 2
+[Week 4 - Molecular dynamics modelling 2](2024_SSC_MD_EJ_2.pptx)
 
 Week 5 - Cancer modelling 
 
