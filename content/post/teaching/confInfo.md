@@ -26,9 +26,9 @@ design:
 
 [Week 4 - Molecular dynamics modelling 2](2024_SSC_MD_EJ_2.pptx)
 
-Week 5 - Cancer modelling 
+Week 5 - Cancer modelling
 
-Week 6 - Prepare for assessment (no slides, no session)
+Week 6 - Prepare for assessment (no session) [Summary slides and asssessment assignments](Week6-summary.pptx)
 
 Week 7 - Assessment week 1 (all attend)
 
