@@ -50,6 +50,6 @@ email: ""
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- Research Assistants
+- Alumni
 ---
 Heather completed her Biomedical Sciences BSc at the University of Bristol. She focussed her dissertation on the effect of the non-canonical NF-κB regulator, B-cell Lymphoma protein-3, on colorectal cancer metastasis. She then volunteered for the Pepper Lab where she used flow cytometry to quantify prognosis marker expression (notably CD49d and CD38) in chronic lymphocytic leukaemia cells (CLL) to inform studies into CLL cell migration post-TLR9 stimulation. Heather is currently working as a Research Assistant in the Mitchell lab. Here, she is to generate NF-κB fingerprints of Diffuse Large B-cell Lymphoma cells (DLBCL) to better understand DLBCL cell heterogeneity and how NF-κB expression profiles might affect DLBCL’s response to microenvironmental stimuli and NF-κB targeted therapies.
