@@ -10,7 +10,7 @@ authors:
 superuser: true
 
 # Role/position
-role: Senior Lecturer in Cancer Research
+role: Reader in Cancer Research
 
 # Organizations/Affiliations
 organizations:
@@ -61,6 +61,10 @@ social:
 - icon: github
   icon_pack: fab
   link: https://github.com/SiFTW
+- icon: comments
+  icon_pack: fas
+  name: Book a Meeting with Simon
+  link: 'https://calendly.com/simon_mitchell/chat-with-simon'
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 # - icon: cv
