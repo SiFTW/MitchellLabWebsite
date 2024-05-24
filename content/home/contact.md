@@ -54,7 +54,7 @@ content:
       name: ORCID iD
       link: 'https://orcid.org/0000-0003-1091-6349'
     - icon: comments
-      icon_pack: fab
+      icon_pack: fas
       name: Book a Meeting with Simon
       link: 'https://calendly.com/simon_mitchell/chat-with-simon'
     - icon: google-scholar
