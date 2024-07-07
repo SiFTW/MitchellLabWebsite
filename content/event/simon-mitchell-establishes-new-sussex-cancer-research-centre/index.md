@@ -1,5 +1,5 @@
 ---
-title: Simon Mitchell establishes new Sussex Cancer Research Centre
+title: New Sussex Cancer Research Centre launched and co-directed by Simon Mitchell
 abstract: >
   Sussex Cancer Research Centre brings together experts from Brighton and Sussex
   Medical School,  the University of Sussex, the University of Brighton, and NHS
