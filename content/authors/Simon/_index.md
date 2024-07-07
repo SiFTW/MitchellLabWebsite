@@ -16,11 +16,10 @@ role: Reader in Cancer Research
 organizations:
  - name: Brighton and Sussex Medical School
    url: "http://www.bsms.ac.uk"
- - name: Leukaemia UK John Goldman Fellow
-   url: "https://www.leukaemiauk.org.uk/lymphoma-using-virtual-patients-to-find-new-ways-to-treat-diffuse-large-b-cell-lymphoma"
  - name: UKRI Future Leaders Fellow
    url: "https://www.bsms.ac.uk/about/news/2020/10-15-bsms-researcher-receives-prestigious-fellowship.aspx"
-
+ - name: Director of Sussex Cancer Research Centre
+   url: "https://sussexcancer.org/"
 
 # Short bio (displayed in user profile at end of posts)
 bio: My primary research focus is in understanding how intracellular, molecular signalling networks control immune cell fate, and how misregulation of these molecular networks leads to haematological malignancies. My combination of immunology and haematological training lead to a particular interest in B-cell lymphomas.
