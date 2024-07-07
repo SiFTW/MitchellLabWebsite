@@ -7,7 +7,6 @@ abstract: >
   cancer treatments and patient outcomes.
 location: Sussex, UK
 date: 2024-07-10T11:26:56.734Z
-date_end: 2024-07-09T23:00:00.000Z
 all_day: true
 event: Sussex Cancer Research Centre
 event_url: http://www.SussexCancer.org
