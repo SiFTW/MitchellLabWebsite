@@ -6,9 +6,10 @@ abstract: Emily secured prestigious £8k for her innovative proposal to appl wha
 location: University of California, Los Angeles
 publishDate: 2024-03-01
 links:
-  - url: https://staff.sussex.ac.uk/news/article/61202-phd-researchers-awarded-for-outstanding-impact
-    name: Check out the new story here.
+  - url: https://www.brighton.ac.uk/research/research-environment/investing-in-research-careers/postgraduate-researcher-mobilisation-scheme.aspx
+    name: More about the scheme
 draft: false
+authors: false
 featured: false
 image:
   filename: featured.png
