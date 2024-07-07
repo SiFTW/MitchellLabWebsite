@@ -10,6 +10,7 @@ links:
     name: More about the scheme
 draft: false
 authors: false
+all_day: true
 featured: false
 image:
   filename: featured.png
