@@ -4,7 +4,7 @@ abstract: Emily secured prestigious £8k for her innovative proposal to appl wha
   she is discovering in her PhD to the unique experimental models available in
   Los Angeles.
 location: University of California, Los Angeles
-publishDate: 2024-03-1
+publishDate: 2024-03-01
 links:
   - url: https://staff.sussex.ac.uk/news/article/61202-phd-researchers-awarded-for-outstanding-impact
     name: Check out the new story here.
