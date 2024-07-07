@@ -55,5 +55,18 @@ date_format = "Jan 2006"
   
   [see project info](../project/rr-dlbcl/)
   """
+
+  [[item]]
+  organization = "Royal Society + JSPS"
+  organization_url = "https://royalsociety.org/grants"
+  title = "Royal Society + Japan Society for the Promotion of Science International Exchange (£12k)"
+  url = "https://royalsociety.org/grants/international-exchanges/"
+  certificate_url = ""
+  date_start = "2025-03-31"
+  date_end = "2026-03-30"
+  description = """
+  Collaboration with Professor Mariko Okada to undetsand how cell signalling and cell fates combine through combined computational and experiment analysis.
+  
+  """
   
 +++
