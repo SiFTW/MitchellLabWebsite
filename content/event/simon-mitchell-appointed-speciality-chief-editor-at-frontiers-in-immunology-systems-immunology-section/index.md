@@ -9,7 +9,7 @@ date_end: 2024-07-07T12:22:13.933Z
 all_day: true
 event: Speciality Chief Editor
 event_url: https://www.frontiersin.org/journals/immunology/sections/systems-immunology
-publishDate: 2024-07-09T12:17:28.355Z
+publishDate: 2024-07-07T12:22:44.941Z
 draft: false
 featured: false
 image:
