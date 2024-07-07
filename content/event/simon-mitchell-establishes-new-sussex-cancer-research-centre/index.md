@@ -19,3 +19,5 @@ image:
   preview_only: false
 ---
 A new cancer research centre has been estbalished and co-directed by Simon, along with co-directors Professor Melanie Flint (University of Brighton), Professor Timothy Humphrey (University of Sussex), and Duncan Gilbert (University Hospitals Sussex NHS Foundation Trust).
+
+Check out [the website](http://www.sussexCancer.org) to learn more!
