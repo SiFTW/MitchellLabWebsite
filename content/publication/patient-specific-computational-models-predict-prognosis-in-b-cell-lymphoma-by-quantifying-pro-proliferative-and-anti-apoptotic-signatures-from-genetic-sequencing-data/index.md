@@ -48,7 +48,7 @@ image:
   preview_only: false
 date: 2024-07-07T09:55:38.443Z
 ---
-In this study, led by Richard Norris we asked: If you take a simulation of healthy cells, and add patient-specific mutations, can you predict patient outcome?
+In this study, led by [Richard Norris](/authors/Richard/) we asked: If you take a simulation of healthy cells, and add patient-specific mutations, can you predict patient outcome?
 
 This journey started with the last Figure of [the Immunity paper](/publication/roy-2019-regulatory/) published with Alex Hoffmann and Koushik roy back in 2019. The simulations we were using to understand healthy B-cells looked a bit like lymphoma if we changed the right numbers. So, can we simulate lymphoma?
 
