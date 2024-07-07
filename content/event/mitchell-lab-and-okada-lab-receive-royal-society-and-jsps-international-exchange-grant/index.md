@@ -6,12 +6,10 @@ abstract: We have secured a prestigious International Travel Award, funded by
   value is £12k to our lab, and £12k to the lab of Professor Mariko Okada in
   Japan, with the purpose of enabling sustained international exchange visits.
 location: Osaka, Japan
-date: 2024-07-07T11:09:48.472Z
-date_end: 2024-07-07T11:13:52.237Z
-all_day: false
-event: Royal Society JSPS  International Exchange
+all_day: true
+event: Royal Society + JSPS International Exchange Award
 event_url: https://royalsociety.org/grants/international-exchanges/
-publishDate: 2024-03-31T11:09:48.480Z
+publishDate: 2024-03-31
 draft: false
 featured: false
 image:
