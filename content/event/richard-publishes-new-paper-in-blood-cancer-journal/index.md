@@ -13,6 +13,6 @@ image:
   focal_point: Smart
   preview_only: false
 ---
-Read more about the paper on [the publication page](/publication/patient-specific-computational-models-predict-prognosis-in-b-cell-lymphoma-by-quantifying-pro-proliferative-and-anti-apoptotic-signatures-from-genetic-sequencing-data/).
+Read more about the paper on [the publication page](/publication/patient-specific-computational-models-predict-prognosis-in-b-cell-lymphoma-by-quantifying-pro-proliferative-and-anti-apoptotic-signatures-from-genetic-sequencing-data/), and see the [press release here](https://www.bsms.ac.uk/about/news/2024/07-11-personalised-simulations-predict-patient-outcomes-for-blood-cancer-treatment-in-breakthrough-study.aspx).
 
 Congratulations Richard!
