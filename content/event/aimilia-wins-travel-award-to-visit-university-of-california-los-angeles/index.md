@@ -1,6 +1,6 @@
 ---
 title: Aimilia wins Travel Award to visit University of California Los Angeles
-abstract: Emily secured prestigious £8k for her innovative proposal to appl what
+abstract: Emily secured prestigious £8k for her innovative proposal to apply what
   she is discovering in her PhD to the unique experimental models available in
   Los Angeles.
 location: University of California, Los Angeles
