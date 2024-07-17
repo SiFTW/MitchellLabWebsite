@@ -7,7 +7,7 @@ publishDate: '2021-01-18T16:11:12.269509Z'
 authors:
 - Simon Mitchell
 publication_types:
-- article-journal
+- 2
 abstract: ''
 featured: false
 publication: '*Frontiers in Cell and Developmental Biology*'
