@@ -14,7 +14,7 @@ authors:
 - Alexander Hoffmann
 - Douglas L Black
 publication_types:
-- article-journal
+- 2
 abstract: ''
 featured: false
 publication: '*Proceedings of the National Academy of Sciences*'
