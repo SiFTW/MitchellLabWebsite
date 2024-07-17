@@ -74,4 +74,10 @@ sitemap:
 minify:
   _merge: deep
 
+markup:
+  tableOfContents:
+    endLevel: 3
+    ordered: false
+    startLevel: 2
+
 
