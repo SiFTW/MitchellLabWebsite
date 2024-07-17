@@ -27,15 +27,28 @@ markup:
 
 This guide will provide practical advice on launching and leading a research centre, with a specific focus on the challenges and opportunities presented to a Future Leaders Fellow. The guide is likely applicable to any researcher on a rapid trajectory towards leadership, but FLFs are likely to encounter these challenges earlier, and across disciplines in a way that can present unique challenges.
 
-The guide is best viewed here, but can also be downloaded as a complete PDF above.
+## About the author
+It is written from the perspective of an FLF. I recently launched a research centre, in the third year of my Future Leaders Fellowship. By most metrics [this](http://www.SussexCancer.org/launch) [went]( https://www.theargus.co.uk/news/24445605.new-sussex-cancer-research-centre-opens-county/) [well]( https://thebusinessmagazine.co.uk/technology-innovation/sussex-cancer-research-centre-launches-to-connect-regions-top-experts/). *But*, I encountered many challenges on the way, many of which were specific to being an FLF attempting to launch a centre. My rapid career timeline, my interdisciplinary research knowledge (and the knowledge gaps that come along with that), all contributed to challenges I needed to overcome. *Therefore*, I wrote this guide to hopefully ease the journey for others.
 
-It is written from the perspective of an FLF.
+{{% callout note %}}
+I would love to help as many FLFs as possible start research centres.
+If you have any questions, need any more help, or just want to chat about your experiences, please [{{< icon name="terminal" pack="fas" >}} contact me.](https://mitchell.science/#contact)
+{{% /callout %}}
 
 
 ---
 
 
 # Chapter 1. Surveying the landscape. 
+
+The first step is figuring out whether a centre is needed at all, and whether you need to be involved in it. This sounds trivial, but you will need to answer this question many times, to many people, on the route to leading a centre.
+
+By the end of this section you will know how to answer the questions:
+
+- [ ] Why are you starting a centre?
+- [ ] Why are you the right person to lead it?
+- [ ] Hasn’t this been tried before?
+
 
 ## Why start a research centre as an FLF?
 
@@ -59,6 +72,11 @@ It is common when applying for promotion to professor to be given the role of le
 
 When starting are centre many supporting roles are created. The development of your team is a key goal of the FLF. The ability to create roles such as “Early Career Research lead”, “Patient Engagement Lead”, “Outreach Lead” enables you to assign supportive roles to members of your FLF team. These can be tailored to match the skills and career development needs of individual members of your team. As a leader of a centre you are uniquely positioned to match people with roles within your centre.
 
+{{% callout note %}}
+If you’re still wondering whether you should start a research centre, perhaps it’s not the right time. Wait a year and reassess. Don’t force it, because it’s going to be *hard* work!
+{{% /callout %}}
+
+
 ## Is a centre needed? Identifying the unmet need.
 
 This is a big one. At many points in this process you will need and answer for people who ask “Why do we need a centre?” If you struggle when thinking about the answer to this for yourself then you will struggle to get the centre off the ground. Spend lots of time thinking about this, because you answer to this question will form the basis of many conversations, presentations, documents, and pitches to leadership as you progress.
@@ -74,7 +92,7 @@ I was able to evidence each of these if asked, for example, with respect to the 
 -	*There was incredible research already happening.* This could be easily evidenced with grants, papers, and real world impact. Nobody I talked to disagreed with this, and I imagine no one will disagree with you if you tell them they’re doing amazing work.
 -	*The outside world doesn’t see this.* I had a screenshot from Google of the search results for “Cancer Research Sussex”. It didn’t look like we’d spoken to each other since 2015!
 
-{{< figure src=" googleScreenshot.jpg" title="Google screenshot from before I launched the centre" >}}
+{{< figure src="googleScreenshot.jpg" title="Google screenshot from before I launched the centre" >}}
 
 ### What exists and has existed?
 
@@ -146,5 +164,8 @@ These are great responses, because they give you answers to the people you will 
 # Chapter 5. Momentum beyond the launch
 
 ## 
+
+
+
 
 
