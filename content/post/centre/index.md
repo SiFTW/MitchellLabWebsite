@@ -6,7 +6,7 @@ featured: true
 #hideNavBar: true
 title: So, you want to start a centre?
 #subtitle: A guide to starting a research centre as a future leaders fellow.
-#type: "widget_page"
+type: book
 toc: true
 image:
   filename: centre.png
@@ -17,11 +17,7 @@ aliases:
   - /centre
   - /FLFCentre
   - /startingCentre
-markup:
-  tableOfContents:
-    endLevel: 3
-    ordered: false
-    startLevel: 2
+
 ---
 # Chapter 0. Introduction
 
