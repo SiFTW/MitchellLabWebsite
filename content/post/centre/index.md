@@ -23,7 +23,6 @@ markup:
     ordered: false
     startLevel: 2
 ---
-{{ .TableOfContents }}
 
 # Chapter 0. Introduction
 
@@ -131,5 +130,7 @@ People in your institution will have a sense of who should lead a new re
 # Chapter 5. Momentum beyond the launch
 
 ## 
+
+{{% ToC %}}
 
 
