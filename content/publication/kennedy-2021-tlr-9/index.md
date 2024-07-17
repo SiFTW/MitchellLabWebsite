@@ -17,7 +17,7 @@ authors:
 - Stephen Devereux
 - ' others'
 publication_types:
-- article-journal
+- 2
 abstract: ''
 featured: false
 publication: '*Blood*'
