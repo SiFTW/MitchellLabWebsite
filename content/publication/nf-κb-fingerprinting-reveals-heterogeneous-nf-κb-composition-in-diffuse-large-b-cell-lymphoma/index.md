@@ -1,6 +1,6 @@
 ---
 publication_types:
-  - article-journal
+  - "2"
 authors:
   - Eleanor Jayawant
   - Arran Pack
