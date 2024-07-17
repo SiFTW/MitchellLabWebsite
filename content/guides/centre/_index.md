@@ -1,62 +1,140 @@
 ---
-# Course title, summary, and position.
-linktitle: Launching a Research Centre as an FLF
-summary: This guide is designed to give FLFs confidence to found and direct their own research centres
-weight: 1
-
-# Page metadata.
-title: Launching a Research Centre as an FLF
-date: "2024-07-01T00:00:00Z"
-lastmod: "2024-07-17T00:00:00Z"
-draft: false  # Is this a draft? true/false
-toc: true  # Show table of contents? true/false
-type: docs  # Do not modify.
-
-# Add menu entry to sidebar.
-# - name: Declare this menu item as a parent with ID `name`.
-# - weight: Position of link in menu.
-menu:
-  example:
-    name: Overview
-    weight: 1
+title: Learn JavaScript
+summary: Easily learn JavaScript in 10 minutes!
+date: 2023-10-24
+type: docs
+math: false
+tags:
+  - JavaScript
+image:
+  caption: 'Embed rich media such as videos and LaTeX math'
 ---
 
-## Flexibility
+[Hugo Blox Builder](https://hugoblox.com) is designed to give technical content creators a seamless experience. You can focus on the content and the Hugo Blox Builder which this template is built upon handles the rest.
 
-This feature can be used for publishing content such as:
+**Embed videos, podcasts, code, LaTeX math, and even test students!**
 
-* **Online courses**
-* **Project or software documentation**
-* **Tutorials**
+On this page, you'll find some examples of the types of technical content that can be rendered with Hugo Blox.
 
-The `courses` folder may be renamed. For example, we can rename it to `docs` for software/project documentation or `tutorials` for creating an online course.
+## Video
 
-## Delete tutorials
+Teach your course by sharing videos with your students. Choose from one of the following approaches:
 
-**To remove these pages, delete the `courses` folder and see below to delete the associated menu link.**
+{{< youtube D2vj0WcvH5c >}}
 
-## Update site menu
+**Youtube**:
 
-After renaming or deleting the `courses` folder, you may wish to update any `[[main]]` menu links to it by editing your menu configuration at `config/_default/menus.toml`.
+    {{</* youtube w7Ft2ymGmfc */>}}
 
-For example, if you delete this folder, you can remove the following from your menu configuration:
+**Bilibili**:
 
-```toml
-[[main]]
-  name = "Courses"
-  url = "courses/"
-  weight = 50
+    {{</* bilibili id="BV1WV4y1r7DF" */>}}
+
+**Video file**
+
+Videos may be added to a page by either placing them in your `assets/media/` media library or in your [page's folder](https://gohugo.io/content-management/page-bundles/), and then embedding them with the _video_ shortcode:
+
+    {{</* video src="my_video.mp4" controls="yes" */>}}
+
+## Podcast
+
+You can add a podcast or music to a page by placing the MP3 file in the page's folder or the media library folder and then embedding the audio on your page with the _audio_ shortcode:
+
+    {{</* audio src="ambient-piano.mp3" */>}}
+
+Try it out:
+
+{{< audio src="ambient-piano.mp3" >}}
+
+## Test students
+
+Provide a simple yet fun self-assessment by revealing the solutions to challenges with the `spoiler` shortcode:
+
+```markdown
+{{</* spoiler text="👉 Click to view the solution" */>}}
+You found me!
+{{</* /spoiler */>}}
 ```
 
-Or, if you are creating a software documentation site, you can rename the `courses` folder to `docs` and update the associated *Courses* menu configuration to:
+renders as
 
-```toml
-[[main]]
-  name = "Docs"
-  url = "docs/"
-  weight = 50
+{{< spoiler text="👉 Click to view the solution" >}} You found me 🎉 {{< /spoiler >}}
+
+## Math
+
+Hugo Blox Builder supports a Markdown extension for $\LaTeX$ math. You can enable this feature by toggling the `math` option in your `config/_default/params.yaml` file.
+
+To render _inline_ or _block_ math, wrap your LaTeX math with `{{</* math */>}}$...${{</* /math */>}}` or `{{</* math */>}}$$...$${{</* /math */>}}`, respectively.
+
+{{% callout note %}}
+We wrap the LaTeX math in the Hugo Blox _math_ shortcode to prevent Hugo rendering our math as Markdown.
+{{% /callout %}}
+
+Example **math block**:
+
+```latex
+{{</* math */>}}
+$$
+\gamma_{n} = \frac{ \left | \left (\mathbf x_{n} - \mathbf x_{n-1} \right )^T \left [\nabla F (\mathbf x_{n}) - \nabla F (\mathbf x_{n-1}) \right ] \right |}{\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2}
+$$
+{{</* /math */>}}
 ```
 
-## Update the docs menu
+renders as
 
-If you use the *docs* layout, note that the name of the menu in the front matter should be in the form `[menu.X]` where `X` is the folder name. Hence, if you rename the `courses/example/` folder, you should also rename the menu definitions in the front matter of files within `courses/example/` from `[menu.example]` to `[menu.<NewFolderName>]`.
+{{< math >}}
+$$\gamma_{n} = \frac{ \left | \left (\mathbf x_{n} - \mathbf x_{n-1} \right )^T \left [\nabla F (\mathbf x_{n}) - \nabla F (\mathbf x_{n-1}) \right ] \right |}{\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2}$$
+{{< /math >}}
+
+Example **inline math** `{{</* math */>}}$\nabla F(\mathbf{x}_{n})${{</* /math */>}}` renders as {{< math >}}$\nabla F(\mathbf{x}_{n})${{< /math >}}.
+
+Example **multi-line math** using the math linebreak (`\\`):
+
+```latex
+{{</* math */>}}
+$$f(k;p_{0}^{*}) = \begin{cases}p_{0}^{*} & \text{if }k=1, \\
+1-p_{0}^{*} & \text{if }k=0.\end{cases}$$
+{{</* /math */>}}
+```
+
+renders as
+
+{{< math >}}
+
+$$
+f(k;p_{0}^{*}) = \begin{cases}p_{0}^{*} & \text{if }k=1, \\
+1-p_{0}^{*} & \text{if }k=0.\end{cases}
+$$
+
+{{< /math >}}
+
+## Code
+
+Hugo Blox Builder utilises Hugo's Markdown extension for highlighting code syntax. The code theme can be selected in the `config/_default/params.yaml` file.
+
+
+    ```python
+    import pandas as pd
+    data = pd.read_csv("data.csv")
+    data.head()
+    ```
+
+renders as
+
+```python
+import pandas as pd
+data = pd.read_csv("data.csv")
+data.head()
+```
+
+## Inline Images
+
+```go
+{{</* icon name="python" */>}} Python
+```
+
+renders as
+
+{{< icon name="python" >}} Python
+
+## Did you find this page helpful? Consider sharing it 🙌
