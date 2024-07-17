@@ -2,8 +2,7 @@
 title: "The NF-κB multidimer system model: A knowledge base to explore diverse
   biological contexts"
 publication_types:
-  - "0"
-  - "2"
+  - article-journal
 authors:
   - Simon Mitchell
   - Rachel Tsui
