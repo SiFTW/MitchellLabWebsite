@@ -44,15 +44,15 @@ title = "So you want to launch a centre?"
 #  icon = "envelope"
   
 [cta]
-  url = "https://www.eventbrite.co.uk/e/lymphoid-malignancies-with-interdisciplinary-techniques-lymit-tickets-256778329897"
-  label = "Free Registration"
+  url = ""
+  label = "Download guide"
   icon_pack = "fas"
-  icon = "clipboard-check"
+  icon = "file-pdf"
   
   
 # Note. An optional note to show underneath the links.
 [cta_note]
-  label = 'A FLFs guide to starting a centre'
+  label = 'Download the complete FLF's guide to starting a centre as a PDF document.'
 +++
 
 **So you want to launch a centre?**
