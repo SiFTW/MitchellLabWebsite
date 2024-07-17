@@ -1,3 +1,25 @@
+---
+date: 2023-01-19T15:43:26.016Z
+summary: ""
+draft: false
+featured: true
+#hideNavBar: true
+title: So you want to start a centre
+#subtitle: A guide to starting a research centre as a future leaders fellow.
+#type: "widget_page"
+toc: true
+image:
+  filename: centre.png
+  focal_point: Smart
+  preview_only: false
+  caption: ""
+aliases:
+  - /centre
+  - /FLFCentre
+  - /startingCentre
+---
+
+
 # Chapter 0. Introduction
 
 This guide will provide practical advice on launching and leading a research centre, with a specific focus on the challenges and opportunities presented to a Future Leaders Fellow. The guide is likely applicable to any researcher on a rapid trajectory towards leadership, but FLFs are likely to encounter these challenges earlier, and across disciplines in a way that can present unique challenges.
