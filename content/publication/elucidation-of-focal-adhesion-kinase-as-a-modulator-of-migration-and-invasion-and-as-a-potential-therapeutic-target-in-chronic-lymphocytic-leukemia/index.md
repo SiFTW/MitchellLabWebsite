@@ -2,7 +2,7 @@
 title: Elucidation of Focal Adhesion Kinase as a Modulator of Migration and
   Invasion and as a Potential Therapeutic Target in Chronic Lymphocytic Leukemia
 publication_types:
-  - article-journal
+  - "0"
 authors:
   - Thomas A Burley
   - Andrew Hesketh
