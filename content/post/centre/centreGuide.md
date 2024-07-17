@@ -11,6 +11,8 @@ design:
   # Choose how many columns the section has. Valid values: 1 or 2.
   columns: '1'
 ---
+{{< toc mobile_only=false is_open=true >}}
+
 # Chapter 1. Laying the foundation
 
 ## Why start a research centre as an FLF?
