@@ -17,6 +17,11 @@ aliases:
   - /centre
   - /FLFCentre
   - /startingCentre
+markup:
+  tableOfContents:
+    endLevel: 3
+    ordered: false
+    startLevel: 2
 ---
 
 
