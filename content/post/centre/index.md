@@ -131,6 +131,3 @@ People in your institution will have a sense of who should lead a new re
 
 ## 
 
-{{% ToC %}}
-
-
