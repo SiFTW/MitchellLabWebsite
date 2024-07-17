@@ -23,8 +23,8 @@ markup:
     ordered: false
     startLevel: 2
 ---
+{{ .TableOfContents }}
 
-{{% toc %}}
 # Chapter 0. Introduction
 
 This guide will provide practical advice on launching and leading a research centre, with a specific focus on the challenges and opportunities presented to a Future Leaders Fellow. The guide is likely applicable to any researcher on a rapid trajectory towards leadership, but FLFs are likely to encounter these challenges earlier, and across disciplines in a way that can present unique challenges.
