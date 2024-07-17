@@ -98,8 +98,8 @@ features:
 # Extensions
 
 extensions:
-  decap_cms:
-    branch: main
+  cms:
+    branch: master
     local_backend: false
   isotope:
     # Enable if you use the Portfolio widget or Publication filter
