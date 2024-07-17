@@ -8,7 +8,7 @@ authors:
 - Jesse Vargas
 - Alexander Hoffmann
 publication_types:
-- 2
+- article-journal
 abstract: ''
 featured: false
 publication: '*Wiley Interdisciplinary Reviews: Systems Biology and Medicine*'
