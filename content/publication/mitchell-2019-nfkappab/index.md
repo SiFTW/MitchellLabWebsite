@@ -13,7 +13,7 @@ authors:
 - Gourisankar Ghosh
 - Alexander Hoffmann
 publication_types:
-- article-journal
+- 2
 abstract: ''
 featured: false
 publication: '*Frontiers in immunology*'
