@@ -27,3 +27,8 @@ It is written from the perspective of an FLF. I recently launched a research cen
 
 I would love to help as many FLFs as possible start research centres.
 If you have any questions, need any more help, or just want to chat about your experiences, please [{{< icon name="envelope" pack="fas" >}} contact me.](https://mitchell.science/#contact)
+
+{{< list_children >}}
+
+
+
