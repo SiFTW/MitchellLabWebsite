@@ -11,7 +11,7 @@ authors:
 - M Chappell
 - J Collingwood
 publication_types:
-- 1
+- article-journal
 abstract: ''
 featured: false
 publication: '*Movement Disorders*'
