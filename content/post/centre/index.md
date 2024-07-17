@@ -4,7 +4,7 @@ summary: ""
 draft: false
 featured: true
 #hideNavBar: true
-title: So you want to start a centre
+title: So, you want to start a centre?
 #subtitle: A guide to starting a research centre as a future leaders fellow.
 #type: "widget_page"
 toc: true
