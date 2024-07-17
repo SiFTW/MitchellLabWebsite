@@ -3,7 +3,7 @@ title: Patient-specific computational models predict prognosis in B cell
   lymphoma by quantifying pro-proliferative and anti-apoptotic signatures from
   genetic sequencing data
 publication_types:
-  - "2"
+  - article-journal
 authors:
   - Richard Norris
   - John Jones
