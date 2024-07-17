@@ -4,10 +4,10 @@ summary: ""
 draft: false
 featured: true
 authors: [Simon Mitchell]
-hideNavBar: true
+#hideNavBar: true
 title: So you want to start a centre
 #subtitle: A guide to starting a research centre as a future leaders fellow.
-type: "widget_page"
+#type: "widget_page"
 toc: true
 image:
   filename: centre.png
