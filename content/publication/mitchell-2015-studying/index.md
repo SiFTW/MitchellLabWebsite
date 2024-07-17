@@ -8,7 +8,7 @@ authors:
 - Rachel Tsui
 - Alexander Hoffmann
 publication_types:
-- article-journal
+- 6
 abstract: ''
 featured: false
 publication: '*NF-kappa B*'
