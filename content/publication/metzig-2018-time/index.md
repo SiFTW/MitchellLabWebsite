@@ -10,7 +10,7 @@ authors:
 - Brooks Taylor
 - Alexander Hoffmann
 publication_types:
-- article-journal
+- 0
 abstract: ''
 featured: false
 publication: '*American Association for Cancer Research*'
