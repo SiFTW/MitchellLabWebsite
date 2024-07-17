@@ -10,7 +10,7 @@ authors:
 - Simon Mitchell
 - Alexander Hoffmann
 publication_types:
-- chapter
+- 6
 abstract: ''
 featured: false
 publication: '*B Cell Receptor Signaling*'
