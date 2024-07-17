@@ -13,7 +13,7 @@ authors:
 - Roy Wollman
 - Alexander Hoffmann
 publication_types:
-- article-journal
+- 2
 abstract: ''
 featured: false
 publication: '*Molecular Systems Biology*'
