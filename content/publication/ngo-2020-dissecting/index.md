@@ -17,7 +17,7 @@ authors:
 - Simon Mitchell
 - ' others'
 publication_types:
-- 2
+- article-journal
 abstract: ''
 featured: false
 publication: '*Cell reports*'
