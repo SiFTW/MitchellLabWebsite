@@ -12,7 +12,7 @@ authors:
 - Michael J Chappell
 - Joanna F Collingwood
 publication_types:
-- paper-conference
+- 1
 abstract: ''
 featured: false
 publication: '*AMERICAN JOURNAL OF HEMATOLOGY*'
