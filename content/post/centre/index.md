@@ -1,6 +1,6 @@
 ---
 date: 2023-01-19T15:43:26.016Z
-summary: ""
+summary: "An FLFs guide to starting a research centre from idea to launch and beyond."
 draft: false
 featured: true
 #hideNavBar: true
