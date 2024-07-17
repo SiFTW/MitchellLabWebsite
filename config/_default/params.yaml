@@ -2,6 +2,7 @@
 # Guide: https://wowchemy.com/docs/getting-started/
 # Documentation: https://wowchemy.com/docs/
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
+docs_section_pager: true
 
 # Appearance
 
