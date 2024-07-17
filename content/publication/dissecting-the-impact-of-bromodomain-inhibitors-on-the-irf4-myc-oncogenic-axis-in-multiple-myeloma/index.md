@@ -2,7 +2,7 @@
 title: Dissecting the Impact of Bromodomain Inhibitors on the IRF4-MYC Oncogenic
   Axis in Multiple Myeloma
 publication_types:
-  - article-journal
+  - "0"
 authors:
   - Alessandro Agnarelli
   - Simon Mitchell
