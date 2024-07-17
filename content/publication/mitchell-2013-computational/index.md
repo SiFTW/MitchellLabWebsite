@@ -7,7 +7,7 @@ authors:
 - Simon Mitchell
 - Pedro Mendes
 publication_types:
-- article-journal
+- 2
 abstract: ''
 featured: false
 publication: '*PLoS Comput Biol*'
