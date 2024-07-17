@@ -23,7 +23,6 @@ markup:
     ordered: false
     startLevel: 2
 ---
-
 # Chapter 0. Introduction
 
 This guide will provide practical advice on launching and leading a research centre, with a specific focus on the challenges and opportunities presented to a Future Leaders Fellow. The guide is likely applicable to any researcher on a rapid trajectory towards leadership, but FLFs are likely to encounter these challenges earlier, and across disciplines in a way that can present unique challenges.
@@ -31,6 +30,10 @@ This guide will provide practical advice on launching and leading a research cen
 The guide is best viewed here, but can also be downloaded as a complete PDF above.
 
 It is written from the perspective of an FLF.
+
+
+---
+
 
 # Chapter 1. Surveying the landscape. 
 
@@ -70,7 +73,8 @@ I was able to evidence each of these if asked, for example, with respect to the 
 
 -	*There was incredible research already happening.* This could be easily evidenced with grants, papers, and real world impact. Nobody I talked to disagreed with this, and I imagine no one will disagree with you if you tell them they’re doing amazing work.
 -	*The outside world doesn’t see this.* I had a screenshot from Google of the search results for “Cancer Research Sussex”. It didn’t look like we’d spoken to each other since 2015!
-![Google Screenshot]( googleScreenshot.png)
+
+{{< figure src=" googleScreenshot.jpg" title="Google screenshot from before I launched the centre" >}}
 
 ### What exists and has existed?
 
@@ -79,7 +83,19 @@ For example, in my situation there had been a very similar attempt, about 10 yea
 
 ### Identifying the natural leaders and discovering where you fit.
 
-People in your institution will have a sense of who should lead a new re
+People in your institution will have a sense of who should lead a new research centre. As an FLF, this may well not be you! The speed of your progression to leadership is likely greater than average and as such there will be people in your institution thinking: “Who are they?”.
+
+Think about the more senior people in your institution that might want to head up your centre. You should meet those people. When I had such meetings I was frequently told:
+
+> We need a new centre in this area but I don’t have time to do it.
+
+And occasionally:
+
+> I tried to do something like this in the past but wasn’t successful.
+
+These are great responses, because they give you answers to the people you will encounter who say “Who are they? Why isn’t XXXXXXX leading the centre?”
+
+
 
 ## Can you do it? 
 
@@ -130,4 +146,5 @@ People in your institution will have a sense of who should lead a new re
 # Chapter 5. Momentum beyond the launch
 
 ## 
+
 
