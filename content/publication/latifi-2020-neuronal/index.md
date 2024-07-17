@@ -15,7 +15,7 @@ authors:
 - Peyman Golshani
 - S Thomas Carmichael
 publication_types:
-- article-journal
+- 2
 abstract: ''
 featured: false
 publication: '*Cerebral Cortex*'
