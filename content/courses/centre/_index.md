@@ -5,7 +5,7 @@ summary: This guide is designed to give FLFs confidence to found and direct thei
 weight: 1
 
 # Page metadata.
-title: Launching a Research Centre as an FLF
+title: Overview
 date: "2024-07-01T00:00:00Z"
 lastmod: "2024-07-17T00:00:00Z"
 draft: false  # Is this a draft? true/false
