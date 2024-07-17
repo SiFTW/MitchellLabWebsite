@@ -8,7 +8,7 @@ authors:
 - Simon Mitchell*
 - Alexander Hoffmann*
 publication_types:
-- 2
+- article-journal
 abstract: ''
 featured: false
 publication: '*Trends in immunology*'
