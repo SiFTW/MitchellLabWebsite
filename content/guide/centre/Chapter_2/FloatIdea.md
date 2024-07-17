@@ -1,5 +1,5 @@
 ---
-title: Floating the Idear
+title: Floating the Idea
 date: 2024-07-17
 type: book
 weight: 10
