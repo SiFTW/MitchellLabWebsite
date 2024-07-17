@@ -1,7 +1,7 @@
 ---
 title: Computational modeling of DLBCL predicts response to BH3-mimetics
 publication_types:
-  - article-journal
+  - "2"
 authors:
   - Ielyaas Cloete
   - Victoria M. Smith
