@@ -45,7 +45,7 @@ image:
 projects: []
 publishDate: '2021-10-28T10:22:19.019046Z'
 publication_types:
-- article-journal
+- '2'
 abstract: Brain organoids represent a powerful tool for studying human neurological
   diseases, particularly those that affect brain growth and structure. However, many
   diseases manifest with clear evidence of physiological and network abnormality in
