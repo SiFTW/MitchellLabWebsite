@@ -20,7 +20,7 @@ I was able to evidence each of these if asked, for example, with respect to the 
 -	*There was incredible research already happening.* This could be easily evidenced with grants, papers, and real world impact. Nobody I talked to disagreed with this, and I imagine no one will disagree with you if you tell them they’re doing amazing work.
 -	*The outside world doesn’t see this.* I had a screenshot from Google of the search results for “Cancer Research Sussex”. It didn’t look like we’d spoken to each other since 2015!
 
-{{< figure src="googleScreenshot.jpg" title="Google screenshot from before I launched the centre" >}}
+{{< figure src="googleScreenshot.png" title="Google screenshot from before I launched the centre" >}}
 
 ### What exists and has existed?
 
