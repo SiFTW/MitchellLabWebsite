@@ -1,7 +1,7 @@
 ---
 title: NF-kB and the CLL microenvironment
 publication_types:
-  - article-journal
+  - "2"
 authors:
   - Alice O’Donnell
   - Chris Pepper
