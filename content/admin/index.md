@@ -1,8 +1,6 @@
 ---
-# Generate Decap CMS
-type: decap_cms
-private: true
+type: wowchemycms
 outputs:
-  - decap_cms_config
+  - wowchemycms_config
   - HTML
 ---
