@@ -52,7 +52,7 @@ title = "So you want to launch a centre?"
   
 # Note. An optional note to show underneath the links.
 [cta_note]
-  label = 'Download the complete FLF's guide to starting a centre as a PDF document.'
+  label = 'Download the complete PDF guide to starting a centre as an FLF.'
 +++
 
 **So you want to launch a centre?**
