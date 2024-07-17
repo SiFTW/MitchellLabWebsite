@@ -2,7 +2,7 @@
 title: Targeting the non-canonical NF-κB pathway in chronic lymphocytic leukemia
   and multiple myeloma
 publication_types:
-  - article-journal
+  - "0"
 authors:
   - Thomas A Burley
   - Emma Kennedy
