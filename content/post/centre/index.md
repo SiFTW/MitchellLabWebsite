@@ -24,7 +24,7 @@ markup:
     startLevel: 2
 ---
 
-
+{{% toc %}}
 # Chapter 0. Introduction
 
 This guide will provide practical advice on launching and leading a research centre, with a specific focus on the challenges and opportunities presented to a Future Leaders Fellow. The guide is likely applicable to any researcher on a rapid trajectory towards leadership, but FLFs are likely to encounter these challenges earlier, and across disciplines in a way that can present unique challenges.
@@ -33,7 +33,7 @@ The guide is best viewed here, but can also be downloaded as a complete PDF abov
 
 It is written from the perspective of an FLF.
 
-# Chapter 1. Laying the foundation
+# Chapter 1. Surveying the landscape. 
 
 ## Why start a research centre as an FLF?
 
@@ -55,13 +55,32 @@ It is common when applying for promotion to professor to be given the role of le
 
 ### Why? Support the career of others
 
-It may be 
+When starting are centre many supporting roles are created. The development of your team is a key goal of the FLF. The ability to create roles such as “Early Career Research lead”, “Patient Engagement Lead”, “Outreach Lead” enables you to assign supportive roles to members of your FLF team. These can be tailored to match the skills and career development needs of individual members of your team. As a leader of a centre you are uniquely positioned to match people with roles within your centre.
 
 ## Is a centre needed? Identifying the unmet need.
 
+This is a big one. At many points in this process you will need and answer for people who ask “Why do we need a centre?” If you struggle when thinking about the answer to this for yourself then you will struggle to get the centre off the ground. Spend lots of time thinking about this, because you answer to this question will form the basis of many conversations, presentations, documents, and pitches to leadership as you progress.
+
+In establishing the Sussex Cancer Research Centre I had two or three main themes:
+
+-	Lack of visibility for our cancer research.
+-	Missed opportunities for collaboration caused by institutional, geographic, and bureaucratic barriers.
+-	An unmet need in cancer patients who were not benefitting from our research.
+
+I was able to evidence each of these if asked, for example, with respect to the “Lack of visibility for our cancer research”:
+
+-	*There was incredible research already happening.* This could be easily evidenced with grants, papers, and real world impact. Nobody I talked to disagreed with this, and I imagine no one will disagree with you if you tell them they’re doing amazing work.
+-	*The outside world doesn’t see this.* I had a screenshot from Google of the search results for “Cancer Research Sussex”. It didn’t look like we’d spoken to each other since 2015!
+![Google Screenshot]( googleScreenshot.png)
+
 ### What exists and has existed?
 
+You need to get a good sense of landscape and history around what you are trying to do.
+For example, in my situation there had been a very similar attempt, about 10 years ago, which started with a lot of motivation but soon fell into abeyance and stopped meeting. While as an FLF it’s unlikely you will have been at your host institution long enough to know the full history it is worth seeking out people who have been there for a decade plus and asking them if anything like what you are trying to achieve has been tried before. If it has, it’s not a problem, but you need to know because senior people who need to decide whether to support you or not *will* remember previous attempts and may not have the appetite to try again unless you can clearly state why the result will be different this time. 
+
 ### Identifying the natural leaders and discovering where you fit.
+
+People in your institution will have a sense of who should lead a new re
 
 ## Can you do it? 
 
@@ -71,7 +90,11 @@ It may be
 
 ## So, are you going to do this? Making the go/no go decision.
 
-# Chapter 2. Turning chats over coffee into a vision.
+## Summary:
+
+
+
+# Chapter 2. Laying the foundations
 
 ## Floating the idea to peers, and leadership.
 
@@ -83,7 +106,7 @@ It may be
 
 ## Finalising the vision ready to circulate
 
-# Chapter 3. Formally establishing a centre
+# Chapter 3. Building your centre
 
 ## Decide what you want from your institution
 
@@ -93,7 +116,7 @@ It may be
 
 ## Formal and informal approval
 
-# Chapter 4. The launch event
+# Chapter 4. Cutting the ribbon
 
 ## Why have a launch event
 
