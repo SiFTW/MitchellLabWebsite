@@ -1,5 +1,5 @@
 ---
-title: Finalising the vision
+title: 2.5 Finalising the vision
 date: 2024-07-17
 type: book
 weight: 50
