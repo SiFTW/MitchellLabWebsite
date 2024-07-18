@@ -3,6 +3,7 @@ title: Is a centre needed?
 date: 2024-07-17
 type: book
 weight: 20
+summary: You can't force a centre where one isn't needed. So how do you figure out whether there is a gap for your centre?
 ---
 
 ## Is a centre needed? Identifying the unmet need.
