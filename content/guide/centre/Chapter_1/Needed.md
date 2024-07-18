@@ -1,5 +1,5 @@
 ---
-title: Is a centre needed?
+title: 1.2 Is a centre needed?
 date: 2024-07-17
 type: book
 weight: 20
