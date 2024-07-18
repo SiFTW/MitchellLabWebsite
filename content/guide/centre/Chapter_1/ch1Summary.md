@@ -1,8 +1,9 @@
 ---
-title: The decision
+title: 1.5 The Decision.
 date: 2024-07-17
 type: book
 weight: 50
+summary: It's time to make the "go" or "no go" decision.
 ---
 
 ### So, are you going to do this? Making the go/no go decision.
