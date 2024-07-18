@@ -3,6 +3,7 @@ title: Input and buy-in to the vision
 date: 2024-07-17
 type: book
 weight: 40
+summary: How to let others shaps your ideas, share ownership of the centre and become your advocates in the process.
 ---
 
 ## Getting input into the vision document
