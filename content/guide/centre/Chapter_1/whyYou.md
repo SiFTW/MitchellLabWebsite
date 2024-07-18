@@ -1,5 +1,5 @@
 ---
-title: Are you the right person, and who will support you?
+title: 1.3 Are you the right person, and who will support you?
 date: 2024-07-17
 type: book
 weight: 30
