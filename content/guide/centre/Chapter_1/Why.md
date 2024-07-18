@@ -1,8 +1,9 @@
 ---
-title: Why start a research centre as an FLF?
+title: 1.1 Why start a research centre as an FLF?
 date: 2024-07-17
 type: book
 weight: 10
+summary: As an FLF you are busy, and likely establishing yourself in new fields. So, why add launching a research/innovation centre to your overflowing todo list?
 ---
 
 You may be considering starting a centre, or perhaps your head of school has tasked you with starting one. Forming and/or directing a research centre is a lot of work, might distract from your research focus, and isn’t like to be in your job description. So the obvious question is... why bother?
