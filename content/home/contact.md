@@ -51,8 +51,8 @@ content:
       link: 'https://www.bsms.ac.uk/about/contact-us/staff/dr-simon-mitchell.aspx'
     - icon: phone
       icon_pack: fas
-      link: phone
-      link: <a href="tel:+441273678584">+44 (0)1273 678584</a>
+      name: '+44 (0)1273 678584'
+      link: 'tel:+441273678584'
     - icon: orcid
       icon_pack: ai
       name: ORCID iD
