@@ -1,8 +1,8 @@
 ---
-title: Meetings
+title: 5.4 Meetings
 date: 2024-07-17
 type: book
-weight: 30
+weight: 40
 summary: You need meetings.
 ---
 
