@@ -1,5 +1,5 @@
 ---
-title: Chapter 2. Laying the Foundation.
+title: Chapter 2. Your Vision
 date: 2024-07-17
 type: book
 weight: 2
