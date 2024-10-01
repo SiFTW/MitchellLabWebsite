@@ -1,14 +1,9 @@
 ---
-title: The Weeks After
+title: Website
 date: 2024-07-17
 type: book
 weight: 20
+summary: You need a website.
 ---
 
-## Walking the Walk
-
-By this point you've done a lot of shouting about all the things your centre will achieve. A portion of your audience will be believing that this is all talk and no action. It is key in the days and weeks following the launch that you are visible and delivering on what you promised.
-
-## Keeping in Touch
-
-## Over to You
+You might have set up a web presence to advertise the launch event, but if you didn’t you need one now. It needs to capture the essence of the vision document and can be used to advertise the above funding call. Consider your multiple audiences: researchers will want to know how to apply for funding, patients will want to know more about how they can get involved, potential donors will want to know where to donate. Your institution may have a good framework for you to have your centre on the institutional website. If you can keep access to edit this directly without working through your institutions IT department you will save yourself many headaches going forwards. Consider Wordpress to let you do this (it’s cheap), or Squarespace if you can afford it. 
