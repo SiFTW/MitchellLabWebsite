@@ -1,5 +1,5 @@
 ---
-title: Funding
+title: 5.1 Awarding funds
 date: 2024-07-17
 type: book
 weight: 10
