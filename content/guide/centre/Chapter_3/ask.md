@@ -1,5 +1,5 @@
 ---
-title: What you want from your institution
+title: 3.1 What you want from your institution
 date: 2024-07-17
 type: book
 weight: 10
