@@ -1,5 +1,5 @@
 ---
-title: 3.3 Funding a launch event
+title: 4.3 Funding a launch event
 date: 2024-07-17
 type: book
 weight: 30
