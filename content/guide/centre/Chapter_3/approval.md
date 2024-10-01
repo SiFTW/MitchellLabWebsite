@@ -1,5 +1,5 @@
 ---
-title: Getting approvals
+title: 3.2 Getting approvals
 date: 2024-07-17
 type: book
 weight: 20
