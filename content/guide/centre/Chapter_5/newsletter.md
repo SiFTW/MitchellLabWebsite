@@ -1,5 +1,5 @@
 ---
-title: Newsletter
+title: 5.3 Newsletter
 date: 2024-07-17
 type: book
 weight: 30
