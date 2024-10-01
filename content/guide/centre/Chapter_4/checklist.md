@@ -7,7 +7,7 @@ summary: A checklist of launch event things to do and timings.
 ---
 This list is modified from a “How to run a conference” guide assembled by SCRC co-director Timothy Humphrey:
 
-## 1 year before:
+## 1 year before
 - [ ] Create document containing “Goals of launch event”.
 - [ ] Find a venue (consider cost and space)
 - [ ] Secure the venue
@@ -23,17 +23,17 @@ This list is modified from a “How to run a conference” guide assembled by SC
 - [ ] Advertise (Include date that registration opens)
 - [ ] Secure sponsorship money
 - [ ] Create a cost spreadsheet, including:
- * Catering
- * Poster boards
- * Accommodation/travel for invited speakers
- * Printing of materials
- * A drinks reception
- * Speakers dinner
+  - [ ] Catering
+  - [ ] Poster boards
+  - [ ] Accommodation/travel for invited speakers
+  - [ ] Printing of materials
+  - [ ] A drinks reception
+  - [ ] Speakers dinner
 - [ ] Discuss communications plan with comms team.
 
 ## 3 months before
 - [ ] Open registration + readvertise
-* Collect necessary dietary and access requirements
+  - [ ] Collect necessary dietary and access requirements
 - [ ] Advertise abstract deadlines
 - [ ] Book all travel + accommodation for invited speakers
 - [ ] Book poster boards
@@ -42,12 +42,12 @@ This list is modified from a “How to run a conference” guide assembled by SC
 
 ## 1 month before
 - [ ] Finalise agenda
-* Review “Goals of launch event”.
+  - [ ] Review “Goals of launch event”.
 - [ ] Generate programme
 - [ ] Add programme to website 
 - [ ] Consider details of speaker travel, taxis for dinner etc.
 - [ ] Consider details/technology for any interactive sessions
--	Re-visit venue and plan layout setup of day.
+- [ ] Re-visit venue and plan layout setup of day.
 
 ## 1-2 Weeks before
 - [ ] Communicate final agenda + logistics
