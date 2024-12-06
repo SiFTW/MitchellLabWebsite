@@ -13,7 +13,7 @@ authors: false
 projects:
   - primary-DLBCL
   - RR-DLBCL
-  - nf-kbsignaling
+  - NF-kBSignaling
 image:
   filename: geib9u1x0aailp0.jpg
   focal_point: Smart
