@@ -9,10 +9,11 @@ event_url: https://www.biorxiv.org/content/10.1101/2024.11.30.626166v1
 publishDate: 2024-12-06T18:20:33.159Z
 draft: false
 featured: false
-author: aimilia
+authors: false
 image:
   filename: geib9u1x0aailp0.jpg
   focal_point: Smart
   preview_only: false
 ---
-Read a [tweetorial here](https://x.com/SiFTW/status/1865085919037980998) or a [bluesky-tutorial here](https://bsky.app/profile/mitchell.science/post/3lcns7h3qds2p).
+[Read the preprint](https://www.biorxiv.org/content/10.1101/2024.11.30.626166v1).
+Alternatively read a [tweetorial here](https://x.com/SiFTW/status/1865085919037980998),or a [bluesky-tutorial here](https://bsky.app/profile/mitchell.science/post/3lcns7h3qds2p).
