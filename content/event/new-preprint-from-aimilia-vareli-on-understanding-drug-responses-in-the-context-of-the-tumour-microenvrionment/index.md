@@ -10,7 +10,7 @@ event_url: https://www.biorxiv.org/content/10.1101/2024.11.30.626166v1
 publishDate: 2024-12-06T18:20:33.159Z
 draft: false
 featured: false
-Author: Aimilia
+author: Aimilia
 image:
   filename: geib9u1x0aailp0.jpg
   focal_point: Smart
