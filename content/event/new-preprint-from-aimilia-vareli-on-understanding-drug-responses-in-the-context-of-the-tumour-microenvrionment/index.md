@@ -10,6 +10,10 @@ publishDate: 2024-12-06T18:20:33.159Z
 draft: false
 featured: false
 authors: false
+projects:
+  - primary-DLBCL
+  - RR-DLBCL
+  - nf-kbsignaling
 image:
   filename: geib9u1x0aailp0.jpg
   focal_point: Smart
