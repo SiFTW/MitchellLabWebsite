@@ -20,11 +20,11 @@ design:
 
 [Week 1 - Population scale modelling](Week1-Intro-SM.pptx)
 
-[Week 2 - Modelling signalling](NFkBModelling.pptx)
+[Week 2 - Molecular dynamics modelling 1](2024_SSC_MD_EJ_1.pptx)
 
-[Week 3 - Molecular dynamics modelling 1](2024_SSC_MD_EJ_1.pptx)
+[Week 3 - Molecular dynamics modelling 2](2024_SSC_MD_EJ_2.pptx)
 
-[Week 4 - Molecular dynamics modelling 2](2024_SSC_MD_EJ_2.pptx)
+[Week 4 - Modelling signalling](NFkBModelling.pptx)
 
 [Week 5 - Cancer modelling](CellCycle.pptx)
 
