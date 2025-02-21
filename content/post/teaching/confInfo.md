@@ -26,7 +26,7 @@ design:
 
 [Week 4 - Molecular dynamics modelling 2](2024_SSC_MD_EJ_2.pptx)
 
-[Week 5 - Cancer modelling](https://docs.google.com/presentation/d/1YjoRpTWlsy-fhjykrPPXeTviCKbCcI90xtcYsl1JZSo/edit?usp=sharing)
+[Week 5 - Cancer modelling](CellCycle.pptx)
 
 Week 6 - Prepare for assessment (no session) [Summary slides and asssessment assignments](Week6-summary.pptx)
 
