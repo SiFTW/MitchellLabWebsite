@@ -61,7 +61,7 @@ email: ""
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- Postdoctoral Researchers
+- Alumni
 ---
  
 Richard completed his PhD in Molecular Biology & Bioinformatics at the University of Barcelona, where he developed computational methods to elucidate gene-regulatory networks in pancreatic neuroendocrine tumours. Prior to this he worked in human genetics at the Sanger Institute and molecular genetics in the NHS. Richard is working on [Therapeutic targeting of refractory relapsed diffuse large B-cell lymphoma through systems biology]({{< ref "/project/rr-dlbcl" >}} "Therapeutic targeting of refractory relapsed diffuse large B-cell lymphoma through systems biology") with funding from a UKRI Future Leaders Fellowship.
