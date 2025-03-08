@@ -57,7 +57,7 @@ email: ""
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- PhD Students
+- Alumni
 ---
  
 Arran studied Biochemistry at Leeds, then took an MSc in Systems and Synthetic Biology in Edinburgh. Now he is fully converted to systems biology, on the attractive premise that simulated biological systems can answer questions that physical experimentation cannot.
