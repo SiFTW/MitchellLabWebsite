@@ -68,5 +68,32 @@ date_format = "Jan 2006"
   Collaboration with Professor Mariko Okada to undetsand how cell signalling and cell fates combine through combined computational and experiment analysis.
   
   """
+
   
+  [[item]]
+  organization = "Future Leaders Fellows Development Network: Flexible Creative Fund"
+  organization_url = "https://www.flfdevnet.com"
+  title = "Flexible Creative Fund (£10k)"
+  url = "https://www.flfdevnet.com/flexible-creative-fund/"
+  certificate_url = ""
+  date_start = "2024-06-01"
+  date_end = "2025-06-01"
+  description = """
+  Simon was awarded a Flexible Creative Fund award to produce educational materials and resources on how to launch a new research centre.
+
+  [See the guide](https://mitchell.science/guide/centre/)
+  """
+
+  [[item]]
+  organization = "UKRI"
+  organization_url = "https://www.ukri.org/"
+  title = "Future Leaders Fellowship Renewal (£565k)"
+  url = "https://www.ukri.org/funding/funding-opportunities/future-leaders-fellowships/"
+  certificate_url = ""
+  date_start = "2025-08-01"
+  date_end = "2028-07-31"
+  description = """
+  Extending personalised modelling towards clinical use in multiple malignancies.
+
+  [see project info](../project/multi-malignancy/)
 +++
