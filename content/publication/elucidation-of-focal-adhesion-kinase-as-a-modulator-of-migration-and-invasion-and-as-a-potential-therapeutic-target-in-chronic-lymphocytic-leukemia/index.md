@@ -29,4 +29,5 @@ projects:
   - primary-DLBCL
   - RR-DLBCL
   - NF-kBSignaling
+  - multi-malignancy
 ---
