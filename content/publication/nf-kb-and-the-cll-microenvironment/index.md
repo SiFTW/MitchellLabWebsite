@@ -36,6 +36,7 @@ projects:
   - primary-DLBCL
   - RR-DLBCL
   - NF-kBSignaling
+  - multi-malignancy
 image:
   filename: featured.png
   focal_point: Smart
