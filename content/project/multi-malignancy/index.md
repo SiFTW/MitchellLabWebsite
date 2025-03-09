@@ -5,4 +5,4 @@ draft: false
 profile: false
 tags: ["Multi-malignancy"]
 ---
-This work is funded by a UKRI Future Leaders Fellowship Renewal and aims to extend our impact beyond Diffuse Large B Cell Lymphoma to related malignancies such as Chronic Lymphocytic Leukaemia (CLL), Multiple Myeloma, and even breast cancer with the support of a BSMS20 studentship supporting [Isabelle Jupp](../authors/isabelle/).
+This work is funded by a UKRI Future Leaders Fellowship Renewal and aims to extend our impact beyond Diffuse Large B Cell Lymphoma to related malignancies such as Chronic Lymphocytic Leukaemia (CLL), multiple myeloma, and breast cancer.
