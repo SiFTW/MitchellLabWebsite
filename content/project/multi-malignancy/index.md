@@ -1,6 +1,6 @@
 ---
 title: "Extending personalised modelling towards clinical use in multiple malignancies"
-date: 2025-08-01T17:07:13+01:00
+date: 2024-10-01T17:07:13+01:00
 draft: false
 profile: false
 
