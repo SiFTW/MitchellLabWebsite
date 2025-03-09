@@ -41,6 +41,7 @@ draft: false
 featured: false
 projects:
   - primary-DLBCL
+  - multi-malignancy
 image:
   filename: featured.png
   focal_point: top
