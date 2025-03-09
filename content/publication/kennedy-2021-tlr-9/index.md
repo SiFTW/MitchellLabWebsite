@@ -21,5 +21,7 @@ publication_types:
 abstract: ''
 featured: false
 publication: '*Blood*'
+projects:
+  - multi-malignancy
 ---
 
