@@ -47,7 +47,8 @@ abstract: "Background/Objectives: Acute myeloid leukemia (AML) is an aggressive
   tested in AML clinical trials."
 draft: false
 featured: false
-projects: []
+projects:
+  - multi-malignancy
 image:
   filename: featured
   focal_point: Smart
