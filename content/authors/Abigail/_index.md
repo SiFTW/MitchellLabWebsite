@@ -21,7 +21,7 @@ organizations:
 bio: Abigail completed her MSci in Biomedical Science at the University of Sussex. She is currently on a rotation project in the lab as part of her PhD funded by the Biotechnology and Biological Sciences Research Council (BBSRC) funded Doctoral Training Partnership (South Coast Biosciences).
 
 interests:
-- Systems Siology 
+- Systems Biology 
 - Cell Signalling 
 - Cancer Biology
 - Gene Editing
