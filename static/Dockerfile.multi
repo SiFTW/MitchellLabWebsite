@@ -38,6 +38,18 @@ RUN useradd -ms /bin/bash student14
 RUN echo 'student14:teaching14' | chpasswd
 RUN useradd -ms /bin/bash student15
 RUN echo 'student15:teaching15' | chpasswd
+RUN useradd -ms /bin/bash student16
+RUN echo 'student15:teaching16' | chpasswd
+RUN useradd -ms /bin/bash student17
+RUN echo 'student15:teaching17' | chpasswd
+RUN useradd -ms /bin/bash student18
+RUN echo 'student15:teaching18' | chpasswd
+RUN useradd -ms /bin/bash student19
+RUN echo 'student15:teaching19' | chpasswd
+RUN useradd -ms /bin/bash student20
+RUN echo 'student15:teaching20' | chpasswd
+RUN useradd -ms /bin/bash studen21
+RUN echo 'student15:teaching21' | chpasswd
 
 
 EXPOSE 8000
