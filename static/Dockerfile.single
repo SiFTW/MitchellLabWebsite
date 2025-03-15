@@ -100,7 +100,7 @@ RUN mkdir /etc/julia && \
 
 
 USER jovyan
-RUN julia -e 'import Pkg; Pkg.add(Pkg.PackageSpec(;name="WebIO", version="0.8.16"))' && \
+RUN julia -e 'import Pkg; Pkg.add(Pkg.PackageSpec(;name="WebIO"))' && \
     julia -e 'using Pkg; Pkg.add("IJulia"); Pkg.build("IJulia");' && \
     julia -e 'using Pkg; Pkg.add("CSV");' && \
     julia -e 'using Pkg; Pkg.add("DifferentialEquations");' && \
