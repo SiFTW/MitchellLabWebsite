@@ -6,7 +6,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache --upgrade jupyter
 RUN pip install --no-cache dockerspawner
 RUN pip install --no-cache jupyterhub-nativeauthenticator
-RUN pip install --no-cache netifaces
+#RUN pip install --no-cache netifaces
 
 RUN useradd -ms /bin/bash student1
 RUN echo 'student1:teaching1' | chpasswd
