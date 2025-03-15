@@ -1,6 +1,6 @@
 from jupyter_client.localinterfaces import public_ips
 # Configuration file for Jupyter Hub
-
+c.JupyterHub.cookie_secret = bytes.fromhex('3A0C1158179FCECC560148B19F37D94BB5226852AD37610EAF91B76B06A874C8')
 c = get_config()
 
 # spawn with Docker
@@ -26,8 +26,8 @@ c.DockerSpawner.extra_create_kwargs.update({ 'command': "start-singleuser.sh --S
 
 #import netifaces
 #docker0 = netifaces.ifaddresses('eth0')
-docker0_ipv4 = 139.184.170.218 #docker0[netifaces.AF_INET][0]
-#docker0_ipv4 = 139.184.171.6
+docker0_ipv4 = '139.184.170.218' #docker0[netifaces.AF_INET][0]
+#docker0_ipv4 = '139.184.171.6'
 c.JupyterHub.hub_ip = '0.0.0.0' #docker0_ipv4['addr']
 c.JupyterHub.hub_connect_ip = docker0_ipv4
 
