@@ -1,4 +1,4 @@
-from jupyter_client.localinterfaces import public_ips
+rom jupyter_client.localinterfaces import public_ips
 # Configuration file for Jupyter Hub
 c.JupyterHub.cookie_secret = bytes.fromhex('3A0C1158179FCECC560148B19F37D94BB5226852AD37610EAF91B76B06A874C8')
 c = get_config()
@@ -10,7 +10,7 @@ c.DockerSpawner.start_timeout=600
 
 # Spawn containers from this image
 c.DockerSpawner.image = 'simon/jupytersingleuser:latest'
-c.DockerSpawner.extra_create_kwargs = {'user': 'root'}
+c.DockerSpawner.extra_create_kwargs = {'user': 'jovyan'}
 c.DockerSpawner.environment = {
   'GRANT_SUDO': '1',
   'UID': '0', # workaround https://github.com/jupyter/docker-stacks/pull/420
@@ -26,11 +26,9 @@ c.DockerSpawner.extra_create_kwargs.update({ 'command': "start-singleuser.sh --S
 
 #import netifaces
 #docker0 = netifaces.ifaddresses('eth0')
-docker0_ipv4 = '139.184.170.218' #docker0[netifaces.AF_INET][0]
+#docker0_ipv4 = '139.184.170.218' #docker0[netifaces.AF_INET][0]
 #docker0_ipv4 = '139.184.171.6'
-c.JupyterHub.hub_ip = '0.0.0.0' #docker0_ipv4['addr']
-c.JupyterHub.hub_connect_ip = docker0_ipv4
-
+#c.JupyterHub.hub_ip = '139.184.171.6' #'0.0.0.0' #docker0_ipv4['addr']
 # Connect containers to this Docker network
 network_name = 'jupyterhub_network'
 c.DockerSpawner.use_internal_ip = True
@@ -44,12 +42,12 @@ c.DockerSpawner.extra_host_config = { 'network_mode': network_name }
 # it.  Most jupyter/docker-stacks *-notebook images run the Notebook server as
 # user `jovyan`, and set the notebook directory to `/home/jovyan/work`.
 # We follow the same convention.
-notebook_dir = '/home/jovyan'
+notebook_dir = '/home/user/jovyan'
 # notebook_dir = '/home/jovyan/work'
 c.DockerSpawner.notebook_dir = notebook_dir
 # Mount the real user's Docker volume on the host to the notebook user's
 # notebook directory in the container
-c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir,'jupyterhub-shared': {"bind": '/home/jovyan/shared', "mode": "rw"}}
+c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir,'jupyterhub-shared': {"bind": '/home/user/jovyan/shared', "mode": "rw"}}
 # volume_driver is no longer a keyword argument to create_container()
 # c.DockerSpawner.extra_create_kwargs.update({ 'volume_driver': 'local' })
 # Remove containers once they are stopped
@@ -57,20 +55,23 @@ c.DockerSpawner.remove_containers = False
 # For debugging arguments passed to spawned containers
 c.DockerSpawner.debug = True
 c.NotebookApp.allow_origin = '*' #allow all origins
-c.NotebookApp.ip = '0.0.0.0' # listen on all IPs 
+c.NotebookApp.ip = '0.0.0.0' # listen on all IPs
 # The docker instances need access to the Hub, so the default loopback port doesn't work:
-# from jupyter_client.localinterfaces import public_ips
+from jupyter_client.localinterfaces import public_ips
 
-#c.JupyterHub.hub_ip = 'jupyterhub'
-#c.JupyterHub.hub_ip = '127.0.0.1'
 
+ip = public_ips()[0]
+c.JupyterHub.hub_ip = ip
+c.JupyterHub.proxy_api_ip = ip
+c.JupyterHub.proxy_api_port=8080
 
 # IP Configurations
 c.JupyterHub.port = 8111
-c.JupyterHub.proxy_api_ip='0.0.0.0'
+#c.JupyterHub.proxy_api_ip=ip
+#c.JupyterHub.port = 8111
 
-
-
+c.JupyterHub.hub_connect_port = 8081
+c.DockerSpawner.hub_connect_ip = ip
 # OAuth with GitLab
 import os
 
@@ -82,8 +83,7 @@ c.LocalAuthenticator.create_system_users=True
 #os.environ['GITLAB_CLIENT_SECRET'] = '05075caea4f3cb63a0cebc5d65e446df4dfc9598932cf3ddc751deb8eee5baf3'
 
 #c.GitLabOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
-#c.GitlabOAuthenticator.client_id = os.environ['GITLAB_CLIENT_ID']
-#c.GitlabOAuthenticator.client_secret = os.environ['GITLAB_CLIENT_SECRET']
+
 
 
 c.Authenticator.whitelist = whitelist = set()
