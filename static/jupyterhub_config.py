@@ -24,12 +24,12 @@ c.DockerSpawner.environment = {
 c.DockerSpawner.extra_create_kwargs.update({ 'command': "start-singleuser.sh --SingleUserNotebookApp.default_url=/lab" })
 
 
-import netifaces
-docker0 = netifaces.ifaddresses('eth0')
-docker0_ipv4 = docker0[netifaces.AF_INET][0]
-
+#import netifaces
+#docker0 = netifaces.ifaddresses('eth0')
+docker0_ipv4 = 139.184.170.218 #docker0[netifaces.AF_INET][0]
+#docker0_ipv4 = 139.184.171.6
 c.JupyterHub.hub_ip = '0.0.0.0' #docker0_ipv4['addr']
-c.JupyterHub.hub_connect_ip = docker0_ipv4['addr']
+c.JupyterHub.hub_connect_ip = docker0_ipv4
 
 # Connect containers to this Docker network
 network_name = 'jupyterhub_network'
