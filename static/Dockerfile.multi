@@ -48,7 +48,7 @@ RUN useradd -ms /bin/bash student19
 RUN echo 'student19:teaching19' | chpasswd
 RUN useradd -ms /bin/bash student20
 RUN echo 'student20:teaching20' | chpasswd
-RUN useradd -ms /bin/bash studen21
+RUN useradd -ms /bin/bash student21
 RUN echo 'student21:teaching21' | chpasswd
 
 
