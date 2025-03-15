@@ -52,4 +52,6 @@ RUN useradd -ms /bin/bash student21
 RUN echo 'student21:teaching21' | chpasswd
 
 
-EXPOSE 8000
+EXPOSE 8081
+#EXPOSE 8000
+#EXPOSE 8111

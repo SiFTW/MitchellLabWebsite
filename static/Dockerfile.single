@@ -99,7 +99,8 @@ RUN mkdir /etc/julia && \
     mkdir "${JULIA_PKGDIR}" && \
     chown "${NB_USER}" "${JULIA_PKGDIR}"
 
-
+RUN mkdir -p /home/user/jovyan
+RUN chown "jovyan" "/home/user/jovyan"
 
 USER jovyan
 RUN julia -e 'import Pkg; Pkg.add(Pkg.PackageSpec(;name="WebIO"))' && \
@@ -147,3 +148,7 @@ WORKDIR /home/user/jovyan
 RUN git clone https://github.com/SiFTW/MitchellLabTeachingPop.git popModelling
 RUN git clone https://github.com/SiFTW/MitchellLabTeachingCancer.git cancerModelling
 RUN git clone https://github.com/SiFTW/MitchellLabTeachingMD.git MDModelling
+RUN chown -R jovyan /home/user/jovyan
+
+USER jovyan
+

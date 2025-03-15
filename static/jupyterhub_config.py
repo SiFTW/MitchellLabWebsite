@@ -1,4 +1,4 @@
-rom jupyter_client.localinterfaces import public_ips
+from jupyter_client.localinterfaces import public_ips
 # Configuration file for Jupyter Hub
 c.JupyterHub.cookie_secret = bytes.fromhex('3A0C1158179FCECC560148B19F37D94BB5226852AD37610EAF91B76B06A874C8')
 c = get_config()
@@ -55,10 +55,9 @@ c.DockerSpawner.remove_containers = False
 # For debugging arguments passed to spawned containers
 c.DockerSpawner.debug = True
 c.NotebookApp.allow_origin = '*' #allow all origins
-c.NotebookApp.ip = '0.0.0.0' # listen on all IPs
+c.NotebookApp.ip = '0.0.0.0' # listen on all IPs 
 # The docker instances need access to the Hub, so the default loopback port doesn't work:
 from jupyter_client.localinterfaces import public_ips
-
 
 ip = public_ips()[0]
 c.JupyterHub.hub_ip = ip
@@ -83,7 +82,8 @@ c.LocalAuthenticator.create_system_users=True
 #os.environ['GITLAB_CLIENT_SECRET'] = '05075caea4f3cb63a0cebc5d65e446df4dfc9598932cf3ddc751deb8eee5baf3'
 
 #c.GitLabOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
-
+#c.GitlabOAuthenticator.client_id = os.environ['GITLAB_CLIENT_ID']
+#c.GitlabOAuthenticator.client_secret = os.environ['GITLAB_CLIENT_SECRET']
 
 
 c.Authenticator.whitelist = whitelist = set()
