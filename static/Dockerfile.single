@@ -58,10 +58,12 @@ USER root
 # Default values can be overridden at build time
 # (ARGS are in lower case to distinguish them from ENV)
 # Check https://julialang.org/downloads/
-ARG julia_version="1.6.2"
+#ARG julia_version="1.6.2"
+ARG julia_version="1.8.5"
 # SHA256 checksum
 #ARG julia_checksum="7c888adec3ea42afbfed2ce756ce1164a570d50fa7506c3f2e1e2cbc49d52506"
-ARG julia_checksum="3eb4b5775b0df1ad38f6c409e989501ab445c95bcb01ab02bd60f5bd1e823240"
+#ARG julia_checksum="3eb4b5775b0df1ad38f6c409e989501ab445c95bcb01ab02bd60f5bd1e823240"
+ARG julia_checksum = "e71a24816e8fe9d5f4807664cbbb42738f5aa9fe05397d35c81d4c5d649b9d05"
 ARG CONDA_DIR="/opt/conda"
 ARG HOME="/home/user/jovyan"
 
