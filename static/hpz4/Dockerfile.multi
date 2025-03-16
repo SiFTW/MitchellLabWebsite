@@ -1,0 +1,59 @@
+ARG BASE_IMAGE=jupyterhub/jupyterhub:latest
+FROM ${BASE_IMAGE}
+
+
+RUN pip install --upgrade pip
+RUN pip install --no-cache --upgrade jupyter
+RUN pip install --no-cache dockerspawner
+RUN pip install --no-cache jupyterhub-nativeauthenticator
+#RUN pip install --no-cache netifaces
+RUN pip install --no-cache --upgrade jupyterhub
+RUN jupyterhub upgrade-db
+
+RUN useradd -ms /bin/bash student1
+RUN echo 'student1:teaching1' | chpasswd
+RUN useradd -ms /bin/bash student2
+RUN echo 'student2:teaching2' | chpasswd
+RUN useradd -ms /bin/bash student3
+RUN echo 'student3:teaching3' | chpasswd
+RUN useradd -ms /bin/bash student4
+RUN echo 'student4:teaching4' | chpasswd
+RUN useradd -ms /bin/bash student5
+RUN echo 'student5:teaching5' | chpasswd
+RUN useradd -ms /bin/bash student6
+RUN echo 'student6:teaching6' | chpasswd
+RUN useradd -ms /bin/bash student7
+RUN echo 'student7:teaching7' | chpasswd
+RUN useradd -ms /bin/bash student8
+RUN echo 'student8:teaching8' | chpasswd
+RUN useradd -ms /bin/bash student9
+RUN echo 'student9:teaching9' | chpasswd
+RUN useradd -ms /bin/bash student10
+RUN echo 'student10:teaching10' | chpasswd
+RUN useradd -ms /bin/bash student11
+RUN echo 'student11:teaching11' | chpasswd
+RUN useradd -ms /bin/bash student12
+RUN echo 'student12:teaching12' | chpasswd
+RUN useradd -ms /bin/bash student13
+RUN echo 'student13:teaching13' | chpasswd
+RUN useradd -ms /bin/bash student14
+RUN echo 'student14:teaching14' | chpasswd
+RUN useradd -ms /bin/bash student15
+RUN echo 'student15:teaching15' | chpasswd
+RUN useradd -ms /bin/bash student16
+RUN echo 'student16:teaching16' | chpasswd
+RUN useradd -ms /bin/bash student17
+RUN echo 'student17:teaching17' | chpasswd
+RUN useradd -ms /bin/bash student18
+RUN echo 'student18:teaching18' | chpasswd
+RUN useradd -ms /bin/bash student19
+RUN echo 'student19:teaching19' | chpasswd
+RUN useradd -ms /bin/bash student20
+RUN echo 'student20:teaching20' | chpasswd
+RUN useradd -ms /bin/bash student21
+RUN echo 'student21:teaching21' | chpasswd
+
+
+EXPOSE 9091
+#EXPOSE 8000
+#EXPOSE 8111
