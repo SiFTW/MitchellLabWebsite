@@ -21,7 +21,7 @@ organizations:
 bio: Isabelle completed her MSci in Biomedical Science at the University of Sussex. She is currently studying for a PhD with the title Digital Twins for Tailoring Therapy in Breast Cancer. In this project she combines laboratory work and computational biology to understand links between stress, signalling, and cell fates in breast cancer cells. This project is funded by a BSMS20 studentship. This project is a collaboration with Melanie Flint at the Unviersity of Brighton and Mariko Okada at Osaka University in Japan.
 
 interests:
-- Systems Siology 
+- Systems Biology 
 - Cell Signalling 
 - Cancer Biology
 - Breast Cancer
