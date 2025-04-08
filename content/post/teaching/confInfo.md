@@ -30,7 +30,7 @@ design:
 [Week 3 - Molecular dynamics modelling 2](2025_SSC_MD_EJ_2.pptx)
 
 <!---[Week 4 - Modelling signalling](NFkBModelling.pptx)--->
-Week 4 - Cancer signalling 1
+[Week 4 - Cancer signalling 1](NFkBModelling.pptx)
 
 <!---[Week 5 - Cancer modelling](CellCycle.pptx)--->
 Week 5 - Cancer signalling 2
