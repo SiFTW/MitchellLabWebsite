@@ -1,3 +1,4 @@
+#!/bin/bash
 function updateGH { 
     for f in /var/lib/docker/volumes/jupyterhub-user-teach*;  do 
         if [ -d $f  -a ! -h $f ];  
