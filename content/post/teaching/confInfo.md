@@ -33,7 +33,7 @@ design:
 [Week 4 - Cancer signalling 1](NFkBModelling2025.pptx)
 
 <!---[Week 5 - Cancer modelling](CellCycle.pptx)--->
-Week 5 - Cancer signalling 2
+[Week 5 - Cancer signalling 2](Modelling Cancer SSC.pptx)
 
 Week 6 - Prepare for assessment (no session) 
 <!---[Summary slides and asssessment assignments](Week6-summary.pptx)--->
