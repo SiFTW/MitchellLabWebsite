@@ -36,7 +36,7 @@ design:
 [Week 5 - Cancer signalling 2](ModellingCancerSSC.pptx)
 
 Week 6 - Prepare for assessment (no session) 
-<!---[Summary slides and asssessment assignments](Week6-summary.pptx)--->
+[Summary slides and asssessment assignments](Week6-summary.pptx)
 
 Week 7 - Assessment week 1 (all attend)
 
