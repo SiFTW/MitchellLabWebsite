@@ -4,8 +4,8 @@ abstract: >-
   We are really excited to be advertising for an enthusiastic and committed post doc to work on a wet lab/dry lab project applying systems biology to mulitple diseases.
   Deadline 29th June.
 location: University of Sussex and BSMS
-date: 2023-05-12
-date_end: 2023-06-12
+date: 2025-05-26
+date_end: 2025-06-29
 all_day: true
 links:
   - url: https://jobs.sussex.ac.uk/job/dc6ab3cc-1d8b-4725-8cdd-d7435d6c308d
