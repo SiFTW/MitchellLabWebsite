@@ -7,7 +7,7 @@ date: 2025-05-12
 date_end: 2025-06-12
 all_day: true
 event: Grant Funding
-event_url: [https://jobs.sussex.ac.uk/job/dc6ab3cc-1d8b-4725-8cdd-d7435d6c308d](https://mitchell.science/project/multi-malignancy/)
+event_url: https://mitchell.science/project/multi-malignancy/
 publishDate: 2025-05-20T08:37:21.472Z
 draft: false
 featured: false
