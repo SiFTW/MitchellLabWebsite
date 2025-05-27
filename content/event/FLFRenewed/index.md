@@ -1,14 +1,11 @@
 ---
 title: £566k follow-on award for research into personalising cancer therapy
 abstract: >-
- The new UKRI FLF award extends the personalised modelling approaches being pioneered in the Mitchell lab towards clinical use in multiple malignancies.
+  The new UKRI FLF award extends the personalised modelling approaches being pioneered in the Mitchell lab towards clinical use in multiple malignancies.
 location: University of Sussex and BSMS
 date: 2025-05-12
 date_end: 2025-06-12
 all_day: true
-links:
-  - url: https://mitchell.science/project/multi-malignancy/
-    name: More Info an Apply
 event: Grant Funding
 event_url: [https://jobs.sussex.ac.uk/job/dc6ab3cc-1d8b-4725-8cdd-d7435d6c308d](https://mitchell.science/project/multi-malignancy/)
 publishDate: 2025-05-20T08:37:21.472Z
