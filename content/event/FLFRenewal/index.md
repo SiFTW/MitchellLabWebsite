@@ -9,7 +9,7 @@ date_end: 2025-06-29
 all_day: true
 links:
   - url: https://jobs.sussex.ac.uk/job/dc6ab3cc-1d8b-4725-8cdd-d7435d6c308d
-    name: More Info an Apply
+    name: More Info and Apply
 event: Postdoc hiring
 event_url: https://jobs.sussex.ac.uk/job/dc6ab3cc-1d8b-4725-8cdd-d7435d6c308d
 publishDate: 2025-05-26T08:37:21.472Z
