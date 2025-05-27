@@ -1,0 +1,26 @@
+---
+title: £566k follow-on award for research into personalising cancer therapy
+abstract: >-
+ The new UKRI FLF award extends the personalised modelling approaches being pioneered in the Mitchell lab towards clinical use in multiple malignancies.
+location: University of Sussex and BSMS
+date: 2025-05-12
+date_end: 2025-06-12
+all_day: true
+links:
+  - url: https://mitchell.science/project/multi-malignancy/
+    name: More Info an Apply
+event: Grant Funding
+event_url: [https://jobs.sussex.ac.uk/job/dc6ab3cc-1d8b-4725-8cdd-d7435d6c308d](https://mitchell.science/project/multi-malignancy/)
+publishDate: 2025-05-20T08:37:21.472Z
+draft: false
+featured: false
+image:
+  filename: featured.png
+  focal_point: Smart
+  preview_only: false
+---
+Dr Simon Mitchell has secured a three-year UK Research and Innovation Future Leaders Fellowship Renewal Award. His research combines computer modelling and lab experiments to personalise cancer treatment. During their Future Leaders Fellowship (FLF), Dr Mitchell’s team previously predicted which lymphoma patients might not respond to standard therapies. This new funding will test the approach in other cancers.
+
+You can work on this project as we are [recruiting a postdoc](../talk/FLFRenewal).
+
+[See project info](../project/multi-malignancy/)
