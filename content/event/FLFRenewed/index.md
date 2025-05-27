@@ -17,6 +17,6 @@ image:
 ---
 Dr Simon Mitchell has secured a three-year UK Research and Innovation Future Leaders Fellowship Renewal Award. His research combines computer modelling and lab experiments to personalise cancer treatment. During their Future Leaders Fellowship (FLF), Dr Mitchell’s team previously predicted which lymphoma patients might not respond to standard therapies. This new funding will test the approach in other cancers.
 
-You can work on this project as we are [recruiting a postdoc](../talk/recruiting-for-a-post-doc-on-a-ukri-future-leaders-fellowship-project/).
+You can work on this project as we are [recruiting a postdoc](../recruiting-for-a-post-doc-on-a-ukri-future-leaders-fellowship-project/).
 
-[See project info](../project/multi-malignancy/)
+[See project info](../../project/multi-malignancy/)
