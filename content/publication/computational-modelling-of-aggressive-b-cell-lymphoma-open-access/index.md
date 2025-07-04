@@ -44,7 +44,7 @@ projects:
   - RR-DLBCL
 image:
   filename: featured.png
-  focal_point: Smart
+  focal_point: BOTTOM
   preview_only: false
 date: 2025-07-04T16:16:40.890Z
 ---
