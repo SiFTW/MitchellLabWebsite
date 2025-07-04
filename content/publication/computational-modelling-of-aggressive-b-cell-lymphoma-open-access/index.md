@@ -1,5 +1,5 @@
 ---
-title: " Computational modelling of aggressive B-cell lymphoma Open Access "
+title: " Computational modelling of aggressive B-cell lymphoma"
 publication_types:
   - "0"
 authors:
