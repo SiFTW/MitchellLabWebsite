@@ -56,7 +56,7 @@ email: ""
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- Postdoctoral Researchers
+- Alumni
 ---
  
 Eleanor studied her PhD in Chemistry at the University of Warwick, and has qualifications in Molecular Cell Biology (Sussex) and Biochemistry (Manchester). She has experience working with both computer simulations and laboratory experiments, and enjoys working on biological problems using a variety of techniques. Eleanor is working on [Therapeutic targeting of refractory/relapsed diffuse large B-cell lymphoma through systems biology]({{< ref "/project/rr-dlbcl" >}} "Therapeutic targeting of refractory/relapsed diffuse large B-cell lymphoma through systems biology") with funding from a UKRI Future Leaders Fellowship.
