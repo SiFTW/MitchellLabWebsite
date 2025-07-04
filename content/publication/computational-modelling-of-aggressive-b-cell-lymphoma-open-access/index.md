@@ -36,7 +36,7 @@ abstract: Decades of research into the molecular signalling determinants of B
   identify the right treatments to the right patients, improving outcomes for
   all lymphoma patients.
 draft: false
-featured: false
+featured: true
 tags: []
 projects:
   - multi-malignancy
