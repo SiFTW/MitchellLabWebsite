@@ -116,7 +116,7 @@ date_format = "Jan 2006"
   url = ""
   certificate_url = ""
   date_start = "2024-10-01"
-  date_end = "2027-09-31"
+  date_end = "2027-09-30"
   description = """
   Digital twins for tailoring therapy in triple-negative breast cancer.
   
