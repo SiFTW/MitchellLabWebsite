@@ -129,7 +129,7 @@ date_format = "Jan 2006"
   url = ""
   certificate_url = ""
   date_start = "2025-10-01"
-  date_end = "2026-09-30"
+  date_end = "2028-09-30"
   description = """
   A systems biology approach to understanding how mutations hijack signalling.
   
