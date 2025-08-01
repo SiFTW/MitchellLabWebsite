@@ -66,7 +66,7 @@ date_format = "Jan 2006"
   description = """
   This project is led by Professor Andrea Pepper, with co-investigators Dr Simon Mitchell and Professor Chris Pepper.
   
-  [More inforamtion is available on their website.](https://www.pepper.science/project/mrc/)
+  [More information is available on their website.](https://www.pepper.science/project/mrc/)
   """
 
   [[item]]
@@ -79,7 +79,7 @@ date_format = "Jan 2006"
   description = """
   This project is led by Professor Chris Pepper, with co-investigators Dr Simon Mitchell and Professor Andrea Pepper.
   
-  [More inforamtion is available on their website.](https://www.pepper.science/project/using-nf-kb-fingerprints-to-identify-therapeutic-vulnerabilities-within-subsets-of-b-cell-malignancies/)
+  [More information is available on their website.](https://www.pepper.science/project/using-nf-kb-fingerprints-to-identify-therapeutic-vulnerabilities-within-subsets-of-b-cell-malignancies/)
   """
   
   [[item]]
