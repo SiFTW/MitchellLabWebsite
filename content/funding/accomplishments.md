@@ -63,8 +63,8 @@ date_format = "Jan 2006"
   certificate_url = ""
   date_start = "2021-04-01"
   date_end = "2024-03-31"
-  description = ""
-  This project is led by Professor Andrea Pepper, with Dr Simon Mitchell and Professor Chris Pepper.
+  description = """
+  This project is led by Professor Andrea Pepper, with co-investigators Dr Simon Mitchell and Professor Chris Pepper.
   
   [More inforamtion is available on their website.](https://www.pepper.science/project/mrc/)
   """
@@ -76,8 +76,8 @@ date_format = "Jan 2006"
   certificate_url = ""
   date_start = "2024-04-01"
   date_end = "2026-06-30"
-  description = ""
-  This project is led by Professor Chris Pepper, with Dr Simon Mitchell and Professor Andrea Pepper.
+  description = """
+  This project is led by Professor Chris Pepper, with co-investigators Dr Simon Mitchell and Professor Andrea Pepper.
   
   [More inforamtion is available on their website.](https://www.pepper.science/project/using-nf-kb-fingerprints-to-identify-therapeutic-vulnerabilities-within-subsets-of-b-cell-malignancies/)
   """
@@ -117,7 +117,7 @@ date_format = "Jan 2006"
   certificate_url = ""
   date_start = "2024-10-01"
   date_end = "2027-09-31"
-  description = ""
+  description = """
   Digital twins for tailoring therapy in triple-negative breast cancer.
   
   [This funding supported the PhD of Isabelle Jupp](../authors/isabelle/)
@@ -130,7 +130,7 @@ date_format = "Jan 2006"
   certificate_url = ""
   date_start = "2025-10-01"
   date_end = "2026-09-31"
-  description = ""
+  description = """
   A systems biology approach to understanding how mutations hijack signalling.
   
   [This funding supported the PhD of Abigail Edwards](../authors/abigail/)
@@ -143,7 +143,7 @@ date_format = "Jan 2006"
   certificate_url = ""
   date_start = "2022-10-01"
   date_end = "2026-05-31"
-  description = ""
+  description = """
   Stratifying and targeting apoptosis in diffuse large B-celll lymphona (DLCBL) using a systems biology approach.
   
   [This funding supported the PhD of Aimilia Vareli](../authors/aimilia/)
