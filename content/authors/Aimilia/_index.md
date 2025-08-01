@@ -10,7 +10,7 @@ authors:
 superuser: false
 
 # Role/position
-role: Postdoctoral Researchers
+role: Postdoctoral Researcher
 
 # Organizations/Affiliations
 organizations:
@@ -54,7 +54,7 @@ email: ""
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- PhD Students
+- Postdoctoral Researcher
 ---
  
 Aimilia completed her BSc and MRes studies in Pharmacology at Nottingham Trent University, where she specialised in chemoresistance. She then joined Abcam PLC as a Research Associate in Antibody Validation. Aimilia is currently completing her PhD in the Mitchell Lab at Brighton and Sussex Medical School, where she is working on stratifying and targeting apoptosis in Diffuse Large B-Cell Lymphoma using a systems biology approach. This project is funded by a Paul Stanforth inaugural studentship.
