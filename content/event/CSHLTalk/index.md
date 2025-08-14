@@ -9,6 +9,10 @@ projects:
   - primary-DLBCL
   - RR-DLBCL
   - NF-kBSignaling
+image:
+  filename: IMG_3326.jpg
+  focal_point: Smart
+  preview_only: false
 ---
 Dr Mitchell recently presented work led by Richard Norris and Aimilia Vareli in New York at the Cold Spring Harbor Laboratory - Systems Immunology conference. Watch the talk below.
 
