@@ -1,5 +1,5 @@
 ---
-title: Dr Arran Pack, the first Mitchell Lab PhD student graduates.
+title: Dr Arran Pack, the first Mitchell Lab PhD student has graduated.
 abstract: >-
   Dr Pack, our first PhD student graduated. Congrats Arran!
 location: Brighton Centre
