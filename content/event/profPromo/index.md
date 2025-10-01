@@ -2,7 +2,7 @@
 title: Simon Mitchell promoted to Professor.
 abstract: >-
    Simon becomes Professor of Cancer Systems Biology at Brighton and Sussex Medical School.
-date: 2025-05-12
+date: 2025-10-01
 all_day: true
 publishDate: 2025-10-01T09:00:00.472Z
 draft: false
