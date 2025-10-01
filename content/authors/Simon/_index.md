@@ -10,7 +10,7 @@ authors:
 superuser: true
 
 # Role/position
-role: Reader in Cancer Research
+role: Professor in Cancer Research
 
 # Organizations/Affiliations
 organizations:
