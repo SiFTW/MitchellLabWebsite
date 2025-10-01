@@ -4,9 +4,7 @@ abstract: >-
    Simon becomes Professor of Cancer Systems Biology at Brighton and Sussex Medical School.
 date: 2025-05-12
 all_day: true
-event: Grant Funding
-event_url: https://mitchell.science/project/multi-malignancy/
-publishDate: 2025-05-20T08:37:21.472Z
+publishDate: 2025-10-01T09:00:00.472Z
 draft: false
 featured: false
 image:
