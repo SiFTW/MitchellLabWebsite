@@ -4,7 +4,7 @@ abstract: >-
    We're excited to announce that we're looking for a postdoctoral research to join our team!
 date: 2026-27-01
 all_day: true
-publishDate: 2026-27-01T09:00:00.472Z
+publishDate: 2026-27-01
 draft: false
 featured: false
 links:
