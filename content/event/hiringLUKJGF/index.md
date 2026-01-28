@@ -2,9 +2,10 @@
 title: We are recruiting a postdoctoral research fellow.
 abstract: >-
    We're excited to announce that we're looking for a postdoctoral research to join our team!
-date: 2026-27-01
+date: 2027-01-26
+date_end: 2027-01-26
 all_day: true
-publishDate: 2026-27-01
+event: Hiring for 3 year postdoc
 draft: false
 featured: false
 links:
