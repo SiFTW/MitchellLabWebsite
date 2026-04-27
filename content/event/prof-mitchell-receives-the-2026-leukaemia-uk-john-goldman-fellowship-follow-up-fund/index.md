@@ -3,10 +3,6 @@ title: Prof Mitchell receives the 2026 Leukaemia UK John Goldman Fellowship
   Follow-up Fund
 abstract: This new research funding (250k) provides us with 3 years of funding
   to bring computational systems biology approaches closer to the clinic.
-location: Brighton and Sussex Medical School
-date: 2026-06-01T11:03:13.810Z
-date_end: 2029-05-30T23:00:00.000Z
-all_day: true
 event: Research Funding
 event_url: https://www.leukaemiauk.org.uk/research-and-advocacy/our-funded-research/using-computer-simulations-to-predict-when-lymphoma-will-return/
 publishDate: 2026-04-27T11:03:13.817Z
