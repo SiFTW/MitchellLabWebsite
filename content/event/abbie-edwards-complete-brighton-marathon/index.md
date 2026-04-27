@@ -4,7 +4,7 @@ abstract: Abbie Edwards recently completed her first marathon in an impressive
   4:48:17, raising funds for Cancer Research UK! We're all so proud of her.
 event: Brighton Marathon
 event_url: https://fundraise.cancerresearchuk.org/page/abbies-athletic-assault-on-cancer?dm_i=6TC5,1CLNP,3LPB3C,6BU16,1,0,0,0
-publishDate: 2026-04-12T10:54:09.439Z
+publishDate: 2026-04-12
 draft: false
 featured: false
 image:
