@@ -162,4 +162,18 @@ date_format = "Jan 2006"
 
   [see project info](../project/multi-malignancy/)
   """
+
+   [[item]]
+  organization = "Leukaemia UK"
+  organization_url = "https://www.leukaemiauk.org.uk/research-and-advocacy/our-funded-research/using-computer-simulations-to-predict-when-lymphoma-will-return/"
+  title = "Leukaemia UK Follow-on Fund (£250k, PI)"
+  url = "https://www.leukaemiauk.org.uk/research-and-advocacy/our-funded-research/using-computer-simulations-to-predict-when-lymphoma-will-return/"
+  certificate_url = ""
+  date_start = "2026-06-01"
+  date_end = "2029-05-31"
+  description = """
+  Identifying therapeutic vulnerabilities in B cell lymphoma by converting mechanistic models into clinically actionable scores.
+
+  [see project info](../project/primary-dlbcl/)
+  """
 +++
