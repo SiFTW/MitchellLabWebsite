@@ -4,12 +4,9 @@ abstract: Thanks to support from the European Haematoloy Society, Aimilia has
   arrived in Harvard Medical School to spend 2 months as a visiting research
   fellow taking her postdoctoral work to the next level in the Oyler-Yaniv lab.
 location: Harvard Medical School
-date: 2026-03-30T10:41:13.386Z
-date_end: 2026-05-31T23:00:00.000Z
-all_day: false
 event: Research Visit
 event_url: https://connects.catalyst.harvard.edu/Profiles/display/Person/227782
-publishDate: 2026-03-30T10:45:32.296Z
+publishDate: 2026-03-30
 draft: false
 featured: false
 image:
