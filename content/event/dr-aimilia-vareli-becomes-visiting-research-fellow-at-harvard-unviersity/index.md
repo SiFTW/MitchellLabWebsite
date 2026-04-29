@@ -1,6 +1,6 @@
 ---
 title: Dr Aimilia Vareli becomes visiting research fellow at Harvard Unviersity
-abstract: Thanks to support from the European Haematoloy Society, Aimilia has
+abstract: Thanks to support from the European Haematology Society, Aimilia has
   arrived in Harvard Medical School to spend 2 months as a visiting research
   fellow taking her postdoctoral work to the next level in the Oyler-Yaniv lab.
 location: Harvard Medical School
