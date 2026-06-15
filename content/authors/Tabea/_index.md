@@ -23,7 +23,7 @@ bio: Tabea completed her BSc and MSc in Technical Biology at the University of S
 interests:
 -	Cancer Research
 -	Systems Biology
--	Multi-omics
+-	Multi\-omics
 -	Chemoresistance
 -	Epigenetics
 
