@@ -21,11 +21,11 @@ organizations:
 bio: Tabea completed her BSc and MSc in Technical Biology at the University of Stuttgart, where she focused on tumour biology and computational approaches, culminating in a systems biology thesis on ODE modelling of apoptosis. During her PhD in Cancer Epigenetics at the University of Stuttgart, she combined experimental techniques with large-scale data analysis to study epigenetic plasticity in cellular stress responses. She is excited to now combine computational, data-driven and experimental approaches to advance lymphoma research. 
 
 interests:
--	Cancer Research
--	Systems Biology
--	Multiomics
--	Chemoresistance
--	Epigenetics
+- Cancer Research
+- Systems Biology
+- "Multi-omics"
+- Chemoresistance
+- Epigenetics
 
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
