@@ -2,7 +2,7 @@
 title: 5.6 Final thoughts
 date: 2024-07-17
 type: book
-weight: 50
+weight: 60
 summary: Summary, and how to keep going.
 ---
 
