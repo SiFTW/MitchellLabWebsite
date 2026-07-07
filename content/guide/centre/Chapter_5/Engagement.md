@@ -24,7 +24,7 @@ Tailored training provided by the REN partnership ensures Community Researchers 
 We co-designed our community engagement strategy with community researchers and members of diverse communities across Sussex. Not only did this create a more authentic and actionable community engagement plan but it built a base of diverse and engaged individuals who were stakeholders in your centre and will support you to succeed, as long as you keep them informed and engaged.
 
 The research engagement plan we developed is useful for all centres, not just those looking at cancer across Sussex. We hope our engagement plan could help your centre engage with diverse communities in your centre too. 
-[![Static Badge](https://img.shields.io/badge/Download-Engagement%20Plan-green?style=for-the-badge&link=https%3A%2F%2Fsussexcancer.org%2Fnews%2Fren-cancer-project-shaping-public-and-community-involvement-and-engagement-at-the-sussex-cancer-research-centre)](https://mitchell.science/draftAgenda.docx)
+[![Static Badge](https://img.shields.io/badge/Download-Engagement%20Plan-green?style=for-the-badge&link=https%3A%2F%2Fsussexcancer.org%2Fnews%2Fren-cancer-project-shaping-public-and-community-involvement-and-engagement-at-the-sussex-cancer-research-centre)](https://sussexcancer.org/news/ren-cancer-project-shaping-public-and-community-involvement-and-engagement-at-the-sussex-cancer-research-centre)
 
 
 
