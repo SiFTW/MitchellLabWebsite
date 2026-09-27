@@ -247,7 +247,7 @@ type: page
 
 <script>
 (function() {
- const GIST_RAW_URL = "https://gist.githubusercontent.com/<YOUR_GITHUB_USERNAME>/<GIST_ID>/raw/endpoints.json";
+ const GIST_RAW_URL = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw/endpoints.json";
 
   const NODES = [
     {
