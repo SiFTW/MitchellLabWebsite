@@ -275,7 +275,7 @@ type: page
       history: []
     },
     {
-      id: "synology",
+      id: "nas",
       name: "Synology DiskStation",
       specs: "4 Cores • 23 TB Btrfs RAID Pool",
       columns: 4,
