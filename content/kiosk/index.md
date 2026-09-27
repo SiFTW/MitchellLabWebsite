@@ -46,60 +46,48 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
     background-size: 100% 100%, 32px 32px, 32px 32px;
   }
 
-  /* Top Aggregated Cluster Banner */
-  .cluster-hud-header {
+.cluster-hud-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: rgba(15, 23, 42, 0.85);
     border: 1px solid rgba(56, 189, 248, 0.25);
     border-radius: 16px;
-    padding: 16px 28px;
+    padding: 16px 24px;
     margin-bottom: 24px;
     backdrop-filter: blur(12px);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  }
-
-  .hud-title-group h1 {
-    margin: 0;
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .hud-title-group p {
-    margin: 4px 0 0 0;
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-    font-family: var(--mono-font);
+    gap: 16px;
   }
 
   .hud-metrics-row {
     display: flex;
-    gap: 28px;
+    gap: 20px;
+    flex-shrink: 0;
+    align-items: center;
   }
 
   .hud-stat-box {
     text-align: right;
+    white-space: nowrap; /* Prevents values and labels from wrapping onto two lines */
   }
 
   .hud-stat-box .val {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: var(--accent-cyan);
     font-family: var(--mono-font);
+    line-height: 1.2;
+    white-space: nowrap;
   }
 
   .hud-stat-box .lbl {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-secondary);
+    white-space: nowrap;
+    margin-top: 2px;
   }
 
   /* Node Cards Grid */
@@ -290,6 +278,34 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
 <script>
   const GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
 
+  // Keep track of latest reported RAM usage per node
+  const clusterMem = {
+    simon: { used: 0, total: 62 },
+    jlp:   { used: 0, total: 188 },
+    priti: { used: 0, total: 64 },
+    nas:   { used: 0, total: 10 }
+  };
+
+  function updateClusterTotalRam() {
+    let totalUsed = 0;
+    let totalCap = 0;
+    let anyReported = false;
+
+    Object.values(clusterMem).forEach(m => {
+      if (m.used > 0) anyReported = true;
+      totalUsed += m.used;
+      totalCap += m.total;
+    });
+
+    const el = document.getElementById("total-ram-active");
+    if (el) {
+      if (anyReported) {
+        el.innerText = `${totalUsed.toFixed(0)} / ${totalCap.toFixed(0)} GB`;
+      } else {
+        el.innerText = `0 / ${totalCap.toFixed(0)} GB`;
+      }
+    }
+  }
   const NODES = [
     { id: "simon", name: "SIMON (Gateway)", specs: "72 Cores • 62GB", cores: 72, columns: 12, apiVer: 3, url: "" },
     { id: "jlp",   name: "JLP (Compute)",    specs: "104 Cores • 188GB", cores: 104, columns: 13, apiVer: 3, url: "" },
@@ -387,6 +403,7 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
   async function fetchTelemetry(node) {
+
     if (!node.url) return;
     const base = `${node.url}/api/${node.apiVer}`;
 
@@ -407,12 +424,23 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
       document.getElementById(`cpu-txt-${node.id}`).innerText = `${cpuVal}%`;
       document.getElementById(`cpu-bar-${node.id}`).style.width = `${cpuVal}%`;
 
+
       // RAM
-      const usedGb = (mem.used / (1024 ** 3)).toFixed(1);
-      const totalGb = (mem.total / (1024 ** 3)).toFixed(1);
+      const usedGbNum = (mem.used / (1024 ** 3));
+      const totalGbNum = (mem.total / (1024 ** 3));
+      const usedGb = usedGbNum.toFixed(1);
+      const totalGb = totalGbNum.toFixed(1);
       const memPct = Math.round((mem.used / mem.total) * 100);
+      
       document.getElementById(`ram-txt-${node.id}`).innerText = `${usedGb} / ${totalGb} GB (${memPct}%)`;
       document.getElementById(`ram-bar-${node.id}`).style.width = `${memPct}%`;
+
+      // Update cluster aggregate
+      if (clusterMem[node.id]) {
+        clusterMem[node.id].used = usedGbNum;
+        clusterMem[node.id].total = totalGbNum;
+        updateClusterTotalRam();
+      }
 
       // Disk
       if (Array.isArray(fs) && fs.length > 0) {
