@@ -361,11 +361,13 @@ type: page
 
   async function fetchModalTasks(node) {
     const wrapper = document.getElementById("taskTableWrapper");
+
     if (!wrapper || !node.url) return;
 
     try {
       const cleanUrl = node.url.replace(/\/+$/, "");
-      const res = await fetch(`${cleanUrl}/api/3/processlist`);
+      const apiVer = node.id === "nas" ? "4" : "3";
+      const res = await fetch(`${cleanUrl}/api/${apiVer}/processlist`);
       if (!res.ok) throw new Error("Status " + res.status);
       const procList = await res.json();
       procList.sort((a, b) => (b.cpu_percent || 0) - (a.cpu_percent || 0));
@@ -488,12 +490,20 @@ type: page
     }
 
     const cleanUrl = node.url.replace(/\/+$/, "");
+    // Use /api/4 for Glances v4 on the NAS, /api/3 for the Linux workstations
+    const apiVer = node.id === "nas" ? "4" : "3";
 
     try {
       // 1. Fetch CPU & RAM (core metrics)
       const [cpuRes, memRes] = await Promise.all([
-        fetch(`${cleanUrl}/api/3/cpu`).then(r => r.json()),
-        fetch(`${cleanUrl}/api/3/mem`).then(r => r.json())
+        fetch(`${cleanUrl}/api/${apiVer}/cpu`).then(r => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        }),
+        fetch(`${cleanUrl}/api/${apiVer}/mem`).then(r => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        })
       ]);
 
       const badge = document.getElementById(`badge-${node.id}`);
@@ -508,17 +518,19 @@ type: page
       if (cpuVal) cpuVal.innerText = `${cpuTotal}%`;
       if (cpuBar) cpuBar.style.width = `${Math.min(cpuTotal, 100)}%`;
 
-      const ramUsedGB = (memRes.used / (1024 ** 3)).toFixed(1);
-      const ramTotalGB = (memRes.total / (1024 ** 3)).toFixed(0);
-      const ramPct = memRes.percent !== undefined ? memRes.percent : ((memRes.used / memRes.total) * 100);
-      const ramVal = document.getElementById(`ram-val-${node.id}`);
-      const ramBar = document.getElementById(`ram-bar-${node.id}`);
-      if (ramVal) ramVal.innerText = `${ramUsedGB} / ${ramTotalGB} GB`;
-      if (ramBar) ramBar.style.width = `${Math.min(ramPct, 100)}%`;
+      if (memRes && memRes.total) {
+        const ramUsedGB = (memRes.used / (1024 ** 3)).toFixed(1);
+        const ramTotalGB = (memRes.total / (1024 ** 3)).toFixed(0);
+        const ramPct = memRes.percent !== undefined ? memRes.percent : ((memRes.used / memRes.total) * 100);
+        const ramVal = document.getElementById(`ram-val-${node.id}`);
+        const ramBar = document.getElementById(`ram-bar-${node.id}`);
+        if (ramVal) ramVal.innerText = `${ramUsedGB} / ${ramTotalGB} GB`;
+        if (ramBar) ramBar.style.width = `${Math.min(ramPct, 100)}%`;
+      }
 
-      // 2. Fetch Storage (targeted safely)
-      fetch(`${cleanUrl}/api/3/fs`)
-        .then(r => r.json())
+      // 2. Fetch Storage
+      fetch(`${cleanUrl}/api/${apiVer}/fs`)
+        .then(r => r.ok ? r.json() : null)
         .then(fsRes => {
           if (Array.isArray(fsRes) && fsRes.length > 0) {
             const targetFs = fsRes.find(d => d.mnt_point === "/volume1") ||
@@ -540,8 +552,8 @@ type: page
         .catch(() => {});
 
       // 3. Fetch Core Heatmap
-      fetch(`${cleanUrl}/api/3/percpu`)
-        .then(r => r.json())
+      fetch(`${cleanUrl}/api/${apiVer}/percpu`)
+        .then(r => r.ok ? r.json() : null)
         .then(perCpuRes => {
           const grid = document.getElementById(`grid-${node.id}`);
           if (grid && Array.isArray(perCpuRes)) {
@@ -559,8 +571,8 @@ type: page
         .catch(() => {});
 
       // 4. Fetch Uptime
-      fetch(`${cleanUrl}/api/3/uptime`)
-        .then(r => r.json())
+      fetch(`${cleanUrl}/api/${apiVer}/uptime`)
+        .then(r => r.ok ? r.json() : null)
         .then(uptimeRes => {
           const uptimeEl = document.getElementById(`uptime-${node.id}`);
           if (uptimeEl) uptimeEl.innerText = formatUptime(uptimeRes);
