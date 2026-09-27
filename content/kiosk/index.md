@@ -450,6 +450,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 <button class="kiosk-btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
 
 <script>
+  
   const GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
 
   const NODES = [
@@ -465,6 +466,19 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     netTx: { simon: 0, jlp: 0, priti: 0, nas: 0 }
   };
 
+
+  function classifyBioTask(cmdName, cmdLine = "") {
+    const full = (cmdName + " " + cmdLine).toLowerCase();
+    
+    if (full.includes("julia")) return { tag: "ODE Cell Solver", icon: "🧬" };
+    if (full.includes("python") || full.includes("python3")) return { tag: "Spatial Sim / ML", icon: "⚗️" };
+    if (full.includes("rscript") || full.includes("r.bin")) return { tag: "Morphogenesis Analysis", icon: "📊" };
+    if (full.includes("nextflow") || full.includes("snakemake")) return { tag: "Pipeline Mesh", icon: "⚡" };
+    if (full.includes("bwa") || full.includes("samtools")) return { tag: "Genome Mapping", icon: "🧬" };
+    if (full.includes("rsync") || full.includes("synology")) return { tag: "Trajectory Checkpoint", icon: "💾" };
+    
+    return { tag: "Numerical Kernel", icon: "⚙️" };
+  }
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(()=>{});
@@ -695,11 +709,16 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
           tbody.innerHTML = sorted.map(p => {
             const cpuUsage = (p.cpu_percent || 0).toFixed(1);
             const isHigh = p.cpu_percent > 30;
-            const cmdName = (p.name || p.cmdline || "task").replace(/^.*\//, '');
+            const rawCmd = (p.name || "task").replace(/^.*\//, '');
+            const bioInfo = classifyBioTask(rawCmd, p.cmdline || "");
+            
             return `
               <tr>
-                <td style="color:var(--text-muted);">${p.pid || '--'}</td>
-                <td style="color:#e2e8f0; font-weight:600;" title="${cmdName}">${cmdName}</td>
+                <td style="color:var(--text-muted); font-size:0.62rem;">${p.pid}</td>
+                <td style="color:#e2e8f0; font-weight:600;" title="${rawCmd}">
+                  <span style="color:var(--accent-cyan); font-size:0.62rem; display:block; text-transform:uppercase; letter-spacing:0.04em;">${bioInfo.icon} ${bioInfo.tag}</span>
+                  ${rawCmd}
+                </td>
                 <td style="text-align:right;">
                   <span class="cpu-pill ${isHigh ? 'high' : ''}">${cpuUsage}%</span>
                 </td>
@@ -715,7 +734,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     }
   }
 
-  async function updateCloudSync() {
+async function updateCloudSync() {
     try {
       const res = await fetch(`${GIST_BASE}/cloudsync.json?t=${Date.now()}`);
       if (!res.ok) return;
@@ -726,18 +745,49 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
       const timeEl = document.getElementById("nas-sync-time");
       const topSync = document.getElementById("nas-sync-top");
 
+      // Format trajectory / simulation snapshot display
+      let formattedFile = "Ready";
+      if (sync.last_file) {
+        const raw = sync.last_file;
+        const lower = raw.toLowerCase();
+        
+        if (lower.endsWith('.jld2') || lower.endsWith('.h5') || lower.endsWith('.zarr')) {
+          formattedFile = `<span style="color:var(--accent-cyan);">🔬 Snapshot:</span> ${raw}`;
+        } else if (lower.endsWith('.bam') || lower.endsWith('.fastq') || lower.endsWith('.fq')) {
+          formattedFile = `<span style="color:var(--accent-purple);">🧬 Seq Data:</span> ${raw}`;
+        } else if (lower.endsWith('.csv') || lower.endsWith('.tsv') || lower.endsWith('.parquet')) {
+          formattedFile = `<span style="color:var(--accent-emerald);">📊 Matrix:</span> ${raw}`;
+        } else {
+          formattedFile = raw;
+        }
+      }
+
       if (sync.state === "success") {
         if (banner) banner.style.borderColor = "rgba(16, 185, 129, 0.4)";
-        if (topSync) { topSync.innerText = "ONLINE"; topSync.style.color = "#10b981"; }
-        if (fileEl) fileEl.innerText = sync.last_file || "Ready";
+        if (topSync) { 
+          topSync.innerText = "ONLINE"; 
+          topSync.style.color = "#10b981"; 
+        }
+        if (fileEl) {
+          fileEl.innerHTML = formattedFile;
+          fileEl.title = `Last synced: ${sync.last_file || ''}`;
+        }
         if (timeEl) timeEl.innerText = sync.last_synced;
       } else {
         if (banner) banner.style.borderColor = "rgba(244, 63, 94, 0.4)";
-        if (topSync) { topSync.innerText = "ATTN"; topSync.style.color = "#f43f5e"; }
-        if (fileEl) fileEl.innerText = `Sync error (${sync.recent_errors || 1})`;
+        if (topSync) { 
+          topSync.innerText = "ATTN"; 
+          topSync.style.color = "#f43f5e"; 
+        }
+        if (fileEl) {
+          fileEl.innerHTML = `<span style="color:var(--accent-rose);">⚠️ Sync err:</span> ${sync.last_file || 'Check logs'}`;
+          fileEl.title = `Error count: ${sync.recent_errors || 1}`;
+        }
         if (timeEl) timeEl.innerText = "Check Logs";
       }
-    } catch(e) {}
+    } catch(e) {
+      console.warn("Could not refresh cloud sync status", e);
+    }
   }
 
   async function initKiosk() {
