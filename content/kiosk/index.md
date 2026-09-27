@@ -2,26 +2,26 @@
 title: "Mitchell Lab Telemetry HUD"
 layout: "single"
 url: "/status/kiosk/"
-summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
+summary: "Widescreen in silico cancer biology telemetry HUD for Mitchell Lab."
 ---
 
 <style>
   :root {
-    --bg-base: #04070d;
-    --card-bg: rgba(10, 16, 28, 0.85);
-    --card-border: rgba(56, 189, 248, 0.18);
+    --bg-base: #03060a;
+    --card-bg: rgba(8, 14, 24, 0.85);
+    --card-border: rgba(56, 189, 248, 0.2);
     --accent-cyan: #38bdf8;
     --accent-emerald: #10b981;
     --accent-purple: #c084fc;
-    --accent-amber: #fbbf24;
+    --accent-amber: #f59e0b;
     --accent-rose: #f43f5e;
+    --accent-tumor: #ec4899;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     --mono-font: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
   }
 
-  /* WOWCHEMY/HUGO BREAKOUT OVERRIDES */
   html, body {
     margin: 0 !important;
     padding: 0 !important;
@@ -35,10 +35,10 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     overflow-x: hidden !important;
   }
 
+  /* WOWCHEMY/HUGO BLANK WRAPPER RESET */
   .page-header, .navbar, .page-footer, .site-footer, footer, header, .docs-sidebar, .docs-toc {
     display: none !important;
   }
-
   .page-body, .universal-wrapper, .article-container, .docs-article-container, .container-fluid, .container, main, article {
     max-width: 100vw !important;
     width: 100vw !important;
@@ -52,32 +52,29 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     max-width: 100vw !important;
     min-height: 100vh !important;
     box-sizing: border-box !important;
-    padding: 16px 20px !important;
+    padding: 14px 18px !important;
     display: flex !important;
     flex-direction: column !important;
     background-image: 
-      radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.1), transparent 70%),
-      linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 100% 100%, 28px 28px, 28px 28px;
+      radial-gradient(circle at 50% 0%, rgba(236, 72, 153, 0.08), transparent 60%),
+      radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.06), transparent 50%),
+      linear-gradient(to right, rgba(255,255,255,0.012) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.012) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
   }
 
- /* TWO-TIER AGGREGATE OPERATIONS BANNER */
-  /* TWO-TIER AGGREGATE OPERATIONS BANNER */
+  /* TWO-TIER ONCOLOGY HEADER */
   .cluster-hud-header {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    background: rgba(13, 20, 36, 0.92);
-    border: 1px solid rgba(56, 189, 248, 0.28);
+    gap: 10px;
+    background: rgba(10, 16, 28, 0.94);
+    border: 1px solid rgba(236, 72, 153, 0.28);
     border-radius: 12px;
-    padding: 12px 16px;
-    margin-bottom: 16px;
+    padding: 12px 18px;
+    margin-bottom: 14px;
     backdrop-filter: blur(16px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-    box-sizing: border-box;
-    width: 100%;
-    overflow: hidden; /* Prevents banner blowout */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
   }
 
   .hud-top-bar {
@@ -101,52 +98,64 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     white-space: nowrap;
   }
 
-  .hud-status-line {
-    font-size: clamp(0.62rem, 1.2vw, 0.72rem);
-    color: var(--text-secondary);
+  .hud-subtitle {
+    font-size: 0.68rem;
+    color: var(--accent-tumor);
     font-family: var(--mono-font);
-    white-space: nowrap;
-    text-align: right;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
   }
 
-  /* FLUID RESPONSIVE STATS ROW */
+  /* Real-time simulated micro-lattice canvas in header */
+  .tumor-canvas-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(236, 72, 153, 0.2);
+    border-radius: 8px;
+    padding: 4px 10px;
+  }
+
+  #tumor-spheroid-canvas {
+    width: 64px;
+    height: 38px;
+    border-radius: 4px;
+    background: #020408;
+  }
+
+  .canvas-meta {
+    font-family: var(--mono-font);
+    font-size: 0.62rem;
+    line-height: 1.25;
+  }
+
   .hud-metrics-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     width: 100%;
-    box-sizing: border-box;
   }
 
   @media (max-width: 1100px) {
-    .hud-metrics-row {
-      grid-template-columns: repeat(2, 1fr); /* 2x2 grid on medium/smaller screens */
-    }
-  }
-
-  @media (max-width: 580px) {
-    .hud-metrics-row {
-      grid-template-columns: 1fr;
-    }
+    .hud-metrics-row { grid-template-columns: repeat(2, 1fr); }
   }
 
   .hud-stat-box {
     background: rgba(0, 0, 0, 0.35);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 8px;
-    padding: 8px 12px;
+    padding: 7px 12px;
     text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 0; /* Critical: allows flex children to shrink below content size */
+    min-width: 0;
     overflow: hidden;
   }
 
   .hud-stat-box .val {
-    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    font-size: clamp(0.95rem, 1.5vw, 1.2rem);
     font-weight: 800;
     color: var(--accent-cyan);
     font-family: var(--mono-font);
@@ -157,20 +166,19 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
   .hud-stat-box .lbl {
-    font-size: clamp(0.58rem, 0.9vw, 0.65rem);
+    font-size: 0.63rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--text-muted);
-    margin-top: 3px;
+    margin-top: 2px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
-  /* TRUE WIDESCREEN 4-COLUMN GRID */
+
+  /* 4-COLUMN ONCOLOGY MESH GRID */
   .nodes-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+    gap: 12px;
     flex: 1;
     align-items: stretch;
   }
@@ -178,7 +186,6 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
   @media (max-width: 1023px) {
     .nodes-grid { grid-template-columns: repeat(2, 1fr); }
   }
-
   @media (max-width: 640px) {
     .nodes-grid { grid-template-columns: 1fr; }
   }
@@ -187,9 +194,9 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 12px;
-    padding: 14px;
+    padding: 12px 14px;
     backdrop-filter: blur(14px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -201,31 +208,31 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-    opacity: 0.5;
+    background: linear-gradient(90deg, transparent, var(--accent-tumor), transparent);
+    opacity: 0.6;
   }
 
   .node-card-head {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .node-name {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 800;
     font-family: var(--mono-font);
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     letter-spacing: 0.04em;
     white-space: nowrap;
   }
 
   .status-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: var(--text-muted);
     flex-shrink: 0;
@@ -236,48 +243,40 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
   .node-submeta {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-family: var(--mono-font);
     color: var(--text-secondary);
-    white-space: nowrap;
   }
 
-  /* NETWORK TRAFFIC HUD BAR */
+  .node-biometa {
+    font-size: 0.65rem;
+    font-family: var(--mono-font);
+    color: var(--accent-cyan);
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
   .net-hud-bar {
     background: rgba(0, 0, 0, 0.35);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 6px;
-    padding: 5px 8px;
-    margin-bottom: 10px;
+    padding: 4px 8px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     font-family: var(--mono-font);
-    font-size: 0.68rem;
+    font-size: 0.65rem;
   }
 
-  .net-stat {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    white-space: nowrap;
-  }
-
-  .net-arrow-rx { color: var(--accent-emerald); font-weight: bold; }
-  .net-arrow-tx { color: var(--accent-cyan); font-weight: bold; }
-
-  /* METRICS & PROGRESS */
-  .metric-block {
-    margin-bottom: 7px;
-  }
+  .metric-block { margin-bottom: 6px; }
 
   .metric-row {
     display: flex;
     justify-content: space-between;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     margin-bottom: 3px;
     font-family: var(--mono-font);
-    white-space: nowrap;
   }
 
   .track-bar {
@@ -295,34 +294,32 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     transition: width 0.5s ease;
   }
 
-  .fill-cpu  { background: linear-gradient(90deg, #38bdf8, #818cf8); }
-  .fill-ram  { background: linear-gradient(90deg, #c084fc, #f43f5e); }
-  .fill-disk { background: linear-gradient(90deg, #10b981, #06b6d4); }
+  .fill-cpu  { background: linear-gradient(90deg, #ec4899, #f43f5e); } /* Mitotic Pink/Rose */
+  .fill-ram  { background: linear-gradient(90deg, #a855f7, #6366f1); } /* Lattice Memory Indigo */
+  .fill-disk { background: linear-gradient(90deg, #10b981, #06b6d4); } /* Trajectory Storage Emerald */
 
-  /* CORE HEATMAP MATRIX */
   .heatmap-wrap {
     margin-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    padding-top: 8px;
+    padding-top: 6px;
   }
 
   .section-label {
     display: flex;
     justify-content: space-between;
-    font-size: 0.65rem;
+    font-size: 0.63rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-muted);
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     font-family: var(--mono-font);
-    white-space: nowrap;
   }
 
   .core-grid {
     display: grid;
     gap: 2px;
-    background: rgba(0, 0, 0, 0.25);
-    padding: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 3px;
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.04);
   }
@@ -334,18 +331,17 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     transition: background 0.25s ease, box-shadow 0.25s ease;
   }
 
-  /* TOP PROCESS LIST */
   .process-box {
     margin-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    padding-top: 8px;
+    padding-top: 6px;
   }
 
   .process-table {
     width: 100%;
     border-collapse: collapse;
     font-family: var(--mono-font);
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     table-layout: fixed;
   }
 
@@ -353,8 +349,8 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     text-align: left;
     color: var(--text-muted);
     font-weight: 500;
-    padding-bottom: 3px;
-    font-size: 0.60rem;
+    padding-bottom: 2px;
+    font-size: 0.58rem;
     text-transform: uppercase;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
@@ -368,25 +364,19 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
   .cpu-pill {
-    background: rgba(56, 189, 248, 0.12);
-    color: var(--accent-cyan);
+    background: rgba(236, 72, 153, 0.15);
+    color: var(--accent-tumor);
     padding: 1px 3px;
     border-radius: 3px;
     font-weight: 700;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
   }
 
-  .cpu-pill.high {
-    background: rgba(244, 63, 94, 0.18);
-    color: var(--accent-rose);
-  }
-
-  /* CLOUDSYNC SPECIAL BADGE */
   .cloudsync-hud {
     background: rgba(16, 185, 129, 0.08);
     border: 1px solid rgba(16, 185, 129, 0.28);
     border-radius: 8px;
-    padding: 7px 10px;
+    padding: 6px 10px;
     margin-top: 8px;
     display: flex;
     justify-content: space-between;
@@ -398,12 +388,12 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     position: fixed;
     bottom: 12px;
     right: 12px;
-    background: rgba(15, 23, 42, 0.75);
+    background: rgba(10, 16, 28, 0.85);
     color: var(--text-secondary);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 20px;
-    padding: 5px 12px;
-    font-size: 0.72rem;
+    padding: 4px 12px;
+    font-size: 0.7rem;
     backdrop-filter: blur(8px);
     cursor: pointer;
     z-index: 100;
@@ -411,74 +401,74 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 </style>
 
 <div class="hud-wrapper">
-  <!-- Cluster Header Banner -->
-  <!-- Two-Tier Cluster Header Banner -->
-  <!-- Two-Tier Cluster Header Banner -->
+  <!-- CANCER BIOLOGY CLUSTER HEADER -->
   <div class="cluster-hud-header">
     <div class="hud-top-bar">
-      <div class="hud-title-group">
-        <h1>
-          <span style="color:var(--accent-cyan);"></span> MITCHELL LAB CLUSTER
-        </h1>
+      <div>
+        <div class="hud-title-group">
+          <h1><span style="color:var(--accent-tumor);">🔬</span> MITCHELL LAB // CANCER SYSTEMS BIOLOGY</h1>
+        </div>
+        <div class="hud-subtitle">
+          <span>SPATIAL ONCOLOGY ENGINE</span> • <span>TUMOR LATTICE PDE SOLVER</span> • <span id="hud-last-update">CONNECTING TO MESH...</span>
+        </div>
       </div>
-      <div class="hud-status-line" id="hud-last-update">CONNECTING TO MESH...</div>
+
+      <!-- Live Micro-Lattice Canvas -->
+      <div class="tumor-canvas-wrapper">
+        <canvas id="tumor-spheroid-canvas" width="128" height="76"></canvas>
+        <div class="canvas-meta">
+          <div style="color:var(--accent-tumor); font-weight:800;">IN SILICO SPHEROID</div>
+          <div style="color:var(--text-muted);" id="spheroid-stats">Active Clones: 128</div>
+          <div style="color:var(--accent-cyan);" id="mitotic-index">Mitotic Index: 4.2%</div>
+        </div>
+      </div>
     </div>
+
+    <!-- Cluster Aggregate Biomarker Stats -->
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
-        <div class="val" id="total-cores">192</div>
-        <div class="lbl">Compute Cores</div>
+        <div class="val" id="total-cores">192 Subvolumes</div>
+        <div class="lbl">Spatial Mesh Cores</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="total-ram-active">0 / 324 GB</div>
-        <div class="lbl">Cluster RAM</div>
+        <div class="lbl">Lattice State Memory</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="cluster-total-net">-- / --</div>
-        <div class="lbl">Aggregate Net I/O</div>
+        <div class="lbl">Boundary / Nutrient Flux</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="nas-sync-top">ONLINE</div>
-        <div class="lbl">Cloud Sync</div>
+        <div class="lbl">Trajectory Snapshots</div>
       </div>
     </div>
   </div>
 
-  <!-- Dynamic Nodes Container (4 Columns) -->
+  <!-- Dynamic 4-Column Nodes Grid -->
   <div class="nodes-grid" id="kiosk-nodes-container"></div>
 </div>
 
 <button class="kiosk-btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
 
 <script>
-  
   const GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
 
+  // Re-cast machines into cancer modeling roles
   const NODES = [
-    { id: "simon", name: "SIMON", role: "Gateway", specs: "72C • 62GB", cores: 72, columns: 12, apiVer: 3, url: "" },
-    { id: "jlp",   name: "JLP",   role: "Compute", specs: "104C • 188GB", cores: 104, columns: 13, apiVer: 3, url: "" },
-    { id: "priti", name: "PRITI", role: "Compute", specs: "12C • 64GB", cores: 12, columns: 6,  apiVer: 3, url: "" },
-    { id: "nas",   name: "NAS",   role: "Storage", specs: "4C • 23TB Btrfs", cores: 4, columns: 4,  apiVer: 4, url: "" }
+    { id: "simon", name: "SIMON", role: "ODE Lattice Controller", bioRole: "72C Agent Flux & Spatial PDE", cores: 72, columns: 12, apiVer: 3, url: "" },
+    { id: "jlp",   name: "JLP",   role: "Clonal Expansion Array", bioRole: "104C Stochastic Monte Carlo", cores: 104, columns: 13, apiVer: 3, url: "" },
+    { id: "priti", name: "PRITI", role: "Biophysical Solver",     bioRole: "12C Viscoelastic Mechanics", cores: 12, columns: 6,  apiVer: 3, url: "" },
+    { id: "nas",   name: "NAS",   role: "Trajectory Store",       bioRole: "23TB RAID Spheroid States",  cores: 4, columns: 4,  apiVer: 4, url: "" }
   ];
 
   const clusterState = {
     mem: { simon: 0, jlp: 0, priti: 0, nas: 0 },
     netRx: { simon: 0, jlp: 0, priti: 0, nas: 0 },
-    netTx: { simon: 0, jlp: 0, priti: 0, nas: 0 }
+    netTx: { simon: 0, jlp: 0, priti: 0, nas: 0 },
+    cpuAvg: 10
   };
 
-
-  function classifyBioTask(cmdName, cmdLine = "") {
-    const full = (cmdName + " " + cmdLine).toLowerCase();
-    
-    if (full.includes("julia")) return { tag: "ODE Cell Solver", icon: "🧬" };
-    if (full.includes("python") || full.includes("python3")) return { tag: "Numerical Processing", icon: "⚗️" };
-    if (full.includes("rscript") || full.includes("r.bin")) return { tag: "General Process", icon: "⚙️" };
-    if (full.includes("nextflow") || full.includes("snakemake")) return { tag: "Bioinformatic Analysis", icon: "⚡" };
-    if (full.includes("bwa") || full.includes("samtools")) return { tag: "Genome Mapping", icon: "🧬" };
-    if (full.includes("rsync") || full.includes("synology")) return { tag: "Data Processing", icon: "💾" };
-    
-    return { tag: "General Compute", icon: "⚙️" };
-  }
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(()=>{});
@@ -495,6 +485,66 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
+  // --- AMBIENT CELLULAR / SPHEROID CANVAS ANIMATION ---
+  const canvas = document.getElementById("tumor-spheroid-canvas");
+  const ctx = canvas.getContext("2d");
+  const cells = Array.from({ length: 42 }).map(() => ({
+    x: 64 + (Math.random() - 0.5) * 36,
+    y: 38 + (Math.random() - 0.5) * 24,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r: Math.random() * 2.5 + 1.8,
+    type: Math.random() > 0.35 ? "tumor" : "quiescent",
+    phase: Math.random() * Math.PI * 2
+  }));
+
+  function animateTumorLattice() {
+    ctx.fillStyle = "rgba(2, 4, 8, 0.25)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Speed scales dynamically with cluster CPU load
+    const speedMult = Math.max(0.4, clusterState.cpuAvg / 25);
+
+    cells.forEach(c => {
+      c.x += c.vx * speedMult;
+      c.y += c.vy * speedMult;
+      c.phase += 0.04 * speedMult;
+
+      // Gentle force back to spheroid center
+      const dx = 64 - c.x;
+      const dy = 38 - c.y;
+      c.vx += dx * 0.001;
+      c.vy += dy * 0.001;
+
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, c.r + Math.sin(c.phase) * 0.4, 0, Math.PI * 2);
+      if (c.type === "tumor") {
+        ctx.fillStyle = speedMult > 1.8 ? "#f43f5e" : "#ec4899"; // Bright pink/rose tumor cells
+        ctx.shadowColor = "#ec4899";
+        ctx.shadowBlur = 4;
+      } else {
+        ctx.fillStyle = "#38bdf8"; // Quiescent/nutrient boundary cells
+        ctx.shadowBlur = 0;
+      }
+      ctx.fill();
+    });
+
+    requestAnimationFrame(animateTumorLattice);
+  }
+  requestAnimationFrame(animateTumorLattice);
+
+  // --- SCIENTIFIC CLASSIFIER FOR RUNNING TASKS ---
+  function classifyBioTask(cmdName, cmdLine = "") {
+    const full = (cmdName + " " + cmdLine).toLowerCase();
+    if (full.includes("julia")) return { tag: "ODE Spheroid Dynamics", icon: "🧬" };
+    if (full.includes("python") || full.includes("python3")) return { tag: "Stochastic Cell Model", icon: "⚗️" };
+    if (full.includes("rscript") || full.includes("r.bin")) return { tag: "Spatial Transcriptomics", icon: "📊" };
+    if (full.includes("nextflow") || full.includes("snakemake")) return { tag: "Clonal Pipeline Mesh", icon: "⚡" };
+    if (full.includes("bwa") || full.includes("samtools")) return { tag: "Variant Alignment", icon: "🧬" };
+    if (full.includes("rsync") || full.includes("cloudsync")) return { tag: "Lattice State Snapshot", icon: "💾" };
+    return { tag: "Biophysical Solver", icon: "⚙️" };
+  }
+
   function renderKioskCards() {
     const container = document.getElementById("kiosk-nodes-container");
     container.innerHTML = "";
@@ -508,10 +558,10 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
       const syncSnippet = isNas ? `
         <div class="cloudsync-hud" id="nas-sync-banner">
           <div style="overflow:hidden;">
-            <div style="font-size:0.60rem; color:#6ee7b7; letter-spacing:0.06em;">CLOUD SYNC ENGINE</div>
-            <div id="nas-sync-file" style="font-size:0.72rem; color:#e2e8f0; font-weight:600; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Syncing...</div>
+            <div style="font-size:0.60rem; color:#6ee7b7; letter-spacing:0.06em;">TRAJECTORY CHECKPOINT</div>
+            <div id="nas-sync-file" style="font-size:0.70rem; color:#e2e8f0; font-weight:600; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Syncing...</div>
           </div>
-          <div id="nas-sync-time" style="font-size:0.66rem; color:#94a3b8; text-align:right; white-space:nowrap;">--</div>
+          <div id="nas-sync-time" style="font-size:0.65rem; color:#94a3b8; text-align:right; white-space:nowrap;">--</div>
         </div>
       ` : "";
 
@@ -520,26 +570,22 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
           <div class="node-card-head">
             <div class="node-name">
               <span class="status-dot" id="dot-${n.id}"></span>
-              ${n.name} <span style="font-size:0.72rem; color:var(--text-muted); font-weight:400;">(${n.role})</span>
+              ${n.name} <span style="font-size:0.70rem; color:var(--text-muted); font-weight:400;">(${n.role})</span>
             </div>
             <span class="node-submeta" id="uptime-${n.id}">--</span>
           </div>
 
-          <!-- Network Flow Live Bar -->
+          <div class="node-biometa">${n.bioRole}</div>
+
+          <!-- Nutrient & Boundary Flux Bar -->
           <div class="net-hud-bar">
-            <div class="net-stat">
-              <span class="net-arrow-rx">↓ Rx</span>
-              <span id="net-rx-${n.id}">0 B/s</span>
-            </div>
-            <div class="net-stat">
-              <span class="net-arrow-tx">↑ Tx</span>
-              <span id="net-tx-${n.id}">0 B/s</span>
-            </div>
+            <span>↓ Influx: <b id="net-rx-${n.id}" style="color:var(--accent-emerald);">0 B/s</b></span>
+            <span>↑ Efflux: <b id="net-tx-${n.id}" style="color:var(--accent-cyan);">0 B/s</b></span>
           </div>
 
           <div class="metric-block">
             <div class="metric-row">
-              <span>CPU POOL</span>
+              <span>MITOTIC / FLUX VELOCITY</span>
               <span id="cpu-txt-${n.id}">--%</span>
             </div>
             <div class="track-bar">
@@ -549,7 +595,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
           <div class="metric-block">
             <div class="metric-row">
-              <span>MEMORY</span>
+              <span>LATTICE STATE MEMORY</span>
               <span id="ram-txt-${n.id}">-- GB</span>
             </div>
             <div class="track-bar">
@@ -559,7 +605,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
           <div class="metric-block">
             <div class="metric-row">
-              <span>STORAGE</span>
+              <span>STORAGE POOL</span>
               <span id="disk-txt-${n.id}">--</span>
             </div>
             <div class="track-bar">
@@ -571,8 +617,8 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
           <div class="heatmap-wrap">
             <div class="section-label">
-              <span>Active Threads (${n.cores} Cores)</span>
-              <span id="load-avg-${n.id}">L: --</span>
+              <span>Subdomain Spatial Cores (${n.cores})</span>
+              <span id="load-avg-${n.id}">Flux: --</span>
             </div>
             <div class="core-grid" id="grid-${n.id}" style="grid-template-columns: repeat(${n.columns}, 1fr);">
               ${Array.from({ length: n.cores }).map((_, i) => `<div class="core-cell" id="core-${n.id}-${i}"></div>`).join('')}
@@ -581,17 +627,17 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
         </div>
 
         <div class="process-box">
-          <div class="section-label">Top Compute Tasks</div>
+          <div class="section-label">Active Cellular Solvers</div>
           <table class="process-table">
             <thead>
               <tr>
                 <th style="width: 25%;">PID</th>
-                <th style="width: 45%;">COMMAND</th>
-                <th style="width: 30%; text-align:right;">%CPU</th>
+                <th style="width: 50%;">SUBROUTINE</th>
+                <th style="width: 25%; text-align:right;">LOAD</th>
               </tr>
             </thead>
             <tbody id="proc-tbody-${n.id}">
-              <tr><td colspan="3" style="color:var(--text-muted);">Polling process tree...</td></tr>
+              <tr><td colspan="3" style="color:var(--text-muted);">Sampling solver tree...</td></tr>
             </tbody>
           </table>
         </div>
@@ -601,25 +647,31 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     });
   }
 
+  // Histology / Reporter Staining Colors (Cold Slate -> Fluorescent Cyan -> S-Phase Emerald -> Mitotic Pink)
   function getHeatmapColor(load) {
     if (load < 5)   return "rgba(255, 255, 255, 0.04)";
-    if (load < 30)  return "#0284c7";
-    if (load < 70)  return "#10b981";
-    if (load < 90)  return "#f59e0b";
-    return "#f43f5e";
+    if (load < 30)  return "#0284c7"; // Interphase / Quiescent (Cyan)
+    if (load < 70)  return "#10b981"; // S-Phase Synthesis (Emerald)
+    if (load < 90)  return "#f59e0b"; // G2 Phase (Amber)
+    return "#ec4899";                 // Mitotic Division (Tumor Rose)
   }
 
   function updateClusterAggregates() {
-    // RAM
     const totalUsed = Object.values(clusterState.mem).reduce((a, b) => a + b, 0);
     const ramEl = document.getElementById("total-ram-active");
     if (ramEl) ramEl.innerText = `${totalUsed.toFixed(0)} / 324 GB`;
 
-    // Total Network I/O
     const sumRx = Object.values(clusterState.netRx).reduce((a, b) => a + b, 0);
     const sumTx = Object.values(clusterState.netTx).reduce((a, b) => a + b, 0);
     const netEl = document.getElementById("cluster-total-net");
     if (netEl) netEl.innerText = `↓${formatBytesSec(sumRx)} ↑${formatBytesSec(sumTx)}`;
+
+    // Update simulation meta tags in top banner
+    const mitEl = document.getElementById("mitotic-index");
+    if (mitEl) {
+      const idx = (clusterState.cpuAvg * 0.12).toFixed(1);
+      mitEl.innerText = `Mitotic Index: ${idx}%`;
+    }
   }
 
   async function fetchTelemetry(node) {
@@ -643,10 +695,8 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
       // Network Traffic
       if (Array.isArray(net) && net.length > 0) {
-        let totalRx = 0;
-        let totalTx = 0;
+        let totalRx = 0, totalTx = 0;
         net.forEach(iface => {
-          // Filter loopback or inactive docker virtual veths
           if (iface.interface_name && !iface.interface_name.startsWith('lo') && !iface.interface_name.startsWith('docker')) {
             totalRx += (iface.rx || 0);
             totalTx += (iface.tx || 0);
@@ -658,7 +708,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
         document.getElementById(`net-tx-${node.id}`).innerText = formatBytesSec(totalTx);
       }
 
-      // CPU
+      // CPU / Mitotic Velocity
       const cpuVal = Math.round(cpu.cpu || 0);
       document.getElementById(`cpu-txt-${node.id}`).innerText = `${cpuVal}%`;
       document.getElementById(`cpu-bar-${node.id}`).style.width = `${cpuVal}%`;
@@ -668,13 +718,13 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
         const usedGbNum = mem.used / (1024 ** 3);
         const totalGbNum = mem.total / (1024 ** 3);
         clusterState.mem[node.id] = usedGbNum;
-        document.getElementById(`ram-txt-${node.id}`).innerText = `${usedGbNum.toFixed(1)} / ${totalGbNum.toFixed(1)} GB (${Math.round((mem.used/mem.total)*100)}%)`;
+        document.getElementById(`ram-txt-${node.id}`).innerText = `${usedGbNum.toFixed(1)} / ${totalGbNum.toFixed(1)} GB`;
         document.getElementById(`ram-bar-${node.id}`).style.width = `${Math.round((mem.used/mem.total)*100)}%`;
       }
 
       // Load average
       if (load && load.min15 !== undefined) {
-        document.getElementById(`load-avg-${node.id}`).innerText = `15m: ${Number(load.min15).toFixed(1)}`;
+        document.getElementById(`load-avg-${node.id}`).innerText = `Flux: ${Number(load.min15).toFixed(1)}`;
       }
 
       // Storage
@@ -686,7 +736,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
         document.getElementById(`disk-bar-${node.id}`).style.width = `${root.percent}%`;
       }
 
-      // Heatmap Grid
+      // Spatial Core Heatmap
       if (Array.isArray(cpus)) {
         cpus.forEach((core, i) => {
           const el = document.getElementById(`core-${node.id}-${i}`);
@@ -698,7 +748,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
         });
       }
 
-      // Top Processes (Sorted by CPU, top 4)
+      // Top Processes Parsed into Cancer Bio Solvers
       if (Array.isArray(procs) && procs.length > 0) {
         const sorted = [...procs]
           .sort((a, b) => (b.cpu_percent || 0) - (a.cpu_percent || 0))
@@ -708,19 +758,17 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
         if (tbody) {
           tbody.innerHTML = sorted.map(p => {
             const cpuUsage = (p.cpu_percent || 0).toFixed(1);
-            const isHigh = p.cpu_percent > 30;
             const rawCmd = (p.name || "task").replace(/^.*\//, '');
             const bioInfo = classifyBioTask(rawCmd, p.cmdline || "");
-            
             return `
               <tr>
-                <td style="color:var(--text-muted); font-size:0.62rem;">${p.pid}</td>
+                <td style="color:var(--text-muted); font-size:0.60rem;">${p.pid}</td>
                 <td style="color:#e2e8f0; font-weight:600;" title="${rawCmd}">
-                  <span style="color:var(--accent-cyan); font-size:0.62rem; display:block; text-transform:uppercase; letter-spacing:0.04em;">${bioInfo.icon} ${bioInfo.tag}</span>
+                  <span style="color:var(--accent-tumor); font-size:0.58rem; display:block; text-transform:uppercase;">${bioInfo.icon} ${bioInfo.tag}</span>
                   ${rawCmd}
                 </td>
                 <td style="text-align:right;">
-                  <span class="cpu-pill ${isHigh ? 'high' : ''}">${cpuUsage}%</span>
+                  <span class="cpu-pill">${cpuUsage}%</span>
                 </td>
               </tr>
             `;
@@ -734,7 +782,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     }
   }
 
-async function updateCloudSync() {
+  async function updateCloudSync() {
     try {
       const res = await fetch(`${GIST_BASE}/cloudsync.json?t=${Date.now()}`);
       if (!res.ok) return;
@@ -745,18 +793,16 @@ async function updateCloudSync() {
       const timeEl = document.getElementById("nas-sync-time");
       const topSync = document.getElementById("nas-sync-top");
 
-      // Format trajectory / simulation snapshot display
       let formattedFile = "Ready";
       if (sync.last_file) {
         const raw = sync.last_file;
         const lower = raw.toLowerCase();
-        
         if (lower.endsWith('.jld2') || lower.endsWith('.h5') || lower.endsWith('.zarr')) {
-          formattedFile = `<span style="color:var(--accent-cyan);">🔬 Snapshot:</span> ${raw}`;
-        } else if (lower.endsWith('.bam') || lower.endsWith('.fastq') || lower.endsWith('.fq')) {
-          formattedFile = `<span style="color:var(--accent-purple);">🧬 Seq Data:</span> ${raw}`;
-        } else if (lower.endsWith('.csv') || lower.endsWith('.tsv') || lower.endsWith('.parquet')) {
-          formattedFile = `<span style="color:var(--accent-emerald);">📊 Matrix:</span> ${raw}`;
+          formattedFile = `<span style="color:var(--accent-tumor);">🔬 Snapshot:</span> ${raw}`;
+        } else if (lower.endsWith('.bam') || lower.endsWith('.fastq')) {
+          formattedFile = `<span style="color:var(--accent-purple);">🧬 Alignment:</span> ${raw}`;
+        } else if (lower.endsWith('.csv') || lower.endsWith('.parquet')) {
+          formattedFile = `<span style="color:var(--accent-emerald);">📊 Morphogen Matrix:</span> ${raw}`;
         } else {
           formattedFile = raw;
         }
@@ -764,30 +810,16 @@ async function updateCloudSync() {
 
       if (sync.state === "success") {
         if (banner) banner.style.borderColor = "rgba(16, 185, 129, 0.4)";
-        if (topSync) { 
-          topSync.innerText = "ONLINE"; 
-          topSync.style.color = "#10b981"; 
-        }
-        if (fileEl) {
-          fileEl.innerHTML = formattedFile;
-          fileEl.title = `Last synced: ${sync.last_file || ''}`;
-        }
+        if (topSync) { topSync.innerText = "CHECKPOINTED"; topSync.style.color = "#10b981"; }
+        if (fileEl) fileEl.innerHTML = formattedFile;
         if (timeEl) timeEl.innerText = sync.last_synced;
       } else {
         if (banner) banner.style.borderColor = "rgba(244, 63, 94, 0.4)";
-        if (topSync) { 
-          topSync.innerText = "ATTN"; 
-          topSync.style.color = "#f43f5e"; 
-        }
-        if (fileEl) {
-          fileEl.innerHTML = `<span style="color:var(--accent-rose);">⚠️ Sync err:</span> ${sync.last_file || 'Check logs'}`;
-          fileEl.title = `Error count: ${sync.recent_errors || 1}`;
-        }
+        if (topSync) { topSync.innerText = "ATTN"; topSync.style.color = "#f43f5e"; }
+        if (fileEl) fileEl.innerText = `Sync error (${sync.recent_errors || 1})`;
         if (timeEl) timeEl.innerText = "Check Logs";
       }
-    } catch(e) {
-      console.warn("Could not refresh cloud sync status", e);
-    }
+    } catch(e) {}
   }
 
   async function initKiosk() {
@@ -804,7 +836,7 @@ async function updateCloudSync() {
     const refreshAll = () => {
       NODES.forEach(fetchTelemetry);
       const now = new Date();
-      document.getElementById("hud-last-update").innerText = `MESH RUNNING // REFRESHED: ${now.toLocaleTimeString()}`;
+      document.getElementById("hud-last-update").innerText = `MESH RUNNING // ${now.toLocaleTimeString()}`;
     };
 
     refreshAll();
