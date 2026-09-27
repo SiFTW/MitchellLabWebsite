@@ -495,22 +495,41 @@ type: page
   }
 
   async function fetchNodeTelemetry(node) {
+    if (!node.url || !node.url.startsWith("http")) {
+      const badge = document.getElementById(`badge-${node.id}`);
+      if (badge) badge.className = "status-badge status-offline";
+      return;
+    }
+
     try {
+      // Determine base API version (v4 for NAS, v3 for Linux nodes)
+      const baseApi = node.id === "synology" ? `${node.url}/api/4` : `${node.url}/api/3`;
+
+      // Safe fetch helper that won't blow up Promise.all if one plugin is missing
+      const safeFetch = (url) => fetch(url).then(r => r.ok ? r.json() : null).catch(() => null);
+
       const [cpuRes, perCpuRes, memRes, fsRes, uptimeRes] = await Promise.all([
-        fetch(`${node.url}/api/3/cpu`).then(r => r.json()),
-        fetch(`${node.url}/api/3/percpu`).then(r => r.json()),
-        fetch(`${node.url}/api/3/mem`).then(r => r.json()),
-        fetch(`${node.url}/api/3/fs`).then(r => r.json()),
-        fetch(`${node.url}/api/3/uptime`).then(r => r.json())
+        safeFetch(`${baseApi}/cpu`),
+        safeFetch(node.id === "synology" ? `${baseApi}/cpu/core` : `${baseApi}/percpu`),
+        safeFetch(`${baseApi}/mem`),
+        safeFetch(`${baseApi}/fs`),
+        safeFetch(`${baseApi}/uptime`)
       ]);
+
+      // If core metrics are missing, mark offline
+      if (!cpuRes || !memRes) {
+        throw new Error("Core metrics unavailable");
+      }
 
       const badge = document.getElementById(`badge-${node.id}`);
       if (badge) badge.className = "status-badge status-online";
 
+      // Uptime
       const uptimeEl = document.getElementById(`uptime-${node.id}`);
       if (uptimeEl) uptimeEl.innerText = formatUptime(uptimeRes);
 
-      const cpuTotal = cpuRes.total ? Number(cpuRes.total.toFixed(1)) : 0;
+      // CPU Total Load
+      const cpuTotal = cpuRes.total !== undefined ? Number(cpuRes.total.toFixed(1)) : 0;
       node.history.push(cpuTotal);
       if (node.history.length > 40) node.history.shift();
 
@@ -519,35 +538,53 @@ type: page
       if (cpuVal) cpuVal.innerText = `${cpuTotal}%`;
       if (cpuBar) cpuBar.style.width = `${Math.min(cpuTotal, 100)}%`;
 
+      // RAM
       const ramUsedGB = (memRes.used / (1024 ** 3)).toFixed(1);
       const ramTotalGB = (memRes.total / (1024 ** 3)).toFixed(0);
-      const ramPct = ((memRes.used / memRes.total) * 100).toFixed(1);
+      const ramPct = memRes.percent !== undefined ? memRes.percent.toFixed(1) : ((memRes.used / memRes.total) * 100).toFixed(1);
       const ramVal = document.getElementById(`ram-val-${node.id}`);
       const ramBar = document.getElementById(`ram-bar-${node.id}`);
       if (ramVal) ramVal.innerText = `${ramUsedGB} / ${ramTotalGB} GB`;
       if (ramBar) ramBar.style.width = `${Math.min(ramPct, 100)}%`;
 
+      // Storage
       if (Array.isArray(fsRes) && fsRes.length > 0) {
-        const rootFs = fsRes.find(d => d.mnt_point === "/") || fsRes[0];
-        const diskUsedGB = (rootFs.used / (1024 ** 3)).toFixed(0);
-        const diskTotalGB = (rootFs.size / (1024 ** 3)).toFixed(0);
-        const diskPct = rootFs.percent !== undefined ? rootFs.percent.toFixed(0) : ((rootFs.used / rootFs.size) * 100).toFixed(0);
+        const targetFs = fsRes.find(d => d.mnt_point === "/volume1") ||
+                         fsRes.find(d => d.mnt_point === "/") ||
+                         fsRes[0];
+
+        const diskUsedStr = formatBytes(targetFs.used);
+        const diskTotalStr = formatBytes(targetFs.size);
+        const diskPct = targetFs.percent !== undefined ? targetFs.percent.toFixed(0) : ((targetFs.used / targetFs.size) * 100).toFixed(0);
 
         const diskVal = document.getElementById(`disk-val-${node.id}`);
         const diskBar = document.getElementById(`disk-bar-${node.id}`);
-        if (diskVal) diskVal.innerText = `${diskUsedGB} / ${diskTotalGB} GB (${diskPct}%)`;
+        if (diskVal) diskVal.innerText = `${diskUsedStr} / ${diskTotalStr} (${diskPct}%)`;
         if (diskBar) diskBar.style.width = `${Math.min(diskPct, 100)}%`;
       }
 
+      // Heatmap Grid
       const grid = document.getElementById(`grid-${node.id}`);
       if (grid) {
         grid.innerHTML = "";
-        perCpuRes.forEach((core, idx) => {
+        let coreList = [];
+
+        if (Array.isArray(perCpuRes)) {
+          coreList = perCpuRes;
+        } else if (perCpuRes && typeof perCpuRes === "object") {
+          // Glances v4 sometimes returns an object map { "0": {total: ...}, "1": {...} }
+          coreList = Object.values(perCpuRes);
+        } else {
+          // Fallback if per-core is blocked on container: render overall load as single visual
+          coreList = [{ total: cpuTotal }];
+        }
+
+        coreList.forEach((core, idx) => {
           const box = document.createElement("div");
           box.className = "core-box";
-          const usage = core.total || 0;
+          const usage = core.total !== undefined ? core.total : (core.percent || 0);
           box.style.backgroundColor = getCoreColor(usage);
-          box.title = `Core ${idx}: ${usage.toFixed(1)}%`;
+          box.title = `Core ${idx}: ${Number(usage).toFixed(1)}%`;
           grid.appendChild(box);
         });
       }
