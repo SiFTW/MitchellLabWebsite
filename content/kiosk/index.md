@@ -63,17 +63,21 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
  /* TWO-TIER AGGREGATE OPERATIONS BANNER */
+  /* TWO-TIER AGGREGATE OPERATIONS BANNER */
   .cluster-hud-header {
     display: flex;
-    flex-direction: column; /* Stacks stats BELOW the title */
-    gap: 14px;
+    flex-direction: column;
+    gap: 12px;
     background: rgba(13, 20, 36, 0.92);
     border: 1px solid rgba(56, 189, 248, 0.28);
     border-radius: 12px;
-    padding: 14px 22px;
+    padding: 12px 16px;
     margin-bottom: 16px;
     backdrop-filter: blur(16px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden; /* Prevents banner blowout */
   }
 
   .hud-top-bar {
@@ -81,64 +85,86 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    padding-bottom: 10px;
+    padding-bottom: 8px;
+    gap: 12px;
   }
 
   .hud-title-group h1 {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 2vw, 1.25rem);
     font-weight: 900;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     white-space: nowrap;
   }
 
   .hud-status-line {
-    font-size: 0.72rem;
+    font-size: clamp(0.62rem, 1.2vw, 0.72rem);
     color: var(--text-secondary);
     font-family: var(--mono-font);
     white-space: nowrap;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  /* Grid of 4 aggregate stat badges sitting directly below the title */
+  /* FLUID RESPONSIVE STATS ROW */
   .hud-metrics-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+    gap: 10px;
     width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 1100px) {
+    .hud-metrics-row {
+      grid-template-columns: repeat(2, 1fr); /* 2x2 grid on medium/smaller screens */
+    }
+  }
+
+  @media (max-width: 580px) {
+    .hud-metrics-row {
+      grid-template-columns: 1fr;
+    }
   }
 
   .hud-stat-box {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 8px;
-    padding: 8px 14px;
-    text-align: left; /* Clean, modern alignment */
-    white-space: nowrap;
+    padding: 8px 12px;
+    text-align: left;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-width: 0; /* Critical: allows flex children to shrink below content size */
+    overflow: hidden;
   }
 
   .hud-stat-box .val {
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
     font-weight: 800;
     color: var(--accent-cyan);
     font-family: var(--mono-font);
     line-height: 1.15;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .hud-stat-box .lbl {
-    font-size: 0.65rem;
+    font-size: clamp(0.58rem, 0.9vw, 0.65rem);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     color: var(--text-muted);
     margin-top: 3px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   /* TRUE WIDESCREEN 4-COLUMN GRID */
   .nodes-grid {
@@ -387,32 +413,32 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 <div class="hud-wrapper">
   <!-- Cluster Header Banner -->
   <!-- Two-Tier Cluster Header Banner -->
+  <!-- Two-Tier Cluster Header Banner -->
   <div class="cluster-hud-header">
-    <!-- Top Row: Title + Live Mesh Pulse -->
     <div class="hud-top-bar">
       <div class="hud-title-group">
         <h1>
           <span style="color:var(--accent-cyan);">⚡</span> MITCHELL LAB CLUSTER
         </h1>
       </div>
-      <div class="hud-status-line" id="hud-last-update">CONNECTING TO HIGH-THROUGHPUT MESH...</div>
+      <div class="hud-status-line" id="hud-last-update">CONNECTING TO MESH...</div>
     </div>
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
         <div class="val" id="total-cores">192</div>
-        <div class="lbl">Threads / Compute Cores</div>
+        <div class="lbl">Compute Cores</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="total-ram-active">0 / 324 GB</div>
-        <div class="lbl">Active Cluster Memory</div>
+        <div class="lbl">Cluster RAM</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="cluster-total-net">-- / --</div>
-        <div class="lbl">Aggregated Network I/O</div>
+        <div class="lbl">Aggregate Net I/O</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="nas-sync-top">ONLINE</div>
-        <div class="lbl">Cloud Sync Engine</div>
+        <div class="lbl">Cloud Sync</div>
       </div>
     </div>
   </div>
