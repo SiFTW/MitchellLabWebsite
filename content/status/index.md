@@ -4,6 +4,7 @@ summary: "Real-time workstation cluster resource monitoring"
 date: 2026-09-27
 type: page
 ---
+
 <style>
   .telemetry-container {
     display: grid;
@@ -28,7 +29,7 @@ type: page
     transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   }
   .node-card * {
-    pointer-events: none; /* Passes all clicks up to the parent card */
+    pointer-events: none;
   }
   .node-card:hover {
     transform: translateY(-2px);
@@ -114,7 +115,6 @@ type: page
   .status-online { background: #10b981; }
   .status-offline { background: #ef4444; }
 
-  /* Full-screen isolated modal overlay */
   #clusterModalOverlay {
     display: none;
     position: fixed !important;
@@ -126,7 +126,7 @@ type: page
     height: 100vh !important;
     background: rgba(15, 23, 42, 0.75) !important;
     backdrop-filter: blur(4px);
-    z-index: 2147483647 !important; /* Highest possible 32-bit z-index */
+    z-index: 2147483647 !important;
     align-items: center;
     justify-content: center;
     padding: 16px;
@@ -224,7 +224,6 @@ type: page
 
 <div class="telemetry-container" id="telemetryGrid"></div>
 
-<!-- Modal definition (will be ported to document.body automatically) -->
 <div id="clusterModalOverlay">
 <div class="modal-window" id="modalWindow">
 <div class="modal-header">
@@ -252,7 +251,6 @@ type: page
     {
       id: "simon",
       name: "simon-HP-Z6-G4-Workstation",
-      ip: "139.184.170.218",
       specs: "72 Cores @ 2.3 GHz",
       columns: 12,
       url: "https://counting-dryer-depot-payments.trycloudflare.com",
@@ -261,7 +259,6 @@ type: page
     {
       id: "jlp",
       name: "Jean Luc Packard Bell (JLP)",
-      ip: "139.184.169.98",
       specs: "104 Cores @ 2.1 GHz",
       columns: 13,
       url: "https://thereby-william-search-reader.trycloudflare.com",
@@ -270,7 +267,6 @@ type: page
     {
       id: "priti",
       name: "Priti TheDell",
-      ip: "139.184.171.6",
       specs: "12 Cores @ 4.0 GHz",
       columns: 6,
       url: "https://info-critics-explanation-ski.trycloudflare.com",
@@ -308,14 +304,11 @@ type: page
   }
 
   function openNodeModal(node) {
-    console.log("Opening modal for node:", node.name);
     activeModalNode = node;
     const modal = document.getElementById("clusterModalOverlay");
     const nameEl = document.getElementById("modalNodeName");
     if (nameEl) nameEl.innerText = node.name;
-    if (modal) {
-      modal.style.display = "flex";
-    }
+    if (modal) modal.style.display = "flex";
     renderModalGraph(node);
     fetchModalTasks(node);
   }
@@ -415,7 +408,6 @@ type: page
           <span class="status-badge" id="badge-${node.id}"></span>${node.name}
         </div>
         <div class="node-meta">
-          IP: ${node.ip}<br>
           ${node.specs}<br>
           Uptime: <span id="uptime-${node.id}">--</span>
         </div>
@@ -447,7 +439,6 @@ type: page
         </div>
       `;
 
-      // Direct, explicit listener on each card
       card.addEventListener("click", () => {
         openNodeModal(node);
       });
@@ -455,7 +446,6 @@ type: page
       container.appendChild(card);
     });
 
-    // Close modal handlers
     const modal = document.getElementById("clusterModalOverlay");
     const closeBtn = document.getElementById("modalCloseBtn");
     if (modal) {
