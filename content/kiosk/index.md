@@ -418,7 +418,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     <div class="hud-top-bar">
       <div class="hud-title-group">
         <h1>
-          <span style="color:var(--accent-cyan);">⚡</span> MITCHELL LAB CLUSTER
+          <span style="color:var(--accent-cyan);"></span> MITCHELL LAB CLUSTER
         </h1>
       </div>
       <div class="hud-status-line" id="hud-last-update">CONNECTING TO MESH...</div>
