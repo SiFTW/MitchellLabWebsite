@@ -84,9 +84,9 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    padding-bottom: 8px;
-    gap: 12px;
-    flex-wrap: wrap; /* Allows wrap on small mobile screens */
+    padding-bottom: 10px;
+    gap: 14px;
+    flex-wrap: wrap;
   }
 
   .hud-title-group {
@@ -108,10 +108,10 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
   .hud-subtitle {
-    font-size: clamp(0.60rem, 1.8vw, 0.70rem);
+    font-size: clamp(0.62rem, 1.8vw, 0.72rem);
     color: var(--accent-tumor);
     font-family: var(--mono-font);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -119,28 +119,29 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     flex-wrap: wrap;
   }
 
+  /* ENLARGED IN SILICO SPHEROID CANVAS WRAPPER */
   .tumor-canvas-wrapper {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(236, 72, 153, 0.2);
-    border-radius: 8px;
-    padding: 4px 8px;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(236, 72, 153, 0.25);
+    border-radius: 10px;
+    padding: 6px 12px;
     flex-shrink: 0;
   }
 
   #tumor-spheroid-canvas {
-    width: 54px;
-    height: 32px;
-    border-radius: 4px;
+    width: 85px;
+    height: 48px;
+    border-radius: 6px;
     background: #020408;
   }
 
   .canvas-meta {
     font-family: var(--mono-font);
-    font-size: 0.58rem;
-    line-height: 1.2;
+    font-size: 0.65rem;
+    line-height: 1.3;
   }
 
   /* FLUID AGGREGATE STATS ROW */
@@ -226,7 +227,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 0; /* Prevents overflow blowout */
+    min-width: 0;
   }
 
   .node-card::before {
@@ -442,21 +443,22 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
   <div class="cluster-hud-header">
     <div class="hud-top-bar">
       <div class="hud-title-group">
-        <h1><span style="color:var(--accent-tumor);">🔬</span> MITCHELL LAB // CANCER SYSTEMS BIOLOGY</h1>
+        <h1><span style="color:var(--accent-tumor);">🔬</span> OVERALL SIMULATION STATUS</h1>
         <div class="hud-subtitle">
-          <span>SPATIAL ONCOLOGY ENGINE</span> • <span id="hud-last-update">CONNECTING TO MESH...</span>
+          <span>SYSTEMS ONCOLOGY SERVERS</span> • <span id="hud-last-update">CONNECTING TO MESH...</span>
         </div>
       </div>
-      <!-- Live Micro-Lattice Canvas -->
+
+      <!-- Enlarged In Silico Spheroid Canvas -->
       <div class="tumor-canvas-wrapper">
-        <canvas id="tumor-spheroid-canvas" width="108" height="64"></canvas>
+        <canvas id="tumor-spheroid-canvas" width="170" height="96"></canvas>
         <div class="canvas-meta">
-          <div style="color:var(--accent-tumor); font-weight:800;">IN SILICO SPHEROID</div>
-          <div style="color:var(--text-muted);" id="spheroid-stats">Active Mesh</div>
-          <div style="color:var(--accent-cyan);" id="mitotic-index">Lattice Activity</div>
+          <div style="color:var(--accent-tumor); font-weight:800; font-size:0.70rem;">IN SILICO SPHEROID</div>
+          <div style="color:var(--accent-cyan); margin-top:2px;" id="mitotic-index">Lattice Activity</div>
         </div>
       </div>
     </div>
+
     <!-- Cluster Aggregate Hardware Stats -->
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
@@ -517,16 +519,18 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
-  // --- AMBIENT CELLULAR SPHEROID CANVAS ANIMATION ---
+  // --- ENLARGED AMBIENT CELLULAR SPHEROID CANVAS ANIMATION ---
   const canvas = document.getElementById("tumor-spheroid-canvas");
   const ctx = canvas.getContext("2d");
-  const cells = Array.from({ length: 36 }).map(() => ({
-    x: 54 + (Math.random() - 0.5) * 32,
-    y: 32 + (Math.random() - 0.5) * 20,
-    vx: (Math.random() - 0.5) * 0.35,
-    vy: (Math.random() - 0.5) * 0.35,
-    r: Math.random() * 2.2 + 1.6,
-    type: Math.random() > 0.4 ? "tumor" : "quiescent",
+  const centerX = 85;
+  const centerY = 48;
+  const cells = Array.from({ length: 58 }).map(() => ({
+    x: centerX + (Math.random() - 0.5) * 56,
+    y: centerY + (Math.random() - 0.5) * 36,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r: Math.random() * 2.8 + 1.8,
+    type: Math.random() > 0.35 ? "tumor" : "quiescent",
     phase: Math.random() * Math.PI * 2
   }));
 
@@ -541,17 +545,17 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
       c.y += c.vy * speedMult;
       c.phase += 0.04 * speedMult;
 
-      const dx = 54 - c.x;
-      const dy = 32 - c.y;
-      c.vx += dx * 0.001;
-      c.vy += dy * 0.001;
+      const dx = centerX - c.x;
+      const dy = centerY - c.y;
+      c.vx += dx * 0.0008;
+      c.vy += dy * 0.0008;
 
       ctx.beginPath();
-      ctx.arc(c.x, c.y, c.r + Math.sin(c.phase) * 0.3, 0, Math.PI * 2);
+      ctx.arc(c.x, c.y, c.r + Math.sin(c.phase) * 0.4, 0, Math.PI * 2);
       if (c.type === "tumor") {
         ctx.fillStyle = speedMult > 1.8 ? "#f43f5e" : "#ec4899";
         ctx.shadowColor = "#ec4899";
-        ctx.shadowBlur = 3;
+        ctx.shadowBlur = 4;
       } else {
         ctx.fillStyle = "#38bdf8";
         ctx.shadowBlur = 0;
@@ -567,7 +571,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
   function classifyBioTask(cmdName, cmdLine = "") {
     const full = (cmdName + " " + cmdLine).toLowerCase();
     
-    // Exact Julia tasks -> ODE Solving
+    // Julia -> ODE Solving
     if (full.includes("julia")) {
       return { tag: "ODE Solving", icon: "🧬" };
     }
@@ -581,12 +585,11 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
       return { tag: "Data Processing", icon: "📊" };
     }
     
-    // Synology / Backup / Storage tasks
+    // Storage & Sync tasks
     if (full.includes("cloudsync") || full.includes("rsync") || full.includes("syno")) {
       return { tag: "Cloud Sync", icon: "💾" };
     }
 
-    // Default / All other OS / Container / Background jobs
     return { tag: "General Computing", icon: "⚙️" };
   }
 
@@ -694,10 +697,10 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
 
   function getHeatmapColor(load) {
     if (load < 5)   return "rgba(255, 255, 255, 0.04)";
-    if (load < 30)  return "#0284c7"; // Cyan
-    if (load < 70)  return "#10b981"; // Emerald
-    if (load < 90)  return "#f59e0b"; // Amber
-    return "#ec4899";                 // Rose/High Load
+    if (load < 30)  return "#0284c7";
+    if (load < 70)  return "#10b981";
+    if (load < 90)  return "#f59e0b";
+    return "#ec4899";
   }
 
   function updateClusterAggregates() {
@@ -712,7 +715,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
 
     const mitEl = document.getElementById("mitotic-index");
     if (mitEl) {
-      mitEl.innerText = `Avg Load: ${Math.round(clusterState.cpuAvg)}%`;
+      mitEl.innerText = `Lattice Load: ${Math.round(clusterState.cpuAvg)}%`;
     }
   }
 
@@ -790,7 +793,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
         });
       }
 
-      // Classified Process Table
+      // Top Processes
       if (Array.isArray(procs) && procs.length > 0) {
         const sorted = [...procs]
           .sort((a, b) => (b.cpu_percent || 0) - (a.cpu_percent || 0))
