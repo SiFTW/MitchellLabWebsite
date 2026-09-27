@@ -412,7 +412,6 @@ summary: "Widescreen in silico cancer biology telemetry HUD for Mitchell Lab."
           <span>SPATIAL ONCOLOGY ENGINE</span> • <span>TUMOR LATTICE PDE SOLVER</span> • <span id="hud-last-update">CONNECTING TO MESH...</span>
         </div>
       </div>
-
       <!-- Live Micro-Lattice Canvas -->
       <div class="tumor-canvas-wrapper">
         <canvas id="tumor-spheroid-canvas" width="128" height="76"></canvas>
@@ -423,7 +422,6 @@ summary: "Widescreen in silico cancer biology telemetry HUD for Mitchell Lab."
         </div>
       </div>
     </div>
-
     <!-- Cluster Aggregate Biomarker Stats -->
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
