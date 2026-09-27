@@ -62,25 +62,26 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     background-size: 100% 100%, 28px 28px, 28px 28px;
   }
 
-  /* TOP AGGREGATE OPERATIONS BANNER */
+ /* TWO-TIER AGGREGATE OPERATIONS BANNER */
   .cluster-hud-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Stacks stats BELOW the title */
+    gap: 14px;
     background: rgba(13, 20, 36, 0.92);
     border: 1px solid rgba(56, 189, 248, 0.28);
     border-radius: 12px;
-    padding: 12px 22px;
+    padding: 14px 22px;
     margin-bottom: 16px;
     backdrop-filter: blur(16px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-    flex-wrap: nowrap;
-    gap: 16px;
   }
 
-  .hud-title-group {
-    flex-shrink: 0;
-    white-space: nowrap;
+  .hud-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding-bottom: 10px;
   }
 
   .hud-title-group h1 {
@@ -96,31 +97,38 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
   .hud-status-line {
-    margin: 3px 0 0 0;
     font-size: 0.72rem;
     color: var(--text-secondary);
     font-family: var(--mono-font);
     white-space: nowrap;
   }
 
+  /* Grid of 4 aggregate stat badges sitting directly below the title */
   .hud-metrics-row {
-    display: flex;
-    gap: 22px;
-    flex-shrink: 0;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    width: 100%;
   }
 
   .hud-stat-box {
-    text-align: right;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 8px 14px;
+    text-align: left; /* Clean, modern alignment */
     white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .hud-stat-box .val {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: var(--accent-cyan);
     font-family: var(--mono-font);
-    line-height: 1.1;
+    line-height: 1.15;
     white-space: nowrap;
   }
 
@@ -129,10 +137,9 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-muted);
-    margin-top: 2px;
+    margin-top: 3px;
     white-space: nowrap;
   }
-
   /* TRUE WIDESCREEN 4-COLUMN GRID */
   .nodes-grid {
     display: grid;
@@ -379,29 +386,35 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
 <div class="hud-wrapper">
   <!-- Cluster Header Banner -->
+  <!-- Two-Tier Cluster Header Banner -->
   <div class="cluster-hud-header">
-    <div class="hud-title-group">
-      <h1>
-        <span style="color:var(--accent-cyan);">⚡</span> MITCHELL LAB CLUSTER
-      </h1>
+    <!-- Top Row: Title + Live Mesh Pulse -->
+    <div class="hud-top-bar">
+      <div class="hud-title-group">
+        <h1>
+          <span style="color:var(--accent-cyan);">⚡</span> MITCHELL LAB CLUSTER
+        </h1>
+      </div>
       <div class="hud-status-line" id="hud-last-update">CONNECTING TO HIGH-THROUGHPUT MESH...</div>
     </div>
+
+    <!-- Bottom Row: 4 Metric Cards Evenly Spaced Below -->
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
         <div class="val" id="total-cores">192</div>
-        <div class="lbl">Threads / Cores</div>
+        <div class="lbl">Threads / Compute Cores</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="total-ram-active">0 / 324 GB</div>
-        <div class="lbl">Cluster RAM</div>
+        <div class="lbl">Active Cluster Memory</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="cluster-total-net">-- / --</div>
-        <div class="lbl">Cluster Net I/O</div>
+        <div class="lbl">Aggregated Network I/O</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="nas-sync-top">ONLINE</div>
-        <div class="lbl">Cloud Sync</div>
+        <div class="lbl">Cloud Sync Engine</div>
       </div>
     </div>
   </div>
