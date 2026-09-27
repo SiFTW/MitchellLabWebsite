@@ -397,8 +397,6 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
       </div>
       <div class="hud-status-line" id="hud-last-update">CONNECTING TO HIGH-THROUGHPUT MESH...</div>
     </div>
-
-    <!-- Bottom Row: 4 Metric Cards Evenly Spaced Below -->
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
         <div class="val" id="total-cores">192</div>
