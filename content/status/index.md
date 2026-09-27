@@ -247,13 +247,15 @@ type: page
 
 <script>
 (function() {
+ const GIST_RAW_URL = "https://gist.githubusercontent.com/<YOUR_GITHUB_USERNAME>/<GIST_ID>/raw/endpoints.json";
+
   const NODES = [
     {
       id: "simon",
       name: "simon-HP-Z6-G4-Workstation",
       specs: "72 Cores @ 2.3 GHz",
       columns: 12,
-      url: "https://simon.mitchell.science",
+      url: "",
       history: []
     },
     {
@@ -261,7 +263,7 @@ type: page
       name: "Jean Luc Packard Bell (JLP)",
       specs: "104 Cores @ 2.1 GHz",
       columns: 13,
-      url: "https://jlp.mitchell.science",
+      url: "",
       history: []
     },
     {
@@ -269,7 +271,7 @@ type: page
       name: "Priti TheDell",
       specs: "12 Cores @ 4.0 GHz",
       columns: 6,
-      url: "https://priti.mitchell.science",
+      url: "",
       history: []
     },
     {
@@ -277,10 +279,36 @@ type: page
       name: "Synology DiskStation",
       specs: "4 Cores • 23 TB Btrfs RAID Pool",
       columns: 4,
-      url: "https://nas.mitchell.science",
+      url: "",
       history: []
     }
   ];
+
+  async function startClusterMonitoring() {
+    try {
+      // Bust cache using timestamp query
+      const res = await fetch(`${GIST_RAW_URL}?t=${Date.now()}`);
+      const endpoints = await res.json();
+
+      NODES.forEach(n => {
+        if (endpoints[n.id]) {
+          n.url = endpoints[n.id];
+        }
+      });
+    } catch (err) {
+      console.warn("Could not load dynamic endpoints, using fallbacks if present", err);
+    }
+
+    initDashboard();
+    updateAll();
+    setInterval(updateAll, 3000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startClusterMonitoring);
+  } else {
+    startClusterMonitoring();
+  }
 
   let activeModalNode = null;
 
