@@ -2,7 +2,7 @@
 title: "Mitchell Lab Telemetry HUD"
 layout: "single"
 url: "/status/kiosk/"
-summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
+summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 ---
 
 <style>
@@ -63,7 +63,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
   }
 
-  /* FLUID TOP COMMAND BANNER */
+  /* TOP COMMAND BANNER */
   .cluster-hud-header {
     display: flex;
     flex-direction: column;
@@ -119,7 +119,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     flex-wrap: wrap;
   }
 
-  /* ENLARGED IN SILICO SPHEROID CANVAS WRAPPER */
+  /* CELL SIMULATION CANVAS */
   .tumor-canvas-wrapper {
     display: flex;
     align-items: center;
@@ -197,7 +197,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     text-overflow: ellipsis;
   }
 
-  /* FLUID CARD GRID */
+  /* FLUID 4-COLUMN CARD GRID */
   .nodes-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -283,12 +283,51 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     font-size: 0.62rem;
     font-family: var(--mono-font);
     color: var(--accent-cyan);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  /* JUPYTERHUB STATUS ROW */
+  .service-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    padding: 3px 8px;
+    margin-bottom: 7px;
+    font-family: var(--mono-font);
+    font-size: 0.64rem;
+  }
+
+  .service-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 700;
+    font-size: 0.60rem;
+    letter-spacing: 0.04em;
+  }
+
+  .service-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+  }
+
+  .service-dot.active {
+    background: var(--accent-emerald);
+    box-shadow: 0 0 6px var(--accent-emerald);
+  }
+
+  .service-dot.inactive {
+    background: #64748b;
   }
 
   .net-hud-bar {
@@ -410,6 +449,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     font-size: 0.62rem;
   }
 
+  /* NAS CLEAN BACKUP HUD BAR */
   .cloudsync-hud {
     background: rgba(16, 185, 129, 0.08);
     border: 1px solid rgba(16, 185, 129, 0.28);
@@ -445,15 +485,15 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
       <div class="hud-title-group">
         <h1><span style="color:var(--accent-tumor);">🔬</span> OVERALL SIMULATION STATUS</h1>
         <div class="hud-subtitle">
-          <span>SYSTEMS ONCOLOGY SERVERS</span> • <span id="hud-last-update">CONNECTING TO MESH...</span>
+          <span>SYSTEMS ONCOLOGY SERVERS</span> • <span id="hud-last-update">CONNECTING...</span>
         </div>
       </div>
-      <!-- Enlarged In Silico Spheroid Canvas -->
+      <!-- Cell Simulation Canvas -->
       <div class="tumor-canvas-wrapper">
         <canvas id="tumor-spheroid-canvas" width="170" height="96"></canvas>
         <div class="canvas-meta">
-          <div style="color:var(--accent-tumor); font-weight:800; font-size:0.70rem;">IN SILICO SPHEROID</div>
-          <div style="color:var(--accent-cyan); margin-top:2px;" id="mitotic-index">Lattice Activity</div>
+          <div style="color:var(--accent-tumor); font-weight:800; font-size:0.70rem;">CELL SIMULATION</div>
+          <div style="color:var(--accent-cyan); margin-top:2px;" id="mitotic-index">Active Load: 0%</div>
         </div>
       </div>
     </div>
@@ -487,11 +527,12 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
 <script>
   const GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
 
+  // Real, uniform Systems Oncology Roles
   const NODES = [
-    { id: "simon", name: "SIMON", role: "ODE Lattice Controller", bioRole: "72C ODE & Model Management", cores: 72, columns: 12, apiVer: 3, url: "" },
-    { id: "jlp",   name: "JLP",   role: "Compute Array",         bioRole: "104C Monte Carlo Simulation",  cores: 104, columns: 13, apiVer: 3, url: "" },
-    { id: "priti", name: "PRITI", role: "Biophysical Solver",     bioRole: "12C Deterministic Solver",     cores: 12, columns: 6,  apiVer: 3, url: "" },
-    { id: "nas",   name: "NAS",   role: "Trajectory Store",       bioRole: "23TB RAID Data & Checkpoints", cores: 4, columns: 4,  apiVer: 4, url: "" }
+    { id: "simon", name: "SIMON", role: "Systems Oncology Compute", bioRole: "72 Cores • 62GB RAM",  hasJupyter: true,  cores: 72, columns: 12, apiVer: 3, url: "" },
+    { id: "jlp",   name: "JLP",   role: "Systems Oncology Compute", bioRole: "104 Cores • 188GB RAM", hasJupyter: true,  cores: 104, columns: 13, apiVer: 3, url: "" },
+    { id: "priti", name: "PRITI", role: "Systems Oncology Compute", bioRole: "12 Cores • 64GB RAM",  hasJupyter: true,  cores: 12, columns: 6,  apiVer: 3, url: "" },
+    { id: "nas",   name: "NAS",   role: "Storage Node",            bioRole: "4 Cores • 23TB RAID",    hasJupyter: false, cores: 4, columns: 4,  apiVer: 4, url: "" }
   ];
 
   const clusterState = {
@@ -517,7 +558,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
-  // --- ENLARGED AMBIENT CELLULAR SPHEROID CANVAS ANIMATION ---
+  // --- CELLULAR SIMULATION CANVAS ---
   const canvas = document.getElementById("tumor-spheroid-canvas");
   const ctx = canvas.getContext("2d");
   const centerX = 85;
@@ -565,7 +606,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
   }
   requestAnimationFrame(animateTumorLattice);
 
-  // --- TRUTHFUL COMPUTATIONAL TASK CLASSIFIER ---
+  // --- TRUTHFUL TASK CLASSIFIER ---
   function classifyBioTask(cmdName, cmdLine = "") {
     const full = (cmdName + " " + cmdLine).toLowerCase();
     
@@ -574,7 +615,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
       return { tag: "ODE Solving", icon: "🧬" };
     }
     
-    // Scripts, Pipelines, Aligners, Python, R -> Data Processing
+    // Python, R, Pipelines, Aligners -> Data Processing
     if (full.includes("python") || full.includes("python3") ||
         full.includes("rscript") || full.includes("r.bin") ||
         full.includes("nextflow") || full.includes("snakemake") ||
@@ -583,7 +624,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
       return { tag: "Data Processing", icon: "📊" };
     }
     
-    // Storage & Sync tasks
+    // Storage & Sync
     if (full.includes("cloudsync") || full.includes("rsync") || full.includes("syno")) {
       return { tag: "Cloud Sync", icon: "💾" };
     }
@@ -601,13 +642,22 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
       card.className = "node-card";
       card.id = `card-${n.id}`;
 
+      // Clean NAS backup row (no truncated snapshot text)
       const syncSnippet = isNas ? `
         <div class="cloudsync-hud" id="nas-sync-banner">
-          <div style="overflow:hidden;">
-            <div style="font-size:0.60rem; color:#6ee7b7; letter-spacing:0.06em;">CLOUD SYNC</div>
-            <div id="nas-sync-file" style="font-size:0.70rem; color:#e2e8f0; font-weight:600; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Syncing...</div>
-          </div>
-          <div id="nas-sync-time" style="font-size:0.65rem; color:#94a3b8; text-align:right; white-space:nowrap;">--</div>
+          <div style="font-size:0.64rem; font-weight:700; color:#10b981;" id="nas-sync-state-txt">BACKUP: SUCCESSFUL</div>
+          <div id="nas-sync-time" style="font-size:0.65rem; color:#94a3b8; text-align:right; white-space:nowrap;">Last: --</div>
+        </div>
+      ` : "";
+
+      // JupyterHub status pill (Compute servers only)
+      const jupyterSnippet = n.hasJupyter ? `
+        <div class="service-status-bar">
+          <span style="color:var(--text-muted);">JupyterHub</span>
+          <span class="service-pill" id="jup-pill-${n.id}" style="color:#64748b;">
+            <span class="service-dot inactive" id="jup-dot-${n.id}"></span>
+            <span id="jup-txt-${n.id}">CHECKING</span>
+          </span>
         </div>
       ` : "";
 
@@ -616,12 +666,14 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
           <div class="node-card-head">
             <div class="node-name">
               <span class="status-dot" id="dot-${n.id}"></span>
-              ${n.name} <span style="font-size:0.70rem; color:var(--text-muted); font-weight:400;">(${n.role})</span>
+              ${n.name}
             </div>
             <span class="node-submeta" id="uptime-${n.id}">--</span>
           </div>
 
           <div class="node-biometa">${n.bioRole}</div>
+
+          ${jupyterSnippet}
 
           <!-- Network Rx/Tx -->
           <div class="net-hud-bar">
@@ -713,7 +765,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
 
     const mitEl = document.getElementById("mitotic-index");
     if (mitEl) {
-      mitEl.innerText = `Lattice Load: ${Math.round(clusterState.cpuAvg)}%`;
+      mitEl.innerText = `Active Load: ${Math.round(clusterState.cpuAvg)}%`;
     }
   }
 
@@ -735,6 +787,30 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
 
       document.getElementById(`dot-${node.id}`).className = "status-dot online";
       document.getElementById(`uptime-${node.id}`).innerText = upt || "ONLINE";
+
+      // JupyterHub Detection (Compute Servers)
+      if (node.hasJupyter && Array.isArray(procs)) {
+        const jupDot = document.getElementById(`jup-dot-${node.id}`);
+        const jupTxt = document.getElementById(`jup-txt-${node.id}`);
+        const jupPill = document.getElementById(`jup-pill-${node.id}`);
+        
+        const isJupyterRunning = procs.some(p => {
+          const combined = ((p.name || '') + ' ' + (p.cmdline || '')).toLowerCase();
+          return combined.includes('jupyterhub') || combined.includes('jupyter-lab') || combined.includes('jupyter-server');
+        });
+
+        if (jupDot && jupTxt && jupPill) {
+          if (isJupyterRunning) {
+            jupDot.className = "service-dot active";
+            jupTxt.innerText = "ACTIVE";
+            jupPill.style.color = "#10b981";
+          } else {
+            jupDot.className = "service-dot inactive";
+            jupTxt.innerText = "INACTIVE";
+            jupPill.style.color = "#64748b";
+          }
+        }
+      }
 
       // Network Traffic
       if (Array.isArray(net) && net.length > 0) {
@@ -822,6 +898,12 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
       updateClusterAggregates();
     } catch (e) {
       document.getElementById(`dot-${node.id}`).className = "status-dot";
+      if (node.hasJupyter) {
+        const jupDot = document.getElementById(`jup-dot-${node.id}`);
+        const jupTxt = document.getElementById(`jup-txt-${node.id}`);
+        if (jupDot) jupDot.className = "service-dot inactive";
+        if (jupTxt) jupTxt.innerText = "OFFLINE";
+      }
     }
   }
 
@@ -832,35 +914,32 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
       const sync = await res.json();
 
       const banner = document.getElementById("nas-sync-banner");
-      const fileEl = document.getElementById("nas-sync-file");
+      const stateTxt = document.getElementById("nas-sync-state-txt");
       const timeEl = document.getElementById("nas-sync-time");
       const topSync = document.getElementById("nas-sync-top");
 
-      let formattedFile = "Ready";
-      if (sync.last_file) {
-        const raw = sync.last_file;
-        const lower = raw.toLowerCase();
-        if (lower.endsWith('.jld2') || lower.endsWith('.h5') || lower.endsWith('.zarr')) {
-          formattedFile = `<span style="color:var(--accent-tumor);">🔬 Snapshot:</span> ${raw}`;
-        } else if (lower.endsWith('.bam') || lower.endsWith('.fastq')) {
-          formattedFile = `<span style="color:var(--accent-purple);">🧬 Seq Data:</span> ${raw}`;
-        } else if (lower.endsWith('.csv') || lower.endsWith('.parquet')) {
-          formattedFile = `<span style="color:var(--accent-emerald);">📊 Matrix:</span> ${raw}`;
-        } else {
-          formattedFile = raw;
-        }
-      }
-
       if (sync.state === "success") {
         if (banner) banner.style.borderColor = "rgba(16, 185, 129, 0.4)";
-        if (topSync) { topSync.innerText = "ONLINE"; topSync.style.color = "#10b981"; }
-        if (fileEl) fileEl.innerHTML = formattedFile;
-        if (timeEl) timeEl.innerText = sync.last_synced;
+        if (topSync) { 
+          topSync.innerText = "SUCCESS"; 
+          topSync.style.color = "#10b981"; 
+        }
+        if (stateTxt) {
+          stateTxt.innerText = "BACKUP: SUCCESSFUL";
+          stateTxt.style.color = "#10b981";
+        }
+        if (timeEl) timeEl.innerText = `Last: ${sync.last_synced || 'Recently'}`;
       } else {
         if (banner) banner.style.borderColor = "rgba(244, 63, 94, 0.4)";
-        if (topSync) { topSync.innerText = "ATTN"; topSync.style.color = "#f43f5e"; }
-        if (fileEl) fileEl.innerText = `Sync error (${sync.recent_errors || 1})`;
-        if (timeEl) timeEl.innerText = "Check Logs";
+        if (topSync) { 
+          topSync.innerText = "FAILED"; 
+          topSync.style.color = "#f43f5e"; 
+        }
+        if (stateTxt) {
+          stateTxt.innerText = "BACKUP: FAILED";
+          stateTxt.style.color = "#f43f5e";
+        }
+        if (timeEl) timeEl.innerText = `Errors: ${sync.recent_errors || 1}`;
       }
     } catch(e) {}
   }
@@ -879,7 +958,7 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
     const refreshAll = () => {
       NODES.forEach(fetchTelemetry);
       const now = new Date();
-      document.getElementById("hud-last-update").innerText = `MESH RUNNING // ${now.toLocaleTimeString()}`;
+      document.getElementById("hud-last-update").innerText = `CONNECTED // ${now.toLocaleTimeString()}`;
     };
 
     refreshAll();
