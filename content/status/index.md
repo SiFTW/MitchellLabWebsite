@@ -34,16 +34,16 @@ type: page
     margin-bottom: 15px;
   }
   .metric-label {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    margin-top: 12px;
+    margin-top: 10px;
     margin-bottom: 4px;
     display: flex;
     justify-content: space-between;
   }
   .progress-bg {
     width: 100%;
-    height: 10px;
+    height: 9px;
     background: #e5e7eb;
     border-radius: 9999px;
     overflow: hidden;
@@ -53,8 +53,9 @@ type: page
     border-radius: 9999px;
     transition: width 0.4s ease;
   }
-  .fill-load { background: #f59e0b; }
-  .fill-ram  { background: #16a34a; }
+  .fill-load    { background: #f59e0b; }
+  .fill-ram     { background: #16a34a; }
+  .fill-storage { background: #3b82f6; }
 
   .heatmap-section-title {
     font-size: 0.85rem;
@@ -118,11 +119,16 @@ const NODES = [
   }
 ];
 
-function formatUptime(seconds) {
-  if (!seconds) return "Unknown";
-  const d = Math.floor(seconds / (3600 * 24));
-  const h = Math.floor((seconds % (3600 * 24)) / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
+function formatUptime(uptimeData) {
+  if (!uptimeData) return "Unknown";
+  if (typeof uptimeData === "string") {
+    return uptimeData.replace("days", "d").replace("day", "d").replace("hours", "h").replace("mins", "m");
+  }
+  const s = parseInt(uptimeData, 10);
+  if (isNaN(s)) return String(uptimeData);
+  const d = Math.floor(s / (3600 * 24));
+  const h = Math.floor((s % (3600 * 24)) / 3600);
+  const m = Math.floor((s % 3600) / 60);
   return `${d}d ${h}h ${m}m`;
 }
 
@@ -166,6 +172,13 @@ function initCards() {
         <div class="progress-fill fill-ram" id="ram-bar-${node.id}" style="width: 0%;"></div>
       </div>
 
+      <div class="metric-label">
+        <span>Storage: <span id="disk-val-${node.id}">-- / -- GB</span></span>
+      </div>
+      <div class="progress-bg">
+        <div class="progress-fill fill-storage" id="disk-bar-${node.id}" style="width: 0%;"></div>
+      </div>
+
       <div class="heatmap-section-title">Core Heatmap:</div>
       <div class="heatmap-grid" id="grid-${node.id}" style="grid-template-columns: repeat(${node.columns}, 1fr);">
         <div style="font-size:0.75rem; color:#9ca3af; grid-column: 1/-1;">Connecting telemetry...</div>
@@ -177,10 +190,11 @@ function initCards() {
 
 async function fetchNodeTelemetry(node) {
   try {
-    const [cpuRes, perCpuRes, memRes, uptimeRes] = await Promise.all([
+    const [cpuRes, perCpuRes, memRes, fsRes, uptimeRes] = await Promise.all([
       fetch(`${node.url}/api/3/cpu`).then(r => r.json()),
       fetch(`${node.url}/api/3/percpu`).then(r => r.json()),
       fetch(`${node.url}/api/3/mem`).then(r => r.json()),
+      fetch(`${node.url}/api/3/fs`).then(r => r.json()),
       fetch(`${node.url}/api/3/uptime`).then(r => r.json())
     ]);
 
@@ -190,12 +204,14 @@ async function fetchNodeTelemetry(node) {
     const uptimeEl = document.getElementById(`uptime-${node.id}`);
     if (uptimeEl) uptimeEl.innerText = formatUptime(uptimeRes);
 
+    // CPU Progress
     const cpuTotal = cpuRes.total ? cpuRes.total.toFixed(1) : 0;
     const cpuVal = document.getElementById(`cpu-val-${node.id}`);
     const cpuBar = document.getElementById(`cpu-bar-${node.id}`);
     if (cpuVal) cpuVal.innerText = `${cpuTotal}%`;
     if (cpuBar) cpuBar.style.width = `${Math.min(cpuTotal, 100)}%`;
 
+    // RAM Progress
     const ramUsedGB = (memRes.used / (1024 ** 3)).toFixed(1);
     const ramTotalGB = (memRes.total / (1024 ** 3)).toFixed(0);
     const ramPct = ((memRes.used / memRes.total) * 100).toFixed(1);
@@ -204,6 +220,20 @@ async function fetchNodeTelemetry(node) {
     if (ramVal) ramVal.innerText = `${ramUsedGB} / ${ramTotalGB} GB`;
     if (ramBar) ramBar.style.width = `${Math.min(ramPct, 100)}%`;
 
+    // Storage Progress (Targets root mount '/')
+    if (Array.isArray(fsRes) && fsRes.length > 0) {
+      const rootFs = fsRes.find(d => d.mnt_point === "/") || fsRes[0];
+      const diskUsedGB = (rootFs.used / (1024 ** 3)).toFixed(0);
+      const diskTotalGB = (rootFs.size / (1024 ** 3)).toFixed(0);
+      const diskPct = rootFs.percent !== undefined ? rootFs.percent.toFixed(0) : ((rootFs.used / rootFs.size) * 100).toFixed(0);
+
+      const diskVal = document.getElementById(`disk-val-${node.id}`);
+      const diskBar = document.getElementById(`disk-bar-${node.id}`);
+      if (diskVal) diskVal.innerText = `${diskUsedGB} / ${diskTotalGB} GB (${diskPct}%)`;
+      if (diskBar) diskBar.style.width = `${Math.min(diskPct, 100)}%`;
+    }
+
+    // Heatmap Grid
     const grid = document.getElementById(`grid-${node.id}`);
     if (grid) {
       grid.innerHTML = "";
