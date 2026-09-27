@@ -248,7 +248,50 @@ type: page
 <script>
 (function() {
   const GIST_RAW_URL = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw/endpoints.json";
+  const GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
 
+function renderCloudSyncBadge(sync) {
+  const statusEl = document.getElementById("nas-sync-status");
+  const pillEl = document.getElementById("nas-sync-pill");
+  const timeEl = document.getElementById("nas-sync-time");
+  const fileEl = document.getElementById("nas-sync-file");
+
+  if (!statusEl || !pillEl || !timeEl || !sync) return;
+
+  if (sync.state === "success") {
+    statusEl.innerText = "Synced";
+    statusEl.style.color = "#16a34a"; // Green
+    pillEl.style.background = "#10b981";
+    pillEl.style.boxShadow = "0 0 6px rgba(16, 185, 129, 0.4)";
+    timeEl.innerText = `Last synced: ${sync.last_synced}`;
+    if (fileEl && sync.last_file) {
+      fileEl.innerText = sync.last_file;
+      fileEl.title = `Last synced file: ${sync.last_file}`;
+    }
+  } else {
+    statusEl.innerText = sync.status || "Failed";
+    statusEl.style.color = "#dc2626"; // Red
+    pillEl.style.background = "#ef4444";
+    pillEl.style.boxShadow = "0 0 6px rgba(239, 68, 68, 0.4)";
+    timeEl.innerText = `Alert: ${sync.recent_errors || 1} error(s)`;
+    if (fileEl && sync.last_file) {
+      fileEl.innerText = sync.last_file;
+      fileEl.title = `File error: ${sync.last_file}`;
+    }
+  }
+}
+
+async function updateCloudSync() {
+  try {
+    const res = await fetch(`${GIST_BASE}/cloudsync.json?t=${Date.now()}`);
+    if (res.ok) {
+      const sync = await res.json();
+      renderCloudSyncBadge(sync);
+    }
+  } catch (err) {
+    console.warn("Could not fetch cloudsync status", err);
+  }
+}
   const NODES = [
     {
       id: "simon",
@@ -426,6 +469,25 @@ type: page
       const card = document.createElement("div");
       card.className = "node-card";
       card.id = `card-${node.id}`;
+
+      // Conditionally render Cloud Sync details ONLY for NAS
+      const isNas = node.id === "nas";
+      const syncSectionHtml = isNas ? `
+        <div style="margin-top: 14px; border-top: 1px solid rgba(229, 231, 235, 0.6); padding-top: 10px;">
+          <div class="metric-label" style="margin-bottom: 4px;">
+            <span>Cloud Sync:</span>
+            <span id="nas-sync-status" style="font-weight: 700; color: #64748b;">Checking...</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: #475569;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span id="nas-sync-pill" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; transition: background 0.3s ease;"></span>
+              <span id="nas-sync-time">Last synced: --</span>
+            </div>
+            <span id="nas-sync-file" style="color: #6b7280; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.72rem; overflow: hidden; text-overflow: ellipsis; max-width: 140px; white-space: nowrap;"></span>
+          </div>
+        </div>
+      ` : "";
+
       card.innerHTML = `
         <span class="card-hint">Inspect ↗</span>
         <div class="node-title">
@@ -456,6 +518,8 @@ type: page
         <div class="progress-bg">
           <div class="progress-fill fill-storage" id="disk-bar-${node.id}" style="width: 0%;"></div>
         </div>
+
+        ${syncSectionHtml}
 
         <div class="heatmap-section-title">Core Heatmap:</div>
         <div class="heatmap-grid" id="grid-${node.id}" style="grid-template-columns: repeat(${node.columns}, 1fr);">
@@ -595,22 +659,29 @@ type: page
 
   async function startClusterMonitoring() {
     try {
-      const res = await fetch(`${GIST_RAW_URL}?t=${Date.now()}`);
-      const endpoints = await res.json();
-
-      NODES.forEach(n => {
-        if (endpoints[n.id] && typeof endpoints[n.id] === "string" && endpoints[n.id].startsWith("http")) {
-          // Normalize URL by removing any trailing slash
-          n.url = endpoints[n.id].replace(/\/+$/, "");
-        }
-      });
+      // 1. Fetch dynamic Cloudflare endpoints for all nodes
+      const res = await fetch(`${GIST_BASE}/endpoints.json?t=${Date.now()}`);
+      if (res.ok) {
+        const endpoints = await res.json();
+        NODES.forEach(n => {
+          const targetUrl = endpoints[n.id] || (n.id === "nas" ? endpoints["nas"] : null);
+          if (targetUrl && typeof targetUrl === "string" && targetUrl.startsWith("http")) {
+            n.url = targetUrl.replace(/\/+$/, "");
+          }
+        });
+      }
     } catch (err) {
       console.warn("Could not load dynamic endpoints", err);
     }
 
+    // 2. Initialize DOM & run first updates
     initDashboard();
+    updateCloudSync();
     updateAll();
-    setInterval(updateAll, 3000);
+
+    // 3. Regular polling intervals
+    setInterval(updateAll, 3000);         // Glances metrics every 3s
+    setInterval(updateCloudSync, 30000);   // Cloud Sync status every 30s
   }
 
   if (document.readyState === "loading") {
