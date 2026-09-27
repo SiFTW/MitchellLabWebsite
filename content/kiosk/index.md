@@ -4,6 +4,21 @@ layout: "single"
 url: "/status/kiosk/"
 summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 ---
+---
+title: "Mitchell Lab Telemetry HUD"
+url: "/status/kiosk/"
+type: "widget_page"
+sections:
+  - block: markdown
+    content:
+      text: ""
+    design:
+      columns: '1'
+      spacing:
+        padding: ['0', '0', '0', '0']
+      css_class: "fullscreen-kiosk"
+---
+
 
 <style>
   :root {
@@ -23,38 +38,56 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
   
 
-  body, html {
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-base) !important;
-    color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    user-select: none;
-    -webkit-user-select: none;
-    overflow-x: hidden;
-    width: 100vw;
-  }
-
-/* 1. Reset standard Hugo theme wrapper constraints */
-  main, article, .post-content, .entry-content, .container, .single, .wrapper, .page, #content {
-    max-width: 100% !important;
-    width: 100% !important;
-    padding: 0 !important;
+/* ========================================================
+     WOWCHEMY / ACADEMIC FULLSCREEN BREAKOUT
+     ======================================================== */
+  /* 1. Unlock the body and main viewport */
+  html, body {
     margin: 0 !important;
-  }
-
-  /* 2. Breakout: Force true full-screen width from edge to edge */
-  .hud-wrapper {
-    position: relative;
+    padding: 0 !important;
     width: 100vw !important;
     max-width: 100vw !important;
-    left: 50% !important;
-    right: 50% !important;
-    margin-left: -50vw !important;
-    margin-right: -50vw !important;
+    background-color: #04070d !important;
+    overflow-x: hidden !important;
+  }
+
+  /* 2. Strip Wowchemy navigation bar and footer */
+  .page-header, 
+  .navbar, 
+  .page-footer, 
+  .site-footer, 
+  footer, 
+  header,
+  .docs-sidebar, 
+  .docs-toc {
+    display: none !important;
+  }
+
+  /* 3. Strip padding, margins, and width clamps from EVERY Wowchemy parent */
+  .page-body,
+  .universal-wrapper,
+  .article-container,
+  .docs-article-container,
+  .container-fluid,
+  .container,
+  main,
+  article {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* 4. Let the dashboard fill the entire screen edge-to-edge */
+  .hud-wrapper {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-height: 100vh !important;
     box-sizing: border-box !important;
-    padding: 16px 24px !important;
-    min-height: 100vh;
+    padding: 16px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   /* Optional: Hide site header/navbar and footer on kiosk mode so it's a true dashboard */
