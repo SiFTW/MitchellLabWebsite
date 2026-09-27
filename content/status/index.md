@@ -226,39 +226,24 @@ type: page
 
 <!-- Modal definition (will be ported to document.body automatically) -->
 <div id="clusterModalOverlay">
-  <div class="modal-window" id="modalWindow">
-    <div class="modal-header">
-      <h3 class="modal-title" id="modalNodeName">Workstation Details</h3>
-      <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
-    </div>
-    <div class="modal-body">
-      <div class="chart-box">
-        <div class="chart-heading">
-          <span>Recent CPU Load Trend</span>
-          <span id="chartLatestVal" style="color: #f59e0b;">--</span>
-        </div>
-        <svg class="sparkline-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
-          <polyline id="sparklinePoly" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="2" points="" />
-        </svg>
-      </div>
-
-      <div class="chart-heading">Top Active Processes (by CPU / RAM)</div>
-      <table class="task-table">
-        <thead>
-          <tr>
-            <th>PID</th>
-            <th>Process</th>
-            <th>User</th>
-            <th>CPU %</th>
-            <th>MEM %</th>
-          </tr>
-        </thead>
-        <tbody id="taskTableBody">
-          <tr><td colspan="5" style="text-align: center; color: #94a3b8;">Click a card to inspect processes...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+<div class="modal-window" id="modalWindow">
+<div class="modal-header">
+<h3 class="modal-title" id="modalNodeName">Workstation Details</h3>
+<button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+</div>
+<div class="modal-body">
+<div class="chart-box">
+<div class="chart-heading">
+<span>Recent CPU Load Trend</span>
+<span id="chartLatestVal" style="color: #f59e0b;">--</span>
+</div>
+<svg class="sparkline-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
+<polyline id="sparklinePoly" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="2" points="" />
+</svg>
+</div>
+<div id="taskTableWrapper"></div>
+</div>
+</div>
 </div>
 
 <script>
@@ -363,30 +348,52 @@ type: page
   }
 
   async function fetchModalTasks(node) {
-    const tbody = document.getElementById("taskTableBody");
-    if (!tbody) return;
+    const wrapper = document.getElementById("taskTableWrapper");
+    if (!wrapper) return;
+
     try {
       const procList = await fetch(`${node.url}/api/3/processlist`).then(r => r.json());
       procList.sort((a, b) => (b.cpu_percent || 0) - (a.cpu_percent || 0));
       const top10 = procList.slice(0, 10);
 
-      tbody.innerHTML = "";
+      let rowsHtml = "";
       top10.forEach(p => {
-        const row = document.createElement("tr");
         const cpu = (p.cpu_percent || 0).toFixed(1);
         const mem = (p.memory_percent || 0).toFixed(1);
-        row.innerHTML = `
-          <td style="color:#64748b;">${p.pid}</td>
-          <td style="font-weight:600;">${p.name}</td>
-          <td style="color:#475569;">${p.username || "root"}</td>
-          <td style="color: ${cpu > 50 ? '#dc2626' : '#1e293b'}; font-weight: 600;">${cpu}%</td>
-          <td>${mem}%</td>
+        rowsHtml += `
+          <tr>
+            <td style="color:#64748b;">${p.pid}</td>
+            <td style="font-weight:600;">${p.name}</td>
+            <td style="color:#475569;">${p.username || "root"}</td>
+            <td style="color: ${cpu > 50 ? '#dc2626' : '#1e293b'}; font-weight: 600;">${cpu}%</td>
+            <td>${mem}%</td>
+          </tr>
         `;
-        tbody.appendChild(row);
       });
+
+      wrapper.innerHTML = `
+        <div class="chart-heading">Top Active Processes (by CPU / RAM)</div>
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>PID</th>
+              <th>Process</th>
+              <th>User</th>
+              <th>CPU %</th>
+              <th>MEM %</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      `;
     } catch (e) {
-      tbody.innerHTML = `
-        <tr><td colspan="5" style="text-align: center; color: #ef4444;">Unable to fetch active processes.</td></tr>
+      wrapper.innerHTML = `
+        <div class="chart-heading">Top Active Processes (by CPU / RAM)</div>
+        <div style="text-align: center; color: #ef4444; padding: 12px; font-size: 0.85rem;">
+          Unable to fetch active processes.
+        </div>
       `;
     }
   }
