@@ -1,3 +1,10 @@
+---
+title: "Cluster Telemetry"
+summary: "Real-time workstation cluster resource monitoring"
+date: 2026-09-27
+type: page
+---
+
 <style>
   .telemetry-container {
     display: grid;
@@ -84,7 +91,6 @@
 <div class="telemetry-container" id="telemetryGrid"></div>
 
 <script>
-// Replace these tunnel URLs with your current active TryCloudflare URLs
 const NODES = [
   {
     id: "simon",
@@ -121,15 +127,15 @@ function formatUptime(seconds) {
 }
 
 function getCoreColor(usage) {
-  // Smooth green -> yellow/amber -> red heatmap
-  if (usage < 15) return "#e5e7eb"; // Idle / minimal
-  if (usage < 40) return "#fcd34d"; // Moderate
-  if (usage < 75) return "#f59e0b"; // Active (amber)
-  return "#ef4444";                 // Saturated (red)
+  if (usage < 15) return "#e5e7eb";
+  if (usage < 40) return "#fcd34d";
+  if (usage < 75) return "#f59e0b";
+  return "#ef4444";
 }
 
 function initCards() {
   const container = document.getElementById("telemetryGrid");
+  if (!container) return;
   container.innerHTML = "";
 
   NODES.forEach(node => {
@@ -178,35 +184,41 @@ async function fetchNodeTelemetry(node) {
       fetch(`${node.url}/api/3/uptime`).then(r => r.json())
     ]);
 
-    document.getElementById(`badge-${node.id}`).className = "status-badge status-online";
-    document.getElementById(`uptime-${node.id}`).innerText = formatUptime(uptimeRes);
+    const badge = document.getElementById(`badge-${node.id}`);
+    if (badge) badge.className = "status-badge status-online";
 
-    // CPU Progress
+    const uptimeEl = document.getElementById(`uptime-${node.id}`);
+    if (uptimeEl) uptimeEl.innerText = formatUptime(uptimeRes);
+
     const cpuTotal = cpuRes.total ? cpuRes.total.toFixed(1) : 0;
-    document.getElementById(`cpu-val-${node.id}`).innerText = `${cpuTotal}%`;
-    document.getElementById(`cpu-bar-${node.id}`).style.width = `${Math.min(cpuTotal, 100)}%`;
+    const cpuVal = document.getElementById(`cpu-val-${node.id}`);
+    const cpuBar = document.getElementById(`cpu-bar-${node.id}`);
+    if (cpuVal) cpuVal.innerText = `${cpuTotal}%`;
+    if (cpuBar) cpuBar.style.width = `${Math.min(cpuTotal, 100)}%`;
 
-    // RAM Progress
     const ramUsedGB = (memRes.used / (1024 ** 3)).toFixed(1);
     const ramTotalGB = (memRes.total / (1024 ** 3)).toFixed(0);
     const ramPct = ((memRes.used / memRes.total) * 100).toFixed(1);
-    document.getElementById(`ram-val-${node.id}`).innerText = `${ramUsedGB} / ${ramTotalGB} GB`;
-    document.getElementById(`ram-bar-${node.id}`).style.width = `${Math.min(ramPct, 100)}%`;
+    const ramVal = document.getElementById(`ram-val-${node.id}`);
+    const ramBar = document.getElementById(`ram-bar-${node.id}`);
+    if (ramVal) ramVal.innerText = `${ramUsedGB} / ${ramTotalGB} GB`;
+    if (ramBar) ramBar.style.width = `${Math.min(ramPct, 100)}%`;
 
-    // Heatmap Grid
     const grid = document.getElementById(`grid-${node.id}`);
-    grid.innerHTML = "";
-    perCpuRes.forEach((core, idx) => {
-      const box = document.createElement("div");
-      box.className = "core-box";
-      const usage = core.total || 0;
-      box.style.backgroundColor = getCoreColor(usage);
-      box.title = `Core ${idx}: ${usage.toFixed(1)}%`;
-      grid.appendChild(box);
-    });
-
+    if (grid) {
+      grid.innerHTML = "";
+      perCpuRes.forEach((core, idx) => {
+        const box = document.createElement("div");
+        box.className = "core-box";
+        const usage = core.total || 0;
+        box.style.backgroundColor = getCoreColor(usage);
+        box.title = `Core ${idx}: ${usage.toFixed(1)}%`;
+        grid.appendChild(box);
+      });
+    }
   } catch (err) {
-    document.getElementById(`badge-${node.id}`).className = "status-badge status-offline";
+    const badge = document.getElementById(`badge-${node.id}`);
+    if (badge) badge.className = "status-badge status-offline";
   }
 }
 
@@ -214,7 +226,9 @@ function updateTelemetry() {
   NODES.forEach(fetchNodeTelemetry);
 }
 
-initCards();
-updateTelemetry();
-setInterval(updateTelemetry, 3000);
+document.addEventListener("DOMContentLoaded", () => {
+  initCards();
+  updateTelemetry();
+  setInterval(updateTelemetry, 3000);
+});
 </script>
