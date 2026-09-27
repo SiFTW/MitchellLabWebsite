@@ -4,7 +4,6 @@ summary: "Real-time workstation cluster resource monitoring"
 date: 2026-09-27
 type: page
 ---
-
 <style>
   .telemetry-container {
     display: grid;
@@ -13,33 +12,46 @@ type: page
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: #1f2937;
     margin: 20px 0;
+    position: relative;
+    z-index: 10;
   }
-  .modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(4px);
-  z-index: 999999;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
   .node-card {
     background: #f3f6f9;
     border: 1px solid #d1d9e0;
     border-radius: 14px;
     padding: 20px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    cursor: pointer !important;
+    position: relative;
+    user-select: none;
+    pointer-events: auto !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .node-card * {
+    pointer-events: none; /* Passes all clicks up to the parent card */
+  }
+  .node-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;
+  }
+  .card-hint {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #2563eb;
+    background: #dbeafe;
+    padding: 3px 8px;
+    border-radius: 6px;
   }
   .node-title {
     font-size: 1.15rem;
     font-weight: 700;
     margin: 0 0 10px 0;
     color: #111827;
+    padding-right: 70px;
   }
   .node-meta {
     font-size: 0.85rem;
@@ -101,9 +113,153 @@ type: page
   }
   .status-online { background: #10b981; }
   .status-offline { background: #ef4444; }
+
+  /* Full-screen isolated modal overlay */
+  #clusterModalOverlay {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(4px);
+    z-index: 2147483647 !important; /* Highest possible 32-bit z-index */
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+  .modal-window {
+    background: #ffffff;
+    border-radius: 16px;
+    max-width: 740px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    pointer-events: auto;
+  }
+  .modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+  }
+  .modal-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+  }
+  .modal-close-btn {
+    background: #e2e8f0;
+    border: none;
+    font-size: 1.4rem;
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-close-btn:hover {
+    background: #cbd5e1;
+    color: #000;
+  }
+  .modal-body {
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .chart-box {
+    margin-bottom: 20px;
+  }
+  .chart-heading {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .sparkline-svg {
+    width: 100%;
+    height: 90px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+  }
+  .task-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .task-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 600;
+    border-bottom: 1px solid #cbd5e1;
+  }
+  .task-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  .task-table tr:hover td {
+    background: #f8fafc;
+  }
 </style>
 
 <div class="telemetry-container" id="telemetryGrid"></div>
+
+<!-- Modal definition (will be ported to document.body automatically) -->
+<div id="clusterModalOverlay">
+  <div class="modal-window" id="modalWindow">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalNodeName">Workstation Details</h3>
+      <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="chart-box">
+        <div class="chart-heading">
+          <span>Recent CPU Load Trend</span>
+          <span id="chartLatestVal" style="color: #f59e0b;">--</span>
+        </div>
+        <svg class="sparkline-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
+          <polyline id="sparklinePoly" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="2" points="" />
+        </svg>
+      </div>
+
+      <div class="chart-heading">Top Active Processes (by CPU / RAM)</div>
+      <table class="task-table">
+        <thead>
+          <tr>
+            <th>PID</th>
+            <th>Process</th>
+            <th>User</th>
+            <th>CPU %</th>
+            <th>MEM %</th>
+          </tr>
+        </thead>
+        <tbody id="taskTableBody">
+          <tr><td colspan="5" style="text-align: center; color: #94a3b8;">Click a card to inspect processes...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <script>
 (function() {
@@ -139,6 +295,13 @@ type: page
 
   let activeModalNode = null;
 
+  function moveModalToBody() {
+    const modal = document.getElementById("clusterModalOverlay");
+    if (modal && modal.parentElement !== document.body) {
+      document.body.appendChild(modal);
+    }
+  }
+
   function formatUptime(uptimeData) {
     if (!uptimeData) return "Unknown";
     if (typeof uptimeData === "string") {
@@ -159,95 +322,23 @@ type: page
     return "#ef4444";
   }
 
-  function initCards() {
-    const container = document.getElementById("telemetryGrid");
-    if (!container) return;
-    container.innerHTML = "";
-
-    NODES.forEach(node => {
-      const card = document.createElement("div");
-      card.className = "node-card";
-      card.id = `card-${node.id}`;
-      card.setAttribute("data-node-id", node.id);
-      card.innerHTML = `
-        <span class="card-hint">Inspect ↗</span>
-        <div class="node-title">
-          <span class="status-badge" id="badge-${node.id}"></span>${node.name}
-        </div>
-        <div class="node-meta">
-          IP: ${node.ip}<br>
-          ${node.specs}<br>
-          Uptime: <span id="uptime-${node.id}">--</span>
-        </div>
-
-        <div class="metric-label">
-          <span>CPU Load: <span id="cpu-val-${node.id}">--%</span></span>
-        </div>
-        <div class="progress-bg">
-          <div class="progress-fill fill-load" id="cpu-bar-${node.id}" style="width: 0%;"></div>
-        </div>
-
-        <div class="metric-label">
-          <span>RAM: <span id="ram-val-${node.id}">-- / -- GB</span></span>
-        </div>
-        <div class="progress-bg">
-          <div class="progress-fill fill-ram" id="ram-bar-${node.id}" style="width: 0%;"></div>
-        </div>
-
-        <div class="metric-label">
-          <span>Storage: <span id="disk-val-${node.id}">-- / -- GB</span></span>
-        </div>
-        <div class="progress-bg">
-          <div class="progress-fill fill-storage" id="disk-bar-${node.id}" style="width: 0%;"></div>
-        </div>
-
-        <div class="heatmap-section-title">Core Heatmap:</div>
-        <div class="heatmap-grid" id="grid-${node.id}" style="grid-template-columns: repeat(${node.columns}, 1fr);">
-          <div style="font-size:0.75rem; color:#9ca3af; grid-column: 1/-1;">Connecting telemetry...</div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-
-    // Delegated click listener on the entire container
-    container.addEventListener("click", function(e) {
-      const targetCard = e.target.closest(".node-card");
-      if (!targetCard) return;
-      const nodeId = targetCard.getAttribute("data-node-id");
-      const matchedNode = NODES.find(n => n.id === nodeId);
-      if (matchedNode) {
-        openModal(matchedNode);
-      }
-    });
-  }
-
-  function openModal(node) {
+  function openNodeModal(node) {
+    console.log("Opening modal for node:", node.name);
     activeModalNode = node;
-    const modal = document.getElementById("nodeModal");
+    const modal = document.getElementById("clusterModalOverlay");
     const nameEl = document.getElementById("modalNodeName");
     if (nameEl) nameEl.innerText = node.name;
-    if (modal) modal.style.display = "flex";
+    if (modal) {
+      modal.style.display = "flex";
+    }
     renderModalGraph(node);
     fetchModalTasks(node);
   }
 
-  function closeModal() {
+  function closeNodeModal() {
     activeModalNode = null;
-    const modal = document.getElementById("nodeModal");
+    const modal = document.getElementById("clusterModalOverlay");
     if (modal) modal.style.display = "none";
-  }
-
-  // Bind close buttons safely
-  const modalOverlay = document.getElementById("nodeModal");
-  if (modalOverlay) {
-    modalOverlay.addEventListener("click", function(e) {
-      if (e.target === modalOverlay) closeModal();
-    });
-  }
-
-  const closeBtn = document.querySelector(".modal-close");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", closeModal);
   }
 
   function renderModalGraph(node) {
@@ -297,6 +388,76 @@ type: page
       tbody.innerHTML = `
         <tr><td colspan="5" style="text-align: center; color: #ef4444;">Unable to fetch active processes.</td></tr>
       `;
+    }
+  }
+
+  function initDashboard() {
+    moveModalToBody();
+
+    const container = document.getElementById("telemetryGrid");
+    if (!container) return;
+    container.innerHTML = "";
+
+    NODES.forEach(node => {
+      const card = document.createElement("div");
+      card.className = "node-card";
+      card.id = `card-${node.id}`;
+      card.innerHTML = `
+        <span class="card-hint">Inspect ↗</span>
+        <div class="node-title">
+          <span class="status-badge" id="badge-${node.id}"></span>${node.name}
+        </div>
+        <div class="node-meta">
+          IP: ${node.ip}<br>
+          ${node.specs}<br>
+          Uptime: <span id="uptime-${node.id}">--</span>
+        </div>
+
+        <div class="metric-label">
+          <span>CPU Load: <span id="cpu-val-${node.id}">--%</span></span>
+        </div>
+        <div class="progress-bg">
+          <div class="progress-fill fill-load" id="cpu-bar-${node.id}" style="width: 0%;"></div>
+        </div>
+
+        <div class="metric-label">
+          <span>RAM: <span id="ram-val-${node.id}">-- / -- GB</span></span>
+        </div>
+        <div class="progress-bg">
+          <div class="progress-fill fill-ram" id="ram-bar-${node.id}" style="width: 0%;"></div>
+        </div>
+
+        <div class="metric-label">
+          <span>Storage: <span id="disk-val-${node.id}">-- / -- GB</span></span>
+        </div>
+        <div class="progress-bg">
+          <div class="progress-fill fill-storage" id="disk-bar-${node.id}" style="width: 0%;"></div>
+        </div>
+
+        <div class="heatmap-section-title">Core Heatmap:</div>
+        <div class="heatmap-grid" id="grid-${node.id}" style="grid-template-columns: repeat(${node.columns}, 1fr);">
+          <div style="font-size:0.75rem; color:#9ca3af; grid-column: 1/-1;">Connecting telemetry...</div>
+        </div>
+      `;
+
+      // Direct, explicit listener on each card
+      card.addEventListener("click", () => {
+        openNodeModal(node);
+      });
+
+      container.appendChild(card);
+    });
+
+    // Close modal handlers
+    const modal = document.getElementById("clusterModalOverlay");
+    const closeBtn = document.getElementById("modalCloseBtn");
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeNodeModal();
+      });
+    }
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeNodeModal);
     }
   }
 
@@ -362,28 +523,26 @@ type: page
         renderModalGraph(node);
         fetchModalTasks(node);
       }
-
     } catch (err) {
       const badge = document.getElementById(`badge-${node.id}`);
       if (badge) badge.className = "status-badge status-offline";
     }
   }
 
-  function updateTelemetry() {
+  function updateAll() {
     NODES.forEach(fetchNodeTelemetry);
   }
 
-  // Initialize immediately and on DOM load
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
-      initCards();
-      updateTelemetry();
-      setInterval(updateTelemetry, 3000);
+      initDashboard();
+      updateAll();
+      setInterval(updateAll, 3000);
     });
   } else {
-    initCards();
-    updateTelemetry();
-    setInterval(updateTelemetry, 3000);
+    initDashboard();
+    updateAll();
+    setInterval(updateAll, 3000);
   }
 })();
 </script>
