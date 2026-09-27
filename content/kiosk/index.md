@@ -4,20 +4,7 @@ layout: "single"
 url: "/status/kiosk/"
 summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 ---
----
-title: "Mitchell Lab Telemetry HUD"
-url: "/status/kiosk/"
-type: "widget_page"
-sections:
-  - block: markdown
-    content:
-      text: ""
-    design:
-      columns: '1'
-      spacing:
-        padding: ['0', '0', '0', '0']
-      css_class: "fullscreen-kiosk"
----
+
 
 
 <style>
