@@ -21,6 +21,8 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     --mono-font: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
   }
 
+  
+
   body, html {
     margin: 0;
     padding: 0;
@@ -33,17 +35,31 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     width: 100vw;
   }
 
+/* 1. Reset standard Hugo theme wrapper constraints */
+  main, article, .post-content, .entry-content, .container, .single, .wrapper, .page, #content {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 2. Breakout: Force true full-screen width from edge to edge */
   .hud-wrapper {
+    position: relative;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    box-sizing: border-box !important;
+    padding: 16px 24px !important;
     min-height: 100vh;
-    padding: 16px 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    background-image: 
-      radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.1), transparent 70%),
-      linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 100% 100%, 28px 28px, 28px 28px;
+  }
+
+  /* Optional: Hide site header/navbar and footer on kiosk mode so it's a true dashboard */
+  header, footer, nav, .header, .footer, .nav {
+    display: none !important;
   }
 
   /* TOP AGGREGATE OPERATIONS BANNER */
