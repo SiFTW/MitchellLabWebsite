@@ -1,6 +1,6 @@
 ---
 title: "Cluster Telemetry"
-summary: "Real-time workstation cluster resource monitoring"
+summary: "Real-time workstation cluster and storage resource monitoring"
 date: 2026-09-27
 type: page
 ---
@@ -247,7 +247,7 @@ type: page
 
 <script>
 (function() {
- const GIST_RAW_URL = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw/endpoints.json";
+  const GIST_RAW_URL = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw/endpoints.json";
 
   const NODES = [
     {
@@ -284,32 +284,6 @@ type: page
     }
   ];
 
-  async function startClusterMonitoring() {
-    try {
-      // Bust cache using timestamp query
-      const res = await fetch(`${GIST_RAW_URL}?t=${Date.now()}`);
-      const endpoints = await res.json();
-
-      NODES.forEach(n => {
-        if (endpoints[n.id]) {
-          n.url = endpoints[n.id];
-        }
-      });
-    } catch (err) {
-      console.warn("Could not load dynamic endpoints, using fallbacks if present", err);
-    }
-
-    initDashboard();
-    updateAll();
-    setInterval(updateAll, 3000);
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", startClusterMonitoring);
-  } else {
-    startClusterMonitoring();
-  }
-
   let activeModalNode = null;
 
   function moveModalToBody() {
@@ -319,8 +293,17 @@ type: page
     }
   }
 
+  function formatBytes(bytes) {
+    if (!bytes || isNaN(bytes)) return "--";
+    const gb = bytes / (1024 ** 3);
+    if (gb >= 1000) {
+      return (bytes / (1024 ** 4)).toFixed(1) + " TB";
+    }
+    return gb.toFixed(0) + " GB";
+  }
+
   function formatUptime(uptimeData) {
-    if (!uptimeData) return "Unknown";
+    if (!uptimeData) return "--";
     if (typeof uptimeData === "string") {
       return uptimeData.replace("days", "d").replace("day", "d").replace("hours", "h").replace("mins", "m");
     }
@@ -378,10 +361,13 @@ type: page
 
   async function fetchModalTasks(node) {
     const wrapper = document.getElementById("taskTableWrapper");
-    if (!wrapper) return;
+    if (!wrapper || !node.url) return;
 
     try {
-      const procList = await fetch(`${node.url}/api/3/processlist`).then(r => r.json());
+      const cleanUrl = node.url.replace(/\/+$/, "");
+      const res = await fetch(`${cleanUrl}/api/3/processlist`);
+      if (!res.ok) throw new Error("Status " + res.status);
+      const procList = await res.json();
       procList.sort((a, b) => (b.cpu_percent || 0) - (a.cpu_percent || 0));
       const top10 = procList.slice(0, 10);
 
@@ -463,7 +449,7 @@ type: page
         </div>
 
         <div class="metric-label">
-          <span>Storage: <span id="disk-val-${node.id}">-- / -- GB</span></span>
+          <span>Storage: <span id="disk-val-${node.id}">-- / --</span></span>
         </div>
         <div class="progress-bg">
           <div class="progress-fill fill-storage" id="disk-bar-${node.id}" style="width: 0%;"></div>
@@ -501,31 +487,19 @@ type: page
       return;
     }
 
+    const cleanUrl = node.url.replace(/\/+$/, "");
+
     try {
-      // Keep working workstations on /api/3, route synology to /api/4
-      const apiBase = node.id === "synology" ? `${node.url}/api/4` : `${node.url}/api/3`;
-
-      const [cpuRes, perCpuRes, memRes, fsRes, uptimeRes] = await Promise.all([
-        fetch(`${apiBase}/cpu`).then(r => r.json()).catch(() => null),
-        fetch(`${apiBase}/percpu`).then(r => r.json()).catch(() => null),
-        fetch(`${apiBase}/mem`).then(r => r.json()).catch(() => null),
-        fetch(`${apiBase}/fs`).then(r => r.json()).catch(() => null),
-        fetch(`${apiBase}/uptime`).then(r => r.json()).catch(() => null)
+      // 1. Fetch CPU & RAM (core metrics)
+      const [cpuRes, memRes] = await Promise.all([
+        fetch(`${cleanUrl}/api/3/cpu`).then(r => r.json()),
+        fetch(`${cleanUrl}/api/3/mem`).then(r => r.json())
       ]);
-
-      if (!cpuRes || !memRes) {
-        throw new Error("Essential telemetry unreachable");
-      }
 
       const badge = document.getElementById(`badge-${node.id}`);
       if (badge) badge.className = "status-badge status-online";
 
-      // Uptime
-      const uptimeEl = document.getElementById(`uptime-${node.id}`);
-      if (uptimeEl) uptimeEl.innerText = formatUptime(uptimeRes);
-
-      // CPU Total Load
-      const cpuTotal = cpuRes.total !== undefined ? Number(cpuRes.total.toFixed(1)) : 0;
+      const cpuTotal = cpuRes && cpuRes.total !== undefined ? Number(cpuRes.total.toFixed(1)) : 0;
       node.history.push(cpuTotal);
       if (node.history.length > 40) node.history.shift();
 
@@ -534,73 +508,103 @@ type: page
       if (cpuVal) cpuVal.innerText = `${cpuTotal}%`;
       if (cpuBar) cpuBar.style.width = `${Math.min(cpuTotal, 100)}%`;
 
-      // RAM
       const ramUsedGB = (memRes.used / (1024 ** 3)).toFixed(1);
       const ramTotalGB = (memRes.total / (1024 ** 3)).toFixed(0);
+      const ramPct = memRes.percent !== undefined ? memRes.percent : ((memRes.used / memRes.total) * 100);
       const ramVal = document.getElementById(`ram-val-${node.id}`);
       const ramBar = document.getElementById(`ram-bar-${node.id}`);
       if (ramVal) ramVal.innerText = `${ramUsedGB} / ${ramTotalGB} GB`;
-      if (ramBar) {
-        const ramPct = memRes.percent !== undefined ? memRes.percent : ((memRes.used / memRes.total) * 100);
-        ramBar.style.width = `${Math.min(ramPct, 100)}%`;
-      }
+      if (ramBar) ramBar.style.width = `${Math.min(ramPct, 100)}%`;
 
-      // Storage
-      if (Array.isArray(fsRes) && fsRes.length > 0) {
-        // Target /volume1 for NAS, fallback to root / for workstations
-        const targetFs = fsRes.find(d => d.mnt_point === "/volume1") ||
-                         fsRes.find(d => d.mnt_point === "/") ||
-                         fsRes[0];
+      // 2. Fetch Storage (targeted safely)
+      fetch(`${cleanUrl}/api/3/fs`)
+        .then(r => r.json())
+        .then(fsRes => {
+          if (Array.isArray(fsRes) && fsRes.length > 0) {
+            const targetFs = fsRes.find(d => d.mnt_point === "/volume1") ||
+                             fsRes.find(d => d.mnt_point === "/") ||
+                             fsRes[0];
 
-        const diskUsedStr = formatBytes(targetFs.used);
-        const diskTotalStr = formatBytes(targetFs.size);
-        const diskPct = targetFs.percent !== undefined 
-          ? Number(targetFs.percent).toFixed(0) 
-          : ((targetFs.used / targetFs.size) * 100).toFixed(0);
+            const diskUsedStr = formatBytes(targetFs.used);
+            const diskTotalStr = formatBytes(targetFs.size);
+            const diskPct = targetFs.percent !== undefined 
+              ? Number(targetFs.percent).toFixed(0) 
+              : ((targetFs.used / targetFs.size) * 100).toFixed(0);
 
-        const diskVal = document.getElementById(`disk-val-${node.id}`);
-        const diskBar = document.getElementById(`disk-bar-${node.id}`);
-        if (diskVal) diskVal.innerText = `${diskUsedStr} / ${diskTotalStr} (${diskPct}%)`;
-        if (diskBar) diskBar.style.width = `${Math.min(diskPct, 100)}%`;
-      }
+            const diskVal = document.getElementById(`disk-val-${node.id}`);
+            const diskBar = document.getElementById(`disk-bar-${node.id}`);
+            if (diskVal) diskVal.innerText = `${diskUsedStr} / ${diskTotalStr} (${diskPct}%)`;
+            if (diskBar) diskBar.style.width = `${Math.min(diskPct, 100)}%`;
+          }
+        })
+        .catch(() => {});
 
-      // Heatmap Grid
-      const grid = document.getElementById(`grid-${node.id}`);
-      if (grid && Array.isArray(perCpuRes)) {
-        grid.innerHTML = "";
-        perCpuRes.forEach((core, idx) => {
-          const box = document.createElement("div");
-          box.className = "core-box";
-          const usage = core.total !== undefined ? core.total : (core.percent || 0);
-          box.style.backgroundColor = getCoreColor(usage);
-          box.title = `Core ${idx}: ${Number(usage).toFixed(1)}%`;
-          grid.appendChild(box);
-        });
-      }
+      // 3. Fetch Core Heatmap
+      fetch(`${cleanUrl}/api/3/percpu`)
+        .then(r => r.json())
+        .then(perCpuRes => {
+          const grid = document.getElementById(`grid-${node.id}`);
+          if (grid && Array.isArray(perCpuRes)) {
+            grid.innerHTML = "";
+            perCpuRes.forEach((core, idx) => {
+              const box = document.createElement("div");
+              box.className = "core-box";
+              const usage = core.total !== undefined ? core.total : (core.percent || 0);
+              box.style.backgroundColor = getCoreColor(usage);
+              box.title = `Core ${idx}: ${Number(usage).toFixed(1)}%`;
+              grid.appendChild(box);
+            });
+          }
+        })
+        .catch(() => {});
+
+      // 4. Fetch Uptime
+      fetch(`${cleanUrl}/api/3/uptime`)
+        .then(r => r.json())
+        .then(uptimeRes => {
+          const uptimeEl = document.getElementById(`uptime-${node.id}`);
+          if (uptimeEl) uptimeEl.innerText = formatUptime(uptimeRes);
+        })
+        .catch(() => {});
 
       if (activeModalNode && activeModalNode.id === node.id) {
         renderModalGraph(node);
-        fetchModalTasks(node);
       }
+
     } catch (err) {
       const badge = document.getElementById(`badge-${node.id}`);
       if (badge) badge.className = "status-badge status-offline";
     }
   }
+
   function updateAll() {
     NODES.forEach(fetchNodeTelemetry);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      initDashboard();
-      updateAll();
-      setInterval(updateAll, 3000);
-    });
-  } else {
+  async function startClusterMonitoring() {
+    try {
+      const res = await fetch(`${GIST_RAW_URL}?t=${Date.now()}`);
+      const endpoints = await res.json();
+
+      NODES.forEach(n => {
+        if (endpoints[n.id] && typeof endpoints[n.id] === "string" && endpoints[n.id].startsWith("http")) {
+          // Normalize URL by removing any trailing slash
+          n.url = endpoints[n.id].replace(/\/+$/, "");
+        }
+      });
+    } catch (err) {
+      console.warn("Could not load dynamic endpoints", err);
+    }
+
     initDashboard();
     updateAll();
     setInterval(updateAll, 3000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startClusterMonitoring);
+  } else {
+    startClusterMonitoring();
   }
 })();
 </script>
