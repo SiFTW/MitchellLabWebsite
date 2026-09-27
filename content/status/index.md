@@ -25,9 +25,9 @@ show_breadcrumb: true
 
 <script>
 const urls = {
-  simon: "PASTE_SIMON_URL_HERE",
-  jlp: "PASTE_JLP_URL_HERE",
-  priti: "PASTE_PRITI_URL_HERE"
+  simon: "https://counting-dryer-depot-payments.trycloudflare.com",
+  jlp: "https://thereby-william-search-reader.trycloudflare.com",
+  priti: "https://info-critics-explanation-ski.trycloudflare.com"
 };
 
 function switchServer(name) {
