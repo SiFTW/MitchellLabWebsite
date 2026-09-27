@@ -253,7 +253,7 @@ type: page
       name: "simon-HP-Z6-G4-Workstation",
       specs: "72 Cores @ 2.3 GHz",
       columns: 12,
-      url: "https://counting-dryer-depot-payments.trycloudflare.com",
+      url: "https://simon.mitchell.science",
       history: []
     },
     {
@@ -261,7 +261,7 @@ type: page
       name: "Jean Luc Packard Bell (JLP)",
       specs: "104 Cores @ 2.1 GHz",
       columns: 13,
-      url: "https://thereby-william-search-reader.trycloudflare.com",
+      url: "https://jlp.mitchell.science",
       history: []
     },
     {
@@ -269,7 +269,15 @@ type: page
       name: "Priti TheDell",
       specs: "12 Cores @ 4.0 GHz",
       columns: 6,
-      url: "https://info-critics-explanation-ski.trycloudflare.com",
+      url: "https://priti.mitchell.science",
+      history: []
+    },
+    {
+      id: "synology",
+      name: "Synology DiskStation",
+      specs: "4 Cores • 23 TB Btrfs RAID Pool",
+      columns: 4,
+      url: "https://nas.mitchell.science",
       history: []
     }
   ];
