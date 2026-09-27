@@ -471,13 +471,13 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     const full = (cmdName + " " + cmdLine).toLowerCase();
     
     if (full.includes("julia")) return { tag: "ODE Cell Solver", icon: "🧬" };
-    if (full.includes("python") || full.includes("python3")) return { tag: "Spatial Sim / ML", icon: "⚗️" };
-    if (full.includes("rscript") || full.includes("r.bin")) return { tag: "Morphogenesis Analysis", icon: "📊" };
-    if (full.includes("nextflow") || full.includes("snakemake")) return { tag: "Pipeline Mesh", icon: "⚡" };
+    if (full.includes("python") || full.includes("python3")) return { tag: "Numerical Processing", icon: "⚗️" };
+    if (full.includes("rscript") || full.includes("r.bin")) return { tag: "General Process", icon: "⚙️" };
+    if (full.includes("nextflow") || full.includes("snakemake")) return { tag: "Bioinformatic Analysis", icon: "⚡" };
     if (full.includes("bwa") || full.includes("samtools")) return { tag: "Genome Mapping", icon: "🧬" };
-    if (full.includes("rsync") || full.includes("synology")) return { tag: "Trajectory Checkpoint", icon: "💾" };
+    if (full.includes("rsync") || full.includes("synology")) return { tag: "Data Processing", icon: "💾" };
     
-    return { tag: "Numerical Kernel", icon: "⚙️" };
+    return { tag: "General Compute", icon: "⚙️" };
   }
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
