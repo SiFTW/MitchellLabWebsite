@@ -5,12 +5,10 @@ url: "/status/kiosk/"
 summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 ---
 
-
-
 <style>
   :root {
     --bg-base: #04070d;
-    --card-bg: rgba(10, 16, 28, 0.82);
+    --card-bg: rgba(10, 16, 28, 0.85);
     --card-border: rgba(56, 189, 248, 0.18);
     --accent-cyan: #38bdf8;
     --accent-emerald: #10b981;
@@ -23,42 +21,25 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     --mono-font: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
   }
 
-  
-
-/* ========================================================
-     WOWCHEMY / ACADEMIC FULLSCREEN BREAKOUT
-     ======================================================== */
-  /* 1. Unlock the body and main viewport */
+  /* WOWCHEMY/HUGO BREAKOUT OVERRIDES */
   html, body {
     margin: 0 !important;
     padding: 0 !important;
     width: 100vw !important;
     max-width: 100vw !important;
-    background-color: #04070d !important;
+    background-color: var(--bg-base) !important;
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
     overflow-x: hidden !important;
   }
 
-  /* 2. Strip Wowchemy navigation bar and footer */
-  .page-header, 
-  .navbar, 
-  .page-footer, 
-  .site-footer, 
-  footer, 
-  header,
-  .docs-sidebar, 
-  .docs-toc {
+  .page-header, .navbar, .page-footer, .site-footer, footer, header, .docs-sidebar, .docs-toc {
     display: none !important;
   }
 
-  /* 3. Strip padding, margins, and width clamps from EVERY Wowchemy parent */
-  .page-body,
-  .universal-wrapper,
-  .article-container,
-  .docs-article-container,
-  .container-fluid,
-  .container,
-  main,
-  article {
+  .page-body, .universal-wrapper, .article-container, .docs-article-container, .container-fluid, .container, main, article {
     max-width: 100vw !important;
     width: 100vw !important;
     padding: 0 !important;
@@ -66,7 +47,6 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     overflow: visible !important;
   }
 
-  /* 4. Let the dashboard fill the entire screen edge-to-edge */
   .hud-wrapper {
     width: 100vw !important;
     max-width: 100vw !important;
@@ -75,11 +55,11 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     padding: 16px 20px !important;
     display: flex !important;
     flex-direction: column !important;
-  }
-
-  /* Optional: Hide site header/navbar and footer on kiosk mode so it's a true dashboard */
-  header, footer, nav, .header, .footer, .nav {
-    display: none !important;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.1), transparent 70%),
+      linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 100% 100%, 28px 28px, 28px 28px;
   }
 
   /* TOP AGGREGATE OPERATIONS BANNER */
@@ -125,7 +105,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
   .hud-metrics-row {
     display: flex;
-    gap: 24px;
+    gap: 22px;
     flex-shrink: 0;
     align-items: center;
   }
@@ -163,15 +143,11 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
   @media (max-width: 1023px) {
-    .nodes-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    .nodes-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (max-width: 640px) {
-    .nodes-grid {
-      grid-template-columns: 1fr;
-    }
+    .nodes-grid { grid-template-columns: 1fr; }
   }
 
   .node-card {
@@ -200,7 +176,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .node-name {
@@ -233,9 +209,33 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     white-space: nowrap;
   }
 
+  /* NETWORK TRAFFIC HUD BAR */
+  .net-hud-bar {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 5px 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono-font);
+    font-size: 0.68rem;
+  }
+
+  .net-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  .net-arrow-rx { color: var(--accent-emerald); font-weight: bold; }
+  .net-arrow-tx { color: var(--accent-cyan); font-weight: bold; }
+
   /* METRICS & PROGRESS */
   .metric-block {
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
 
   .metric-row {
@@ -268,7 +268,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
   /* CORE HEATMAP MATRIX */
   .heatmap-wrap {
-    margin-top: 10px;
+    margin-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
     padding-top: 8px;
   }
@@ -303,7 +303,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
   /* TOP PROCESS LIST */
   .process-box {
-    margin-top: 10px;
+    margin-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
     padding-top: 8px;
   }
@@ -312,7 +312,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     width: 100%;
     border-collapse: collapse;
     font-family: var(--mono-font);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     table-layout: fixed;
   }
 
@@ -321,21 +321,17 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     color: var(--text-muted);
     font-weight: 500;
     padding-bottom: 3px;
-    font-size: 0.62rem;
+    font-size: 0.60rem;
     text-transform: uppercase;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .process-table td {
-    padding: 2.5px 0;
+    padding: 2px 0;
     color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  .process-table tr:hover td {
-    color: var(--text-primary);
   }
 
   .cpu-pill {
@@ -400,8 +396,8 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
         <div class="lbl">Cluster RAM</div>
       </div>
       <div class="hud-stat-box">
-        <div class="val" id="cluster-active-procs">--</div>
-        <div class="lbl">Active Procs</div>
+        <div class="val" id="cluster-total-net">-- / --</div>
+        <div class="lbl">Cluster Net I/O</div>
       </div>
       <div class="hud-stat-box">
         <div class="val" id="nas-sync-top">ONLINE</div>
@@ -428,7 +424,8 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
   const clusterState = {
     mem: { simon: 0, jlp: 0, priti: 0, nas: 0 },
-    procs: { simon: 0, jlp: 0, priti: 0, nas: 0 }
+    netRx: { simon: 0, jlp: 0, priti: 0, nas: 0 },
+    netTx: { simon: 0, jlp: 0, priti: 0, nas: 0 }
   };
 
   function toggleFullScreen() {
@@ -437,6 +434,14 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     } else {
       document.exitFullscreen().catch(()=>{});
     }
+  }
+
+  function formatBytesSec(bytes) {
+    if (!bytes || bytes <= 0) return "0 B/s";
+    const k = 1024;
+    const sizes = ['B/s', 'KB/s', 'MB/s', 'GB/s'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
   function renderKioskCards() {
@@ -452,7 +457,7 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
       const syncSnippet = isNas ? `
         <div class="cloudsync-hud" id="nas-sync-banner">
           <div style="overflow:hidden;">
-            <div style="font-size:0.62rem; color:#6ee7b7; letter-spacing:0.06em;">CLOUD SYNC ENGINE</div>
+            <div style="font-size:0.60rem; color:#6ee7b7; letter-spacing:0.06em;">CLOUD SYNC ENGINE</div>
             <div id="nas-sync-file" style="font-size:0.72rem; color:#e2e8f0; font-weight:600; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Syncing...</div>
           </div>
           <div id="nas-sync-time" style="font-size:0.66rem; color:#94a3b8; text-align:right; white-space:nowrap;">--</div>
@@ -467,6 +472,18 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
               ${n.name} <span style="font-size:0.72rem; color:var(--text-muted); font-weight:400;">(${n.role})</span>
             </div>
             <span class="node-submeta" id="uptime-${n.id}">--</span>
+          </div>
+
+          <!-- Network Flow Live Bar -->
+          <div class="net-hud-bar">
+            <div class="net-stat">
+              <span class="net-arrow-rx">↓ Rx</span>
+              <span id="net-rx-${n.id}">0 B/s</span>
+            </div>
+            <div class="net-stat">
+              <span class="net-arrow-tx">↑ Tx</span>
+              <span id="net-tx-${n.id}">0 B/s</span>
+            </div>
           </div>
 
           <div class="metric-block">
@@ -542,13 +559,16 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
   function updateClusterAggregates() {
+    // RAM
     const totalUsed = Object.values(clusterState.mem).reduce((a, b) => a + b, 0);
     const ramEl = document.getElementById("total-ram-active");
     if (ramEl) ramEl.innerText = `${totalUsed.toFixed(0)} / 324 GB`;
 
-    const totalProcs = Object.values(clusterState.procs).reduce((a, b) => a + b, 0);
-    const procEl = document.getElementById("cluster-active-procs");
-    if (procEl) procEl.innerText = totalProcs > 0 ? `${totalProcs} tasks` : "--";
+    // Total Network I/O
+    const sumRx = Object.values(clusterState.netRx).reduce((a, b) => a + b, 0);
+    const sumTx = Object.values(clusterState.netTx).reduce((a, b) => a + b, 0);
+    const netEl = document.getElementById("cluster-total-net");
+    if (netEl) netEl.innerText = `↓${formatBytesSec(sumRx)} ↑${formatBytesSec(sumTx)}`;
   }
 
   async function fetchTelemetry(node) {
@@ -556,18 +576,36 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
     const base = `${node.url}/api/${node.apiVer}`;
 
     try {
-      const [cpu, mem, fs, upt, cpus, procs, load] = await Promise.all([
+      const [cpu, mem, fs, upt, cpus, procs, load, net] = await Promise.all([
         fetch(`${base}/quicklook`).then(r => r.json()).catch(() => ({})),
         fetch(`${base}/mem`).then(r => r.json()).catch(() => ({})),
         fetch(`${base}/fs`).then(r => r.json()).catch(() => []),
         fetch(`${base}/uptime`).then(r => r.json()).catch(() => "ONLINE"),
         fetch(`${base}/percpu`).then(r => r.json()).catch(() => []),
         fetch(`${base}/processlist`).then(r => r.json()).catch(() => []),
-        fetch(`${base}/load`).then(r => r.json()).catch(() => ({}))
+        fetch(`${base}/load`).then(r => r.json()).catch(() => ({})),
+        fetch(`${base}/network`).then(r => r.json()).catch(() => [])
       ]);
 
       document.getElementById(`dot-${node.id}`).className = "status-dot online";
       document.getElementById(`uptime-${node.id}`).innerText = upt || "ONLINE";
+
+      // Network Traffic
+      if (Array.isArray(net) && net.length > 0) {
+        let totalRx = 0;
+        let totalTx = 0;
+        net.forEach(iface => {
+          // Filter loopback or inactive docker virtual veths
+          if (iface.interface_name && !iface.interface_name.startsWith('lo') && !iface.interface_name.startsWith('docker')) {
+            totalRx += (iface.rx || 0);
+            totalTx += (iface.tx || 0);
+          }
+        });
+        clusterState.netRx[node.id] = totalRx;
+        clusterState.netTx[node.id] = totalTx;
+        document.getElementById(`net-rx-${node.id}`).innerText = formatBytesSec(totalRx);
+        document.getElementById(`net-tx-${node.id}`).innerText = formatBytesSec(totalTx);
+      }
 
       // CPU
       const cpuVal = Math.round(cpu.cpu || 0);
@@ -611,7 +649,6 @@ summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 
       // Top Processes (Sorted by CPU, top 4)
       if (Array.isArray(procs) && procs.length > 0) {
-        clusterState.procs[node.id] = procs.length;
         const sorted = [...procs]
           .sort((a, b) => (b.cpu_percent || 0) - (a.cpu_percent || 0))
           .slice(0, 4);
