@@ -502,23 +502,19 @@ type: page
     }
 
     try {
-      // Determine base API version (v4 for NAS, v3 for Linux nodes)
-      const baseApi = node.id === "synology" ? `${node.url}/api/4` : `${node.url}/api/3`;
-
-      // Safe fetch helper that won't blow up Promise.all if one plugin is missing
-      const safeFetch = (url) => fetch(url).then(r => r.ok ? r.json() : null).catch(() => null);
+      // Keep working workstations on /api/3, route synology to /api/4
+      const apiBase = node.id === "synology" ? `${node.url}/api/4` : `${node.url}/api/3`;
 
       const [cpuRes, perCpuRes, memRes, fsRes, uptimeRes] = await Promise.all([
-        safeFetch(`${baseApi}/cpu`),
-        safeFetch(node.id === "synology" ? `${baseApi}/cpu/core` : `${baseApi}/percpu`),
-        safeFetch(`${baseApi}/mem`),
-        safeFetch(`${baseApi}/fs`),
-        safeFetch(`${baseApi}/uptime`)
+        fetch(`${apiBase}/cpu`).then(r => r.json()).catch(() => null),
+        fetch(`${apiBase}/percpu`).then(r => r.json()).catch(() => null),
+        fetch(`${apiBase}/mem`).then(r => r.json()).catch(() => null),
+        fetch(`${apiBase}/fs`).then(r => r.json()).catch(() => null),
+        fetch(`${apiBase}/uptime`).then(r => r.json()).catch(() => null)
       ]);
 
-      // If core metrics are missing, mark offline
       if (!cpuRes || !memRes) {
-        throw new Error("Core metrics unavailable");
+        throw new Error("Essential telemetry unreachable");
       }
 
       const badge = document.getElementById(`badge-${node.id}`);
@@ -541,21 +537,26 @@ type: page
       // RAM
       const ramUsedGB = (memRes.used / (1024 ** 3)).toFixed(1);
       const ramTotalGB = (memRes.total / (1024 ** 3)).toFixed(0);
-      const ramPct = memRes.percent !== undefined ? memRes.percent.toFixed(1) : ((memRes.used / memRes.total) * 100).toFixed(1);
       const ramVal = document.getElementById(`ram-val-${node.id}`);
       const ramBar = document.getElementById(`ram-bar-${node.id}`);
       if (ramVal) ramVal.innerText = `${ramUsedGB} / ${ramTotalGB} GB`;
-      if (ramBar) ramBar.style.width = `${Math.min(ramPct, 100)}%`;
+      if (ramBar) {
+        const ramPct = memRes.percent !== undefined ? memRes.percent : ((memRes.used / memRes.total) * 100);
+        ramBar.style.width = `${Math.min(ramPct, 100)}%`;
+      }
 
       // Storage
       if (Array.isArray(fsRes) && fsRes.length > 0) {
+        // Target /volume1 for NAS, fallback to root / for workstations
         const targetFs = fsRes.find(d => d.mnt_point === "/volume1") ||
                          fsRes.find(d => d.mnt_point === "/") ||
                          fsRes[0];
 
         const diskUsedStr = formatBytes(targetFs.used);
         const diskTotalStr = formatBytes(targetFs.size);
-        const diskPct = targetFs.percent !== undefined ? targetFs.percent.toFixed(0) : ((targetFs.used / targetFs.size) * 100).toFixed(0);
+        const diskPct = targetFs.percent !== undefined 
+          ? Number(targetFs.percent).toFixed(0) 
+          : ((targetFs.used / targetFs.size) * 100).toFixed(0);
 
         const diskVal = document.getElementById(`disk-val-${node.id}`);
         const diskBar = document.getElementById(`disk-bar-${node.id}`);
@@ -565,21 +566,9 @@ type: page
 
       // Heatmap Grid
       const grid = document.getElementById(`grid-${node.id}`);
-      if (grid) {
+      if (grid && Array.isArray(perCpuRes)) {
         grid.innerHTML = "";
-        let coreList = [];
-
-        if (Array.isArray(perCpuRes)) {
-          coreList = perCpuRes;
-        } else if (perCpuRes && typeof perCpuRes === "object") {
-          // Glances v4 sometimes returns an object map { "0": {total: ...}, "1": {...} }
-          coreList = Object.values(perCpuRes);
-        } else {
-          // Fallback if per-core is blocked on container: render overall load as single visual
-          coreList = [{ total: cpuTotal }];
-        }
-
-        coreList.forEach((core, idx) => {
+        perCpuRes.forEach((core, idx) => {
           const box = document.createElement("div");
           box.className = "core-box";
           const usage = core.total !== undefined ? core.total : (core.percent || 0);
@@ -598,7 +587,6 @@ type: page
       if (badge) badge.className = "status-badge status-offline";
     }
   }
-
   function updateAll() {
     NODES.forEach(fetchNodeTelemetry);
   }
