@@ -2,13 +2,13 @@
 title: "Mitchell Lab Telemetry HUD"
 layout: "single"
 url: "/status/kiosk/"
-summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
+summary: "Widescreen wall telemetry HUD for Mitchell Lab cluster compute."
 ---
 
 <style>
   :root {
     --bg-base: #04070d;
-    --card-bg: rgba(10, 16, 28, 0.78);
+    --card-bg: rgba(10, 16, 28, 0.82);
     --card-border: rgba(56, 189, 248, 0.18);
     --accent-cyan: #38bdf8;
     --accent-emerald: #10b981;
@@ -30,14 +30,17 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
     user-select: none;
     -webkit-user-select: none;
     overflow-x: hidden;
+    width: 100vw;
   }
 
   .hud-wrapper {
     min-height: 100vh;
-    padding: 18px 24px;
+    padding: 16px 20px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     background-image: 
-      radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.12), transparent 70%),
+      radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.1), transparent 70%),
       linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
     background-size: 100% 100%, 28px 28px, 28px 28px;
@@ -48,14 +51,20 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(13, 20, 36, 0.9);
+    background: rgba(13, 20, 36, 0.92);
     border: 1px solid rgba(56, 189, 248, 0.28);
-    border-radius: 14px;
-    padding: 14px 24px;
-    margin-bottom: 20px;
+    border-radius: 12px;
+    padding: 12px 22px;
+    margin-bottom: 16px;
     backdrop-filter: blur(16px);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    flex-wrap: nowrap;
     gap: 16px;
+  }
+
+  .hud-title-group {
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   .hud-title-group h1 {
@@ -67,18 +76,20 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
     display: flex;
     align-items: center;
     gap: 10px;
+    white-space: nowrap;
   }
 
   .hud-status-line {
     margin: 3px 0 0 0;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-secondary);
     font-family: var(--mono-font);
+    white-space: nowrap;
   }
 
   .hud-metrics-row {
     display: flex;
-    gap: 22px;
+    gap: 24px;
     flex-shrink: 0;
     align-items: center;
   }
@@ -89,7 +100,7 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
   }
 
   .hud-stat-box .val {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: var(--accent-cyan);
     font-family: var(--mono-font);
@@ -103,22 +114,37 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
     letter-spacing: 0.08em;
     color: var(--text-muted);
     margin-top: 2px;
+    white-space: nowrap;
   }
 
-  /* CARD GRID */
+  /* TRUE WIDESCREEN 4-COLUMN GRID */
   .nodes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    flex: 1;
+    align-items: stretch;
+  }
+
+  @media (max-width: 1023px) {
+    .nodes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nodes-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .node-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 14px;
-    padding: 18px;
+    border-radius: 12px;
+    padding: 14px;
     backdrop-filter: blur(14px);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.45);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -138,17 +164,18 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .node-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 800;
     font-family: var(--mono-font);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
     letter-spacing: 0.04em;
+    white-space: nowrap;
   }
 
   .status-dot {
@@ -156,29 +183,32 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
     height: 8px;
     border-radius: 50%;
     background: var(--text-muted);
+    flex-shrink: 0;
   }
   .status-dot.online {
     background: var(--accent-emerald);
-    box-shadow: 0 0 10px var(--accent-emerald);
+    box-shadow: 0 0 8px var(--accent-emerald);
   }
 
   .node-submeta {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-family: var(--mono-font);
     color: var(--text-secondary);
+    white-space: nowrap;
   }
 
   /* METRICS & PROGRESS */
   .metric-block {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .metric-row {
     display: flex;
     justify-content: space-between;
-    font-size: 0.74rem;
-    margin-bottom: 4px;
+    font-size: 0.72rem;
+    margin-bottom: 3px;
     font-family: var(--mono-font);
+    white-space: nowrap;
   }
 
   .track-bar {
@@ -202,27 +232,28 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
 
   /* CORE HEATMAP MATRIX */
   .heatmap-wrap {
-    margin-top: 14px;
+    margin-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    padding-top: 10px;
+    padding-top: 8px;
   }
 
   .section-label {
     display: flex;
     justify-content: space-between;
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-muted);
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     font-family: var(--mono-font);
+    white-space: nowrap;
   }
 
   .core-grid {
     display: grid;
     gap: 2px;
     background: rgba(0, 0, 0, 0.25);
-    padding: 5px;
+    padding: 4px;
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.04);
   }
@@ -236,30 +267,31 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
 
   /* TOP PROCESS LIST */
   .process-box {
-    margin-top: 14px;
+    margin-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    padding-top: 10px;
+    padding-top: 8px;
   }
 
   .process-table {
     width: 100%;
     border-collapse: collapse;
     font-family: var(--mono-font);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
+    table-layout: fixed;
   }
 
   .process-table th {
     text-align: left;
     color: var(--text-muted);
     font-weight: 500;
-    padding-bottom: 4px;
-    font-size: 0.65rem;
+    padding-bottom: 3px;
+    font-size: 0.62rem;
     text-transform: uppercase;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .process-table td {
-    padding: 3px 0;
+    padding: 2.5px 0;
     color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
@@ -273,9 +305,10 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
   .cpu-pill {
     background: rgba(56, 189, 248, 0.12);
     color: var(--accent-cyan);
-    padding: 1px 4px;
+    padding: 1px 3px;
     border-radius: 3px;
     font-weight: 700;
+    font-size: 0.65rem;
   }
 
   .cpu-pill.high {
@@ -288,8 +321,8 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
     background: rgba(16, 185, 129, 0.08);
     border: 1px solid rgba(16, 185, 129, 0.28);
     border-radius: 8px;
-    padding: 8px 12px;
-    margin-top: 12px;
+    padding: 7px 10px;
+    margin-top: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -298,14 +331,14 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
 
   .kiosk-btn {
     position: fixed;
-    bottom: 16px;
-    right: 16px;
+    bottom: 12px;
+    right: 12px;
     background: rgba(15, 23, 42, 0.75);
     color: var(--text-secondary);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 24px;
-    padding: 6px 14px;
-    font-size: 0.75rem;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.72rem;
     backdrop-filter: blur(8px);
     cursor: pointer;
     z-index: 100;
@@ -336,12 +369,12 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
       </div>
       <div class="hud-stat-box">
         <div class="val" id="nas-sync-top">ONLINE</div>
-        <div class="lbl">Dropbox Sync</div>
+        <div class="lbl">Cloud Sync</div>
       </div>
     </div>
   </div>
 
-  <!-- Dynamic Nodes Container -->
+  <!-- Dynamic Nodes Container (4 Columns) -->
   <div class="nodes-grid" id="kiosk-nodes-container"></div>
 </div>
 
@@ -382,11 +415,11 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
 
       const syncSnippet = isNas ? `
         <div class="cloudsync-hud" id="nas-sync-banner">
-          <div>
-            <div style="font-size:0.65rem; color:#6ee7b7; letter-spacing:0.06em;">CLOUD SYNC ENGINE</div>
-            <div id="nas-sync-file" style="font-size:0.74rem; color:#e2e8f0; font-weight:600; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Syncing...</div>
+          <div style="overflow:hidden;">
+            <div style="font-size:0.62rem; color:#6ee7b7; letter-spacing:0.06em;">CLOUD SYNC ENGINE</div>
+            <div id="nas-sync-file" style="font-size:0.72rem; color:#e2e8f0; font-weight:600; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Syncing...</div>
           </div>
-          <div id="nas-sync-time" style="font-size:0.68rem; color:#94a3b8; text-align:right;">--</div>
+          <div id="nas-sync-time" style="font-size:0.66rem; color:#94a3b8; text-align:right; white-space:nowrap;">--</div>
         </div>
       ` : "";
 
@@ -395,7 +428,7 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
           <div class="node-card-head">
             <div class="node-name">
               <span class="status-dot" id="dot-${n.id}"></span>
-              ${n.name} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:400;">(${n.role})</span>
+              ${n.name} <span style="font-size:0.72rem; color:var(--text-muted); font-weight:400;">(${n.role})</span>
             </div>
             <span class="node-submeta" id="uptime-${n.id}">--</span>
           </div>
@@ -450,12 +483,11 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
               <tr>
                 <th style="width: 25%;">PID</th>
                 <th style="width: 45%;">COMMAND</th>
-                <th style="width: 15%;">USER</th>
-                <th style="width: 15%; text-align:right;">%CPU</th>
+                <th style="width: 30%; text-align:right;">%CPU</th>
               </tr>
             </thead>
             <tbody id="proc-tbody-${n.id}">
-              <tr><td colspan="4" style="color:var(--text-muted);">Polling process tree...</td></tr>
+              <tr><td colspan="3" style="color:var(--text-muted);">Polling process tree...</td></tr>
             </tbody>
           </table>
         </div>
@@ -467,19 +499,17 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
 
   function getHeatmapColor(load) {
     if (load < 5)   return "rgba(255, 255, 255, 0.04)";
-    if (load < 30)  return "#0284c7"; // Cyan
-    if (load < 70)  return "#10b981"; // Emerald
-    if (load < 90)  return "#f59e0b"; // Amber
-    return "#f43f5e";                 // Magenta/Rose
+    if (load < 30)  return "#0284c7";
+    if (load < 70)  return "#10b981";
+    if (load < 90)  return "#f59e0b";
+    return "#f43f5e";
   }
 
   function updateClusterAggregates() {
-    // RAM
     const totalUsed = Object.values(clusterState.mem).reduce((a, b) => a + b, 0);
     const ramEl = document.getElementById("total-ram-active");
     if (ramEl) ramEl.innerText = `${totalUsed.toFixed(0)} / 324 GB`;
 
-    // Process Count
     const totalProcs = Object.values(clusterState.procs).reduce((a, b) => a + b, 0);
     const procEl = document.getElementById("cluster-active-procs");
     if (procEl) procEl.innerText = totalProcs > 0 ? `${totalProcs} tasks` : "--";
@@ -538,7 +568,7 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
           if (el) {
             const loadVal = core.total || 0;
             el.style.background = getHeatmapColor(loadVal);
-            el.style.boxShadow = loadVal > 60 ? `0 0 6px ${getHeatmapColor(loadVal)}` : "none";
+            el.style.boxShadow = loadVal > 60 ? `0 0 5px ${getHeatmapColor(loadVal)}` : "none";
           }
         });
       }
@@ -560,7 +590,6 @@ summary: "High-density wall telemetry HUD for Mitchell Lab cluster compute."
               <tr>
                 <td style="color:var(--text-muted);">${p.pid || '--'}</td>
                 <td style="color:#e2e8f0; font-weight:600;" title="${cmdName}">${cmdName}</td>
-                <td style="color:var(--text-muted);">${(p.username || 'simon').slice(0, 7)}</td>
                 <td style="text-align:right;">
                   <span class="cpu-pill ${isHigh ? 'high' : ''}">${cpuUsage}%</span>
                 </td>
