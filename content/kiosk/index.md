@@ -448,7 +448,6 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
           <span>SYSTEMS ONCOLOGY SERVERS</span> • <span id="hud-last-update">CONNECTING TO MESH...</span>
         </div>
       </div>
-
       <!-- Enlarged In Silico Spheroid Canvas -->
       <div class="tumor-canvas-wrapper">
         <canvas id="tumor-spheroid-canvas" width="170" height="96"></canvas>
@@ -458,7 +457,6 @@ summary: "Fluid wall telemetry HUD for Mitchell Lab cluster compute."
         </div>
       </div>
     </div>
-
     <!-- Cluster Aggregate Hardware Stats -->
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
