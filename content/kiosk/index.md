@@ -800,7 +800,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     const mitEl = document.getElementById("mitotic-index");
     if (mitEl) {
       const roundedCpu = Math.round(clusterState.cpuAvg);
-      mitEl.innerText = `Mitotic Index: ${roundedCpu}%`;
+      mitEl.innerText = `Utilisation: ${roundedCpu}%`;
     }
   }
 
