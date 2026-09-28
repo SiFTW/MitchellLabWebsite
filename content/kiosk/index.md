@@ -1,5 +1,5 @@
 ---
-title: "Mitchell Lab Telemetry HUD"
+title: ""
 layout: "single"
 url: "/status/kiosk/"
 summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
@@ -35,8 +35,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     overflow-x: hidden !important;
   }
 
-  /* RESET HUGO / WOWCHEMY PARENT WRAPPERS */
-  .page-header, .navbar, .page-footer, .site-footer, footer, header, .docs-sidebar, .docs-toc {
+  /* RESET HUGO / WOWCHEMY PARENT WRAPPERS & REMOVE PAGE TITLE */
+  .page-header, .navbar, .page-footer, .site-footer, footer, header, .docs-sidebar, .docs-toc,
+  .article-header, .page-title, h1.article-title, .article-metadata {
     display: none !important;
   }
   .page-body, .universal-wrapper, .article-container, .docs-article-container, .container-fluid, .container, main, article {
@@ -117,10 +118,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
     line-height: 1.2;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    color: #ffffff !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.9);
   }
 
   .hud-subtitle {
@@ -521,7 +521,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 <canvas id="header-cell-canvas"></canvas>
 <div class="hud-top-bar">
 <div class="hud-title-group">
-<h1><span style="color:var(--accent-tumor);"></span> OVERALL SIMULATION STATUS</h1>
+<h1>OVERALL SIMULATION STATUS</h1>
 <div class="hud-subtitle">
 <span>SYSTEMS ONCOLOGY SERVERS</span> • <span id="hud-last-update">CONNECTING...</span>
 </div>
