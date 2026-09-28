@@ -119,7 +119,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     flex-wrap: wrap;
   }
 
-  /* CELL SIMULATION CANVAS */
+  /* DYNAMIC SIZING CELL SIMULATION CANVAS */
   .tumor-canvas-wrapper {
     display: flex;
     align-items: center;
@@ -479,24 +479,26 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 </style>
 
 <div class="hud-wrapper">
-  <!-- FLUID ONCOLOGY CLUSTER HEADER -->
+  <!-- TOP COMMAND BANNER -->
   <div class="cluster-hud-header">
     <div class="hud-top-bar">
       <div class="hud-title-group">
-        <h1><span style="color:var(--accent-tumor);"></span> OVERALL SIMULATION STATUS</h1>
+        <h1><span style="color:var(--accent-tumor);">🔬</span> OVERALL SIMULATION STATUS</h1>
         <div class="hud-subtitle">
           <span>SYSTEMS ONCOLOGY SERVERS</span> • <span id="hud-last-update">CONNECTING...</span>
         </div>
       </div>
+
       <!-- Cell Simulation Canvas -->
       <div class="tumor-canvas-wrapper">
         <canvas id="tumor-spheroid-canvas" width="170" height="96"></canvas>
         <div class="canvas-meta">
-          <div style="color:var(--accent-tumor); font-weight:800; font-size:0.70rem;">CONNECTION LIVE</div>
-          <div style="color:var(--accent-cyan); margin-top:2px;" id="mitotic-index">Active Load: 0%</div>
+          <div style="color:var(--accent-tumor); font-weight:800; font-size:0.70rem;">CELL SIMULATION</div>
+          <div style="color:var(--accent-cyan); margin-top:2px;" id="mitotic-index">Mitotic Index: 0%</div>
         </div>
       </div>
     </div>
+
     <!-- Cluster Aggregate Hardware Stats -->
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
@@ -527,7 +529,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 <script>
   const GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
 
-  // Real, uniform Systems Oncology Roles
   const NODES = [
     { id: "simon", name: "HP-Z4", role: "Systems Oncology Compute", bioRole: "72 Cores • 62GB RAM",  hasJupyter: true,  cores: 72, columns: 12, apiVer: 3, url: "" },
     { id: "jlp",   name: "JLP",   role: "Systems Oncology Compute", bioRole: "104 Cores • 188GB RAM", hasJupyter: true,  cores: 104, columns: 13, apiVer: 3, url: "" },
@@ -539,7 +540,8 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     mem: { simon: 0, jlp: 0, priti: 0, nas: 0 },
     netRx: { simon: 0, jlp: 0, priti: 0, nas: 0 },
     netTx: { simon: 0, jlp: 0, priti: 0, nas: 0 },
-    cpuAvg: 10
+    cpu: { simon: 0, jlp: 0, priti: 0, nas: 0 },
+    cpuAvg: 0
   };
 
   function toggleFullScreen() {
@@ -558,49 +560,74 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
-  // --- CELLULAR SIMULATION CANVAS ---
+  // --- DYNAMIC CPU-DRIVEN CELLULAR CLUSTER SIMULATION ---
   const canvas = document.getElementById("tumor-spheroid-canvas");
   const ctx = canvas.getContext("2d");
   const centerX = 85;
   const centerY = 48;
-  const cells = Array.from({ length: 58 }).map(() => ({
-    x: centerX + (Math.random() - 0.5) * 56,
-    y: centerY + (Math.random() - 0.5) * 36,
-    vx: (Math.random() - 0.5) * 0.4,
-    vy: (Math.random() - 0.5) * 0.4,
-    r: Math.random() * 2.8 + 1.8,
-    type: Math.random() > 0.35 ? "tumor" : "quiescent",
+  const MAX_CELLS = 70;
+
+  // Initialize pool of cells with angle and radial distance
+  const cells = Array.from({ length: MAX_CELLS }).map((_, i) => ({
+    angle: Math.random() * Math.PI * 2,
+    baseDist: Math.pow(Math.random(), 0.65), // Density concentrated toward center
+    angularSpeed: (Math.random() - 0.5) * 0.02,
+    radialWobble: Math.random() * Math.PI * 2,
+    baseRadius: Math.random() * 1.6 + 1.6,
+    type: i % 3 === 0 ? "quiescent" : "tumor",
     phase: Math.random() * Math.PI * 2
   }));
 
   function animateTumorLattice() {
-    ctx.fillStyle = "rgba(2, 4, 8, 0.25)";
+    ctx.fillStyle = "rgba(2, 4, 8, 0.3)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const speedMult = Math.max(0.4, clusterState.cpuAvg / 25);
+    // Dynamic factors calculated purely from cluster CPU activity
+    const loadFraction = Math.min(1, Math.max(0, clusterState.cpuAvg / 100)); // 0.0 to 1.0
+    
+    // Cluster grows outwards as CPU load increases:
+    // Low load: compact core (radius ~14px). High load: expands to ~40px across canvas.
+    const clusterRadius = 14 + (loadFraction * 26);
+    
+    // More cells activate and divide as load increases
+    const activeCount = Math.floor(20 + (loadFraction * (MAX_CELLS - 20)));
+    
+    // Mitotic velocity / agitation scales with CPU load
+    const speedMult = 0.5 + (loadFraction * 2.5);
 
-    cells.forEach(c => {
-      c.x += c.vx * speedMult;
-      c.y += c.vy * speedMult;
-      c.phase += 0.04 * speedMult;
+    for (let i = 0; i < activeCount; i++) {
+      const c = cells[i];
+      c.angle += c.angularSpeed * speedMult;
+      c.radialWobble += 0.03 * speedMult;
+      c.phase += 0.05 * speedMult;
 
-      const dx = centerX - c.x;
-      const dy = centerY - c.y;
-      c.vx += dx * 0.0008;
-      c.vy += dy * 0.0008;
+      // Current distance based on dynamic clusterRadius + slight organic wobble
+      const currentDist = (c.baseDist * clusterRadius) + (Math.sin(c.radialWobble) * 2.5);
+      const x = centerX + Math.cos(c.angle) * currentDist;
+      const y = centerY + Math.sin(c.angle) * currentDist * 0.85; // Spheroid aspect
+
+      // Cell size grows slightly during active mitotic synthesis
+      const currentRadius = c.baseRadius * (1 + (loadFraction * 0.45)) + (Math.sin(c.phase) * 0.35);
 
       ctx.beginPath();
-      ctx.arc(c.x, c.y, c.r + Math.sin(c.phase) * 0.4, 0, Math.PI * 2);
+      ctx.arc(x, y, Math.max(1, currentRadius), 0, Math.PI * 2);
+      
       if (c.type === "tumor") {
-        ctx.fillStyle = speedMult > 1.8 ? "#f43f5e" : "#ec4899";
-        ctx.shadowColor = "#ec4899";
-        ctx.shadowBlur = 4;
+        if (loadFraction > 0.45) {
+          ctx.fillStyle = "#f43f5e"; // Mitotic Rose/Pink flush under high CPU
+          ctx.shadowColor = "#f43f5e";
+          ctx.shadowBlur = 4;
+        } else {
+          ctx.fillStyle = "#ec4899";
+          ctx.shadowColor = "#ec4899";
+          ctx.shadowBlur = 2;
+        }
       } else {
-        ctx.fillStyle = "#38bdf8";
+        ctx.fillStyle = "#38bdf8"; // Quiescent Cyan
         ctx.shadowBlur = 0;
       }
       ctx.fill();
-    });
+    }
 
     requestAnimationFrame(animateTumorLattice);
   }
@@ -610,12 +637,10 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   function classifyBioTask(cmdName, cmdLine = "") {
     const full = (cmdName + " " + cmdLine).toLowerCase();
     
-    // Julia -> ODE Solving
     if (full.includes("julia")) {
       return { tag: "ODE Solving", icon: "🧬" };
     }
     
-    // Python, R, Pipelines, Aligners -> Data Processing
     if (full.includes("python") || full.includes("python3") ||
         full.includes("rscript") || full.includes("r.bin") ||
         full.includes("nextflow") || full.includes("snakemake") ||
@@ -624,7 +649,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       return { tag: "Data Processing", icon: "📊" };
     }
     
-    // Storage & Sync
     if (full.includes("cloudsync") || full.includes("rsync") || full.includes("syno")) {
       return { tag: "Cloud Sync", icon: "💾" };
     }
@@ -642,7 +666,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       card.className = "node-card";
       card.id = `card-${n.id}`;
 
-      // Clean NAS backup row (no truncated snapshot text)
       const syncSnippet = isNas ? `
         <div class="cloudsync-hud" id="nas-sync-banner">
           <div style="font-size:0.64rem; font-weight:700; color:#10b981;" id="nas-sync-state-txt">BACKUP: SUCCESSFUL</div>
@@ -650,7 +673,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         </div>
       ` : "";
 
-      // JupyterHub status pill (Compute servers only)
       const jupyterSnippet = n.hasJupyter ? `
         <div class="service-status-bar">
           <span style="color:var(--text-muted);">JupyterHub</span>
@@ -754,18 +776,33 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   }
 
   function updateClusterAggregates() {
+    // RAM
     const totalUsed = Object.values(clusterState.mem).reduce((a, b) => a + b, 0);
     const ramEl = document.getElementById("total-ram-active");
     if (ramEl) ramEl.innerText = `${totalUsed.toFixed(0)} / 324 GB`;
 
+    // Network
     const sumRx = Object.values(clusterState.netRx).reduce((a, b) => a + b, 0);
     const sumTx = Object.values(clusterState.netTx).reduce((a, b) => a + b, 0);
     const netEl = document.getElementById("cluster-total-net");
     if (netEl) netEl.innerText = `↓${formatBytesSec(sumRx)} ↑${formatBytesSec(sumTx)}`;
 
+    // Core-weighted average CPU calculation
+    let weightedCpuSum = 0;
+    let totalCores = 0;
+    NODES.forEach(n => {
+      const load = clusterState.cpu[n.id] || 0;
+      weightedCpuSum += (load * n.cores);
+      totalCores += n.cores;
+    });
+
+    clusterState.cpuAvg = totalCores > 0 ? (weightedCpuSum / totalCores) : 0;
+
+    // Update Mitotic Index / Cluster Activity directly from actual CPU activity
     const mitEl = document.getElementById("mitotic-index");
     if (mitEl) {
-      mitEl.innerText = `Active Load: ${Math.round(clusterState.cpuAvg)}%`;
+      const roundedCpu = Math.round(clusterState.cpuAvg);
+      mitEl.innerText = `Mitotic Index: ${roundedCpu}%`;
     }
   }
 
@@ -788,7 +825,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       document.getElementById(`dot-${node.id}`).className = "status-dot online";
       document.getElementById(`uptime-${node.id}`).innerText = upt || "ONLINE";
 
-      // JupyterHub Detection (Compute Servers)
+      // JupyterHub Detection
       if (node.hasJupyter && Array.isArray(procs)) {
         const jupDot = document.getElementById(`jup-dot-${node.id}`);
         const jupTxt = document.getElementById(`jup-txt-${node.id}`);
@@ -827,8 +864,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         document.getElementById(`net-tx-${node.id}`).innerText = formatBytesSec(totalTx);
       }
 
-      // CPU
+      // CPU Load Tracking
       const cpuVal = Math.round(cpu.cpu || 0);
+      clusterState.cpu[node.id] = cpuVal;
       document.getElementById(`cpu-txt-${node.id}`).innerText = `${cpuVal}%`;
       document.getElementById(`cpu-bar-${node.id}`).style.width = `${cpuVal}%`;
 
