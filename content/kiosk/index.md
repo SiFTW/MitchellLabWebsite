@@ -159,6 +159,32 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     box-sizing: border-box;
   }
 
+  .heatmap-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.58rem;
+  font-family: var(--mono-font);
+  color: var(--text-muted);
+  text-transform: none;
+  letter-spacing: normal;
+  }
+  .legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  }
+  .legend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  display: inline-block;
+  }
+  .dot-idle { background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2); }
+  .dot-low  { background: #0284c7; }
+  .dot-mid  { background: #10b981; }
+  .dot-high { background: #f59e0b; }
+  .dot-max  { background: #ec4899; box-shadow: 0 0 4px #ec4899; }
   @media (max-width: 900px) {
     .hud-metrics-row {
       grid-template-columns: repeat(2, 1fr);
@@ -752,15 +778,20 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           ${syncSnippet}
 
           <div class="heatmap-wrap">
-            <div class="section-label">
-              <span>Core Heatmap (${n.cores} Cores)</span>
-              <span id="load-avg-${n.id}">Load: --</span>
-            </div>
-            <div class="core-grid" id="grid-${n.id}" style="grid-template-columns: repeat(${n.columns}, 1fr);">
-              ${Array.from({ length: n.cores }).map((_, i) => `<div class="core-cell" id="core-${n.id}-${i}"></div>`).join('')}
-            </div>
+          <div class="section-label">
+          <span>Cores (${n.cores})</span>
+          <div class="heatmap-legend">
+          <span class="legend-item"><span class="legend-dot dot-idle"></span>&lt;5%</span>
+          <span class="legend-item"><span class="legend-dot dot-low"></span>&lt;30%</span>
+          <span class="legend-item"><span class="legend-dot dot-mid"></span>&lt;70%</span>
+          <span class="legend-item"><span class="legend-dot dot-high"></span>&lt;90%</span>
+          <span class="legend-item"><span class="legend-dot dot-max"></span>&gt;90%</span>
           </div>
-        </div>
+          </div>
+          <div class="core-grid" id="grid-${n.id}" style="grid-template-columns: repeat(${n.columns}, 1fr);">
+          ${Array.from({ length: n.cores }).map((_, i) => `<div class="core-cell" id="core-${n.id}-${i}"></div>`).join('')}
+          </div>
+          </div>
 
         <div class="process-box">
           <div class="section-label">Top Tasks</div>
