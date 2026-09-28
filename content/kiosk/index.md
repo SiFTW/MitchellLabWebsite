@@ -619,7 +619,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
-// --- AMBIENT BIOLOGICAL CELL CANVAS (GROWTH -> MITOSIS & SWELL -> POP) ---
+// --- AMBIENT BIOLOGICAL CELL CANVAS (GROWTH -> DIVISION -> INDEPENDENT DRIFT -> POP) ---
   const headerContainer = document.getElementById("hud-header-container");
   const canvas = document.getElementById("header-cell-canvas");
   const ctx = canvas.getContext("2d");
@@ -637,7 +637,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     clusterCorePool[n.id] = new Array(n.cores).fill(0);
   });
 
-  // Spawn exactly 1 cell for every core in the cluster (192 total)
+  // Base persistent cells: exactly 192 cores mapped 1:1
   let cellIndex = 0;
   const cells = [];
   NODES.forEach(n => {
@@ -647,17 +647,18 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         id: cellIndex++,
         nodeId: n.id,
         coreIdx: c,
+        isTemporaryDaughter: false,
         x: Math.random() * (canvas.width || 800),
         y: Math.random() * (canvas.height || 120),
         vx: Math.cos(angle) * (0.04 + Math.random() * 0.05),
         vy: Math.sin(angle) * (0.04 + Math.random() * 0.05),
         currentLoad: 0,
         lastLoad: 0,
-        // Mitosis states: 'none' -> 'growing' -> 'splitting'
+        // Mitosis: 'none' -> 'growing' -> 'splitting'
         mitosisState: 'none',
         mitosisProgress: 0,
         splitAngle: 0,
-        // Death / Pop state: 'none' -> 'swelling' -> 'popping'
+        // Death: 'none' -> 'swelling' -> 'popping'
         deathState: 'none',
         deathProgress: 0,
         popRadius: 0,
@@ -666,12 +667,36 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     }
   });
 
+  // Pool for independent daughter cells spawned during mitosis
+  const temporaryDaughters = [];
+
+  // Spawn a real, independent daughter cell upon division completion
+  function spawnIndependentDaughter(x, y, angle, load) {
+    // Push the daughter in the split direction with gentle forward momentum
+    const speed = 0.08 + Math.random() * 0.05;
+    const daughter = {
+      id: `daughter-${Date.now()}-${Math.random()}`,
+      isTemporaryDaughter: true,
+      x: x,
+      y: y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      currentLoad: load,
+      deathState: 'none',
+      deathProgress: 0,
+      popRadius: 0,
+      popAlpha: 1,
+      timeRemaining: 600 // 60fps * 10 seconds = 600 frames
+    };
+    temporaryDaughters.push(daughter);
+  }
+
   // Periodic Mitosis Event (~every 8-10 seconds)
   function triggerMitosisEvent() {
     const candidates = cells.filter(c => c.mitosisState === 'none' && c.deathState === 'none');
     if (candidates.length === 0) return;
 
-    // Favor active cores (>25%), else pick any available core
+    // Prefer active cores (>25%), else pick any available core
     const active = candidates.filter(c => c.currentLoad > 25);
     const chosen = (active.length > 0)
       ? active[Math.floor(Math.random() * active.length)]
@@ -679,7 +704,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
     chosen.mitosisState = 'growing';
     chosen.mitosisProgress = 0;
-    chosen.splitAngle = Math.random() * Math.PI;
+    chosen.splitAngle = Math.random() * Math.PI * 2;
   }
 
   setInterval(triggerMitosisEvent, 9000);
@@ -687,13 +712,15 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   function animateHeaderCells() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // ==========================================
+    // 1. RENDER PERSISTENT HARDWARE CORE CELLS (192)
+    // ==========================================
     cells.forEach(c => {
-      // 1. Sync real-time hardware telemetry
       const targetLoad = (clusterCorePool[c.nodeId] && clusterCorePool[c.nodeId][c.coreIdx] !== undefined)
         ? clusterCorePool[c.nodeId][c.coreIdx]
         : 0;
 
-      // Detect sharp drop in load -> Trigger Apoptotic Pop
+      // Natural drop from load -> Trigger Pop
       if (c.currentLoad > 35 && targetLoad < 8 && c.deathState === 'none' && c.mitosisState === 'none') {
         c.deathState = 'swelling';
         c.deathProgress = 0;
@@ -702,20 +729,18 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       c.lastLoad = c.currentLoad;
       c.currentLoad += (targetLoad - c.currentLoad) * 0.06;
 
-      // 2. Calm, dignified biological drift
       const loadNorm = c.currentLoad / 100;
       const speedMult = 0.10 + (loadNorm * 0.28);
 
       c.x += c.vx * speedMult;
       c.y += c.vy * speedMult;
 
-      // Boundary wrap
+      // Screen wrapping
       if (c.x < -20) c.x = canvas.width + 20;
       if (c.x > canvas.width + 20) c.x = -20;
       if (c.y < -20) c.y = canvas.height + 20;
       if (c.y > canvas.height + 20) c.y = -20;
 
-      // Continuous color scale
       const color = getContinuousColor(c.currentLoad);
       const baseRadius = 2.0 + (loadNorm * 2.6);
       const glow = c.currentLoad > 75 ? (c.currentLoad - 75) * 0.25 : 0;
@@ -726,17 +751,14 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         ctx.shadowBlur = glow;
       }
 
-      // ==========================================
-      // STAGE A: CELL DEATH / POPPING (APOPTOSIS)
-      // ==========================================
+      // STAGE A: APOPTOSIS / POPPING
       if (c.deathState !== 'none') {
         c.deathProgress += 0.035;
 
         if (c.deathState === 'swelling') {
-          // Swells rapidly by 1.6x before bursting
           const swellScale = 1.0 + (c.deathProgress * 0.7);
           const currentRadius = baseRadius * swellScale;
-          
+
           ctx.beginPath();
           ctx.arc(c.x, c.y, currentRadius, 0, Math.PI * 2);
           ctx.fillStyle = color;
@@ -748,7 +770,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
             c.popAlpha = 0.85;
           }
         } else if (c.deathState === 'popping') {
-          // Rapidly expands outward as a translucent ring and vanishes
           c.popRadius += 0.8;
           c.popAlpha -= 0.06;
 
@@ -762,18 +783,15 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           if (c.popAlpha <= 0) {
             c.deathState = 'none';
             c.deathProgress = 0;
-            c.currentLoad = 0; // Resets quietly as an idle slate core
+            c.currentLoad = 0;
           }
         }
       }
 
-      // ==========================================
-      // STAGE B: CELL DIVISION (MITOSIS)
-      // ==========================================
+      // STAGE B1: MITOSIS INTERPHASE (2x Growth)
       else if (c.mitosisState === 'growing') {
-        // Interphase: Cell smoothly swells to 2x its normal diameter
-        c.mitosisProgress += 0.008; // ~2 seconds of visible growth
-        const growthFactor = 1.0 + c.mitosisProgress; // 1.0x -> 2.0x size
+        c.mitosisProgress += 0.009;
+        const growthFactor = 1.0 + c.mitosisProgress;
         const currentRadius = baseRadius * growthFactor;
 
         ctx.beginPath();
@@ -785,39 +803,52 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           c.mitosisState = 'splitting';
           c.mitosisProgress = 0;
         }
-      } 
+      }
+
+      // STAGE B2: MITOSIS CYTOKINESIS (Active Separation)
       else if (c.mitosisState === 'splitting') {
-        // Cytokinesis: 2x giant cell cleaves into two distinct daughter nuclei
-        c.mitosisProgress += 0.012; // ~1.5 seconds of separation
-        
-        const doubleRadius = baseRadius * 1.8;
-        const daughterRadius = doubleRadius * 0.58; // Daughter size shrinks back to normal
-        const separation = c.mitosisProgress * (daughterRadius * 2.2);
+        c.mitosisProgress += 0.014;
+
+        const daughterRadius = baseRadius;
+        const separation = c.mitosisProgress * (daughterRadius * 2.8);
 
         const dx = Math.cos(c.splitAngle) * separation;
         const dy = Math.sin(c.splitAngle) * separation;
 
-        // Daughter 1
+        // Mother nucleus
         ctx.beginPath();
-        ctx.arc(c.x - dx, c.y - dy, Math.max(1.5, daughterRadius), 0, Math.PI * 2);
+        ctx.arc(c.x - (dx * 0.5), c.y - (dy * 0.5), daughterRadius, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
-        // Daughter 2
+        // Budding daughter nucleus
         ctx.beginPath();
-        ctx.arc(c.x + dx, c.y + dy, Math.max(1.5, daughterRadius), 0, Math.PI * 2);
+        ctx.arc(c.x + (dx * 0.5), c.y + (dy * 0.5), daughterRadius, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
+        // Separation complete: Spawn genuine independent daughter cell
         if (c.mitosisProgress >= 1.0) {
           c.mitosisState = 'none';
           c.mitosisProgress = 0;
+
+          // Mother keeps backward recoil
+          c.x -= dx * 0.5;
+          c.y -= dy * 0.5;
+          c.vx = -Math.cos(c.splitAngle) * 0.08;
+          c.vy = -Math.sin(c.splitAngle) * 0.08;
+
+          // Daughter inherits split position and sails forward independently
+          spawnIndependentDaughter(
+            c.x + dx,
+            c.y + dy,
+            c.splitAngle,
+            c.currentLoad
+          );
         }
       }
 
-      // ==========================================
-      // STAGE C: NORMAL QUIESCENT / ACTIVE DRIFT
-      // ==========================================
+      // STAGE C: NORMAL DRIFT
       else {
         ctx.beginPath();
         ctx.arc(c.x, c.y, Math.max(1.2, baseRadius), 0, Math.PI * 2);
@@ -827,6 +858,80 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
       ctx.restore();
     });
+
+    // ==========================================
+    // 2. RENDER INDEPENDENT TEMPORARY DAUGHTERS (10s LIFETIME)
+    // ==========================================
+    for (let i = temporaryDaughters.length - 1; i >= 0; i--) {
+      const d = temporaryDaughters[i];
+
+      // Drift independently
+      d.x += d.vx;
+      d.y += d.vy;
+
+      if (d.x < -20) d.x = canvas.width + 20;
+      if (d.x > canvas.width + 20) d.x = -20;
+      if (d.y < -20) d.y = canvas.height + 20;
+      if (d.y > canvas.height + 20) d.y = -20;
+
+      const color = getContinuousColor(d.currentLoad);
+      const baseRadius = 2.0 + (d.currentLoad / 100 * 2.6);
+
+      ctx.save();
+      if (d.currentLoad > 75) {
+        ctx.shadowColor = color;
+        ctx.shadowBlur = (d.currentLoad - 75) * 0.25;
+      }
+
+      // Count down 10-second life timer
+      if (d.deathState === 'none') {
+        d.timeRemaining--;
+        if (d.timeRemaining <= 0) {
+          d.deathState = 'swelling';
+          d.deathProgress = 0;
+        }
+
+        // Normal swimming daughter
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, Math.max(1.2, baseRadius), 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+      // Triggered 10-second apoptosis swell & pop
+      else if (d.deathState === 'swelling') {
+        d.deathProgress += 0.035;
+        const swellRadius = baseRadius * (1.0 + d.deathProgress * 0.7);
+
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, swellRadius, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        if (d.deathProgress >= 1.0) {
+          d.deathState = 'popping';
+          d.popRadius = swellRadius;
+          d.popAlpha = 0.85;
+        }
+      }
+      else if (d.deathState === 'popping') {
+        d.popRadius += 0.8;
+        d.popAlpha -= 0.06;
+
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.popRadius, 0, Math.PI * 2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.2;
+        ctx.globalAlpha = Math.max(0, d.popAlpha);
+        ctx.stroke();
+
+        // Once popped, permanently delete this temporary daughter
+        if (d.popAlpha <= 0) {
+          temporaryDaughters.splice(i, 1);
+        }
+      }
+
+      ctx.restore();
+    }
 
     requestAnimationFrame(animateHeaderCells);
   }
