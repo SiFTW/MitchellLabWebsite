@@ -82,7 +82,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     overflow: hidden;
   }
 
-  /* Absolute ambient canvas behind header elements */
   #header-cell-canvas {
     position: absolute;
     inset: 0;
@@ -170,24 +169,19 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     letter-spacing: normal;
   }
 
-  .legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-  }
-
-  .legend-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 1px;
+  .legend-bar {
+    width: 58px;
+    height: 5px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, 
+      rgb(40, 50, 70) 0%, 
+      rgb(2, 132, 199) 20%, 
+      rgb(16, 185, 129) 50%, 
+      rgb(245, 158, 11) 75%, 
+      rgb(236, 72, 153) 100%);
     display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
-
-  .dot-idle { background: rgba(71, 85, 105, 0.5); }
-  .dot-low  { background: #0284c7; }
-  .dot-mid  { background: #10b981; }
-  .dot-high { background: #f59e0b; }
-  .dot-max  { background: #ec4899; box-shadow: 0 0 4px #ec4899; }
 
   @media (max-width: 900px) {
     .hud-metrics-row {
@@ -420,6 +414,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   .section-label {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: 0.62rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -441,9 +436,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   .core-cell {
     aspect-ratio: 1;
     border-radius: 1px;
-    background: rgba(71, 85, 105, 0.25);
+    background: rgb(40, 50, 70);
     border: 1px solid rgba(255, 255, 255, 0.04);
-    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    transition: background-color 0.35s ease, box-shadow 0.35s ease;
   }
 
   .process-box {
@@ -570,6 +565,39 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     cpuAvg: 0
   };
 
+  // --- CONTINUOUS COLOR INTERPOLATION ---
+  const COLOR_STOPS = [
+    { p: 0.00, r: 40,  g: 50,  b: 70  }, // 0%: Idle Slate
+    { p: 0.20, r: 2,   g: 132, b: 199 }, // 20%: Cyan/Blue
+    { p: 0.50, r: 16,  g: 185, b: 129 }, // 50%: Emerald
+    { p: 0.75, r: 245, g: 158, b: 11  }, // 75%: Amber
+    { p: 1.00, r: 236, g: 72,  b: 153 }  // 100%: Mitotic Peak Pink
+  ];
+
+  function getContinuousColor(pct) {
+    const t = Math.max(0, Math.min(100, pct)) / 100;
+    
+    let lower = COLOR_STOPS[0];
+    let upper = COLOR_STOPS[COLOR_STOPS.length - 1];
+
+    for (let i = 0; i < COLOR_STOPS.length - 1; i++) {
+      if (t >= COLOR_STOPS[i].p && t <= COLOR_STOPS[i + 1].p) {
+        lower = COLOR_STOPS[i];
+        upper = COLOR_STOPS[i + 1];
+        break;
+      }
+    }
+
+    const range = upper.p - lower.p;
+    const factor = range === 0 ? 0 : (t - lower.p) / range;
+
+    const r = Math.round(lower.r + (upper.r - lower.r) * factor);
+    const g = Math.round(lower.g + (upper.g - lower.g) * factor);
+    const b = Math.round(lower.b + (upper.b - lower.b) * factor);
+
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(()=>{});
@@ -625,29 +653,11 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       if (c.y < -20) c.y = canvas.height + 20;
       if (c.y > canvas.height + 20) c.y = -20;
 
-      const effectiveActivity = Math.min(1, c.tier + (loadFrac * 0.65));
-
-      let color, radius, glow = 0;
-
-      if (effectiveActivity < 0.28) {
-        color = "rgba(71, 85, 105, 0.45)";
-        radius = 1.6 + Math.sin(c.wobble) * 0.3;
-      } else if (effectiveActivity < 0.55) {
-        color = "rgba(2, 132, 199, 0.7)";
-        radius = 2.4 + Math.sin(c.wobble) * 0.4;
-      } else if (effectiveActivity < 0.78) {
-        color = "rgba(16, 185, 129, 0.85)";
-        radius = 3.4 + Math.sin(c.wobble) * 0.5;
-        glow = 4;
-      } else if (effectiveActivity < 0.90) {
-        color = "rgba(245, 158, 11, 0.9)";
-        radius = 4.4 + Math.sin(c.wobble) * 0.6;
-        glow = 6;
-      } else {
-        color = "#ec4899";
-        radius = 6.2 + Math.sin(c.wobble) * 0.9;
-        glow = 12;
-      }
+      // Continuous individual load percentile
+      const cellLoadPct = Math.min(100, (c.tier * 60) + (loadFrac * 60));
+      const color = getContinuousColor(cellLoadPct);
+      const radius = 1.6 + (cellLoadPct / 100) * 4.2 + Math.sin(c.wobble) * 0.5;
+      const glow = cellLoadPct > 65 ? (cellLoadPct - 65) * 0.35 : 0;
 
       ctx.beginPath();
       ctx.arc(c.x, c.y, Math.max(1, radius), 0, Math.PI * 2);
@@ -770,11 +780,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
             <div class="section-label">
               <span>Cores (${n.cores})</span>
               <div class="heatmap-legend">
-                <span class="legend-item"><span class="legend-dot dot-idle"></span>0%</span>
-                <span class="legend-item"><span class="legend-dot dot-low"></span>30%</span>
-                <span class="legend-item"><span class="legend-dot dot-mid"></span>70%</span>
-                <span class="legend-item"><span class="legend-dot dot-high"></span>90%</span>
-                <span class="legend-item"><span class="legend-dot dot-max"></span>Max</span>
+                <span>0%</span>
+                <span class="legend-bar"></span>
+                <span>100%</span>
               </div>
             </div>
             <div class="core-grid" id="grid-${n.id}" style="grid-template-columns: repeat(${n.columns}, 1fr);">
@@ -802,14 +810,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
       container.appendChild(card);
     });
-  }
-
-  function getHeatmapColor(load) {
-    if (load < 5)   return "rgba(71, 85, 105, 0.4)";
-    if (load < 30)  return "#0284c7";
-    if (load < 70)  return "#10b981";
-    if (load < 90)  return "#f59e0b";
-    return "#ec4899";
   }
 
   function updateClusterAggregates() {
@@ -966,15 +966,15 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         }
       }
 
-      // Core Heatmap Rendering
+      // Continuous Core Heatmap Rendering
       if (Array.isArray(cpus) && cpus.length > 0) {
         cpus.forEach((core, i) => {
           const el = document.getElementById(`core-${node.id}-${i}`);
           if (el) {
             const loadVal = (typeof core.total === 'number') ? core.total : (100 - (core.idle ?? 100));
-            const color = getHeatmapColor(loadVal);
+            const color = getContinuousColor(loadVal);
             el.style.backgroundColor = color;
-            el.style.boxShadow = loadVal > 60 ? `0 0 5px ${color}` : "none";
+            el.style.boxShadow = loadVal > 65 ? `0 0 6px ${color}` : "none";
           }
         });
       }
