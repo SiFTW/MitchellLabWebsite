@@ -854,9 +854,13 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         fetch(`${base}/network`).then(r => r.json()).catch(() => [])
       ]);
 
-      document.getElementById(`dot-${node.id}`).className = "status-dot online";
-      document.getElementById(`uptime-${node.id}`).innerText = upt || "ONLINE";
+      const dotEl = document.getElementById(`dot-${node.id}`);
+      if (dotEl) dotEl.className = "status-dot online";
+      
+      const uptEl = document.getElementById(`uptime-${node.id}`);
+      if (uptEl) uptEl.innerText = upt || "ONLINE";
 
+      // JupyterHub Detection
       if (node.hasJupyter && Array.isArray(procs)) {
         const jupDot = document.getElementById(`jup-dot-${node.id}`);
         const jupTxt = document.getElementById(`jup-txt-${node.id}`);
@@ -880,6 +884,33 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         }
       }
 
+      // Top Processes Table (Placed early so it always renders first!)
+      const tbody = document.getElementById(`proc-tbody-${node.id}`);
+      if (tbody && Array.isArray(procs) && procs.length > 0) {
+        const sorted = [...procs]
+          .sort((a, b) => (b.cpu_percent || 0) - (a.cpu_percent || 0))
+          .slice(0, 4);
+
+        tbody.innerHTML = sorted.map(p => {
+          const cpuUsage = (p.cpu_percent || 0).toFixed(1);
+          const rawCmd = (p.name || "task").replace(/^.*\//, '');
+          const bioInfo = classifyBioTask(rawCmd, p.cmdline || "");
+          return `
+            <tr>
+              <td style="color:var(--text-muted); font-size:0.60rem;">${p.pid}</td>
+              <td style="color:#e2e8f0; font-weight:600;" title="${rawCmd}">
+                <span style="color:var(--accent-tumor); font-size:0.58rem; display:block; text-transform:uppercase;">${bioInfo.icon} ${bioInfo.tag}</span>
+                ${rawCmd}
+              </td>
+              <td style="text-align:right;">
+                <span class="cpu-pill">${cpuUsage}%</span>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Network Traffic
       if (Array.isArray(net) && net.length > 0) {
         let totalRx = 0, totalTx = 0;
         net.forEach(iface => {
@@ -890,73 +921,76 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         });
         clusterState.netRx[node.id] = totalRx;
         clusterState.netTx[node.id] = totalTx;
-        document.getElementById(`net-rx-${node.id}`).innerText = formatBytesSec(totalRx);
-        document.getElementById(`net-tx-${node.id}`).innerText = formatBytesSec(totalTx);
+        const rxEl = document.getElementById(`net-rx-${node.id}`);
+        const txEl = document.getElementById(`net-tx-${node.id}`);
+        if (rxEl) rxEl.innerText = formatBytesSec(totalRx);
+        if (txEl) txEl.innerText = formatBytesSec(totalTx);
       }
 
-      const cpuVal = Math.round(cpu.cpu || 0);
+      // CPU Load Tracking
+      const cpuVal = Math.round(cpu.cpu ?? 0);
       clusterState.cpu[node.id] = cpuVal;
-      document.getElementById(`cpu-txt-${node.id}`).innerText = `${cpuVal}%`;
-      document.getElementById(`cpu-bar-${node.id}`).style.width = `${cpuVal}%`;
+      const cpuTxt = document.getElementById(`cpu-txt-${node.id}`);
+      const cpuBar = document.getElementById(`cpu-bar-${node.id}`);
+      if (cpuTxt) cpuTxt.innerText = `${cpuVal}%`;
+      if (cpuBar) cpuBar.style.width = `${cpuVal}%`;
 
-      if (mem.used && mem.total) {
+      // RAM
+      if (mem && mem.used && mem.total) {
         const usedGbNum = mem.used / (1024 ** 3);
         const totalGbNum = mem.total / (1024 ** 3);
         clusterState.mem[node.id] = usedGbNum;
-        document.getElementById(`ram-txt-${node.id}`).innerText = `${usedGbNum.toFixed(1)} / ${totalGbNum.toFixed(1)} GB`;
-        document.getElementById(`ram-bar-${node.id}`).style.width = `${Math.round((mem.used/mem.total)*100)}%`;
+        const ramTxt = document.getElementById(`ram-txt-${node.id}`);
+        const ramBar = document.getElementById(`ram-bar-${node.id}`);
+        if (ramTxt) ramTxt.innerText = `${usedGbNum.toFixed(1)} / ${totalGbNum.toFixed(1)} GB`;
+        if (ramBar) ramBar.style.width = `${Math.round((mem.used/mem.total)*100)}%`;
       }
 
+      // Load average
       if (load && load.min15 !== undefined) {
-        document.getElementById(`load-avg-${node.id}`).innerText = `15m: ${Number(load.min15).toFixed(1)}`;
+        const loadAvgEl = document.getElementById(`load-avg-${node.id}`);
+        if (loadAvgEl) loadAvgEl.innerText = `15m: ${Number(load.min15).toFixed(1)}`;
       }
 
+      // Storage
       if (Array.isArray(fs) && fs.length > 0) {
         const root = fs.find(d => d.mnt_point === "/" || d.mnt_point === "/volume1") || fs[0];
-        const dUsed = (root.used / (1024 ** 4) >= 1) ? `${(root.used / (1024 ** 4)).toFixed(1)} TB` : `${Math.round(root.used / (1024 ** 3))} GB`;
-        const dTotal = (root.size / (1024 ** 4) >= 1) ? `${(root.size / (1024 ** 4)).toFixed(1)} TB` : `${Math.round(root.size / (1024 ** 3))} GB`;
-        document.getElementById(`disk-txt-${node.id}`).innerText = `${dUsed} / ${dTotal}`;
-        document.getElementById(`disk-bar-${node.id}`).style.width = `${root.percent}%`;
+        if (root) {
+          const dUsed = (root.used / (1024 ** 4) >= 1) ? `${(root.used / (1024 ** 4)).toFixed(1)} TB` : `${Math.round(root.used / (1024 ** 3))} GB`;
+          const dTotal = (root.size / (1024 ** 4) >= 1) ? `${(root.size / (1024 ** 4)).toFixed(1)} TB` : `${Math.round(root.size / (1024 ** 3))} GB`;
+          const diskTxt = document.getElementById(`disk-txt-${node.id}`);
+          const diskBar = document.getElementById(`disk-bar-${node.id}`);
+          if (diskTxt) diskTxt.innerText = `${dUsed} / ${dTotal}`;
+          if (diskBar) diskBar.style.width = `${root.percent}%`;
+        }
       }
 
-      if (Array.isArray(cpus)) {
+      // Core Heatmap Rendering
+      if (Array.isArray(cpus) && cpus.length > 0) {
         cpus.forEach((core, i) => {
           const el = document.getElementById(`core-${node.id}-${i}`);
           if (el) {
-            const loadVal = core.total || 0;
-            el.style.background = getHeatmapColor(loadVal);
-            el.style.boxShadow = loadVal > 60 ? `0 0 5px ${getHeatmapColor(loadVal)}` : "none";
+            const loadVal = (typeof core.total === 'number') ? core.total : (100 - (core.idle ?? 100));
+            const color = getHeatmapColor(loadVal);
+            el.style.backgroundColor = color;
+            el.style.boxShadow = loadVal > 60 ? `0 0 5px ${color}` : "none";
           }
         });
       }
 
-      if (Array.isArray(procs) && procs.length > 0) {
-        const sorted = [...procs]
-          .sort((a, b) => (b.cpu_percent || 0) - (a.cpu_percent || 0))
-          .slice(0, 4);
-
-        const tbody = document.getElementById(`proc-tbody-${node.id}`);
-        if (tbody) {
-          tbody.innerHTML = sorted.map(p => {
-            const cpuUsage = (p.cpu_percent || 0).toFixed(1);
-            const rawCmd = (p.name || "task").replace(/^.*\//, '');
-            const bioInfo = classifyBioTask(rawCmd, p.cmdline || "");
-            return `
-              <tr>
-                <td style="color:var(--text-muted); font-size:0.60rem;">${p.pid}</td>
-                <td style="color:#e2e8f0; font-weight:600;" title="${rawCmd}">
-                  <span style="color:var(--accent-tumor); font-size:0.58rem; display:block; text-transform:uppercase;">${bioInfo.icon} ${bioInfo.tag}</span>
-                  ${rawCmd}
-                </td>
-                <td style="text-align:right;">
-                  <span class="cpu-pill">${cpuUsage}%</span>
-                </td>
-              </tr>
-            `;
-          }).join('');
-        }
+      updateClusterAggregates();
+    } catch (e) {
+      console.warn(`Telemetry error on node ${node.id}:`, e);
+      const dotEl = document.getElementById(`dot-${node.id}`);
+      if (dotEl) dotEl.className = "status-dot";
+      if (node.hasJupyter) {
+        const jupDot = document.getElementById(`jup-dot-${node.id}`);
+        const jupTxt = document.getElementById(`jup-txt-${node.id}`);
+        if (jupDot) jupDot.className = "service-dot inactive";
+        if (jupTxt) jupTxt.innerText = "OFFLINE";
       }
-
+    }
+  }
       updateClusterAggregates();
     } catch (e) {
       document.getElementById(`dot-${node.id}`).className = "status-dot";
