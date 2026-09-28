@@ -513,6 +513,85 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     cursor: pointer;
     z-index: 100;
   }
+  /* FOCUS / AMBIENT MODE STYLES */
+  .hud-wrapper.ambient-focus {
+    justify-content: flex-start;
+  }
+
+  /* Expand header and canvas to take dominant screen area */
+  .hud-wrapper.ambient-focus .cluster-hud-header {
+    flex: 1 1 65vh;
+    min-height: 55vh;
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cluster-hud-header {
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Collapse nodes grid into a minimal bottom strip */
+  .hud-wrapper.ambient-focus .nodes-grid {
+    flex: 0 0 auto;
+    gap: 8px;
+    margin-top: 4px;
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hud-wrapper.ambient-focus .node-card {
+    padding: 8px 12px;
+    justify-content: center;
+  }
+
+  /* Hide heavy sub-elements when in focus mode */
+  .hud-wrapper.ambient-focus .heatmap-wrap,
+  .hud-wrapper.ambient-focus .process-box,
+  .hud-wrapper.ambient-focus .cloudsync-hud,
+  .hud-wrapper.ambient-focus .service-status-bar,
+  .hud-wrapper.ambient-focus .net-hud-bar {
+    display: none !important;
+  }
+
+  /* Compact metrics presentation in focus mode */
+  .hud-wrapper.ambient-focus .metric-block {
+    margin-bottom: 3px;
+  }
+  .hud-wrapper.ambient-focus .node-biometa {
+    margin-bottom: 4px;
+  }
+
+  /* Kiosk control action bar */
+  .kiosk-controls {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  }
+
+  .kiosk-btn {
+    background: rgba(10, 16, 28, 0.85);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-size: 0.70rem;
+    font-family: var(--mono-font);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .kiosk-btn:hover {
+    color: #fff;
+    border-color: var(--accent-tumor);
+  }
+
+  .kiosk-btn.active {
+    background: rgba(236, 72, 153, 0.2);
+    border-color: var(--accent-tumor);
+    color: var(--accent-tumor);
+  }
 </style>
 
 <div class="hud-wrapper">
@@ -549,7 +628,10 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 <div class="nodes-grid" id="kiosk-nodes-container"></div>
 </div>
 
-<button class="kiosk-btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
+<div class="kiosk-controls">
+  <button class="kiosk-btn" id="ambient-toggle-btn" onclick="toggleAmbientFocus()">Ambient View</button>
+  <button class="kiosk-btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
+</div>
 
 <script>
   const GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
@@ -611,6 +693,29 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     }
   }
 
+  let isAmbientFocus = false;
+
+  function toggleAmbientFocus() {
+    isAmbientFocus = !isAmbientFocus;
+    const wrapper = document.querySelector(".hud-wrapper");
+    const btn = document.getElementById("ambient-toggle-btn");
+    
+    if (isAmbientFocus) {
+      wrapper.classList.add("ambient-focus");
+      btn.classList.add("active");
+      btn.innerText = "📊 Dashboard View";
+    } else {
+      wrapper.classList.remove("ambient-focus");
+      btn.classList.remove("active");
+      btn.innerText = "🔬 Ambient View";
+    }
+
+    // Trigger canvas resize after layout animation completes
+    setTimeout(resizeCanvas, 50);
+    setTimeout(resizeCanvas, 250);
+    setTimeout(resizeCanvas, 460);
+  }
+
   function formatBytesSec(bytes) {
     if (!bytes || bytes <= 0) return "0 B/s";
     const k = 1024;
@@ -625,11 +730,19 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   const ctx = canvas.getContext("2d");
 
   function resizeCanvas() {
+    const prevHeight = canvas.height || 120;
     canvas.width = headerContainer.clientWidth;
     canvas.height = headerContainer.clientHeight;
+
+    // Distribute cells into the expanded vertical space
+    if (canvas.height > prevHeight && cells.length > 0) {
+      cells.forEach(c => {
+        if (Math.random() > 0.4) {
+          c.y = Math.random() * canvas.height;
+        }
+      });
+    }
   }
-  window.addEventListener("resize", resizeCanvas);
-  resizeCanvas();
 
   // Registry of current cluster core loads
   const clusterCorePool = {};
