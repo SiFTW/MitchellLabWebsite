@@ -637,7 +637,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     clusterCorePool[n.id] = new Array(n.cores).fill(0);
   });
 
-  // Spawn exactly 1 cell for every core in the cluster (192 total)
+ // Spawn exactly 1 cell for every core in the cluster (192 total)
   let cellIndex = 0;
   const cells = [];
   NODES.forEach(n => {
@@ -648,11 +648,10 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         coreIdx: c,
         x: Math.random() * (canvas.width || 800),
         y: Math.random() * (canvas.height || 120),
-        baseVx: (Math.random() - 0.5) * 0.35,
-        baseVy: (Math.random() - 0.5) * 0.35,
-        wobble: Math.random() * Math.PI * 2,
-        wobbleSpeed: 0.015 + Math.random() * 0.02,
-        currentLoad: 0 // Smoothly interpolates to actual core load
+        // Gentle baseline velocity
+        baseVx: (Math.random() - 0.5) * 0.18,
+        baseVy: (Math.random() - 0.5) * 0.18,
+        currentLoad: 0
       });
     }
   });
@@ -661,37 +660,40 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     cells.forEach(c => {
-      // 1. Fetch the actual core load reported by Glances
+      // 1. Fetch real-time core load reported by Glances
       const targetLoad = (clusterCorePool[c.nodeId] && clusterCorePool[c.nodeId][c.coreIdx] !== undefined)
         ? clusterCorePool[c.nodeId][c.coreIdx]
         : 0;
 
-      // 2. Smoothly ease toward real-time core load
-      c.currentLoad += (targetLoad - c.currentLoad) * 0.1;
+      // 2. Smoothly ease toward real-time core load (no instant jumps)
+      c.currentLoad += (targetLoad - c.currentLoad) * 0.08;
 
-      // 3. Dark/idle cells float slowly; active/pink cells move faster
-      const loadNorm = c.currentLoad / 100; // 0.0 to 1.0
-      const speedMult = 0.25 + (loadNorm * 2.2); // 0.25x (idle) to 2.45x (peak load)
+      // 3. Calm speed curve:
+      // Idle: 0.2x speed | Peak (100%): 0.85x speed (subtle, non-distracting drift)
+      const loadNorm = c.currentLoad / 100;
+      const speedMult = 0.20 + (loadNorm * 0.65);
 
       c.x += c.baseVx * speedMult;
       c.y += c.baseVy * speedMult;
-      c.wobble += c.wobbleSpeed * (0.5 + loadNorm * 2.0);
 
-      // Wrap-around screen bounds
-      if (c.x < -10) c.x = canvas.width + 10;
-      if (c.x > canvas.width + 10) c.x = -10;
-      if (c.y < -10) c.y = canvas.height + 10;
-      if (c.y > canvas.height + 10) c.y = -10;
+      // Wrap-around bounds smoothly
+      if (c.x < -15) c.x = canvas.width + 15;
+      if (c.x > canvas.width + 15) c.x = -15;
+      if (c.y < -15) c.y = canvas.height + 15;
+      if (c.y > canvas.height + 15) c.y = -15;
 
       // 4. Exact continuous color matching with core heatmaps
       const color = getContinuousColor(c.currentLoad);
 
-      // Idle cores are small (2.0px), saturated pink cores grow up to 5.8px
-      const radius = 2.0 + (loadNorm * 3.8) + Math.sin(c.wobble) * (0.2 + loadNorm * 0.6);
-      const glow = c.currentLoad > 70 ? (c.currentLoad - 65) * 0.35 : 0;
+      // 5. Purely telemetry-driven size (NO artificial sine pulse)
+      // Idle (0%): 2.2px -> Peak (100%): 5.2px
+      const radius = 2.2 + (loadNorm * 3.0);
+
+      // Soft ambient glow only for heavy/saturated compute
+      const glow = c.currentLoad > 75 ? (c.currentLoad - 75) * 0.25 : 0;
 
       ctx.beginPath();
-      ctx.arc(c.x, c.y, Math.max(1.2, radius), 0, Math.PI * 2);
+      ctx.arc(c.x, c.y, radius, 0, Math.PI * 2);
       ctx.fillStyle = color;
       if (glow > 0) {
         ctx.shadowColor = color;
