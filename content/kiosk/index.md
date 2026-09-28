@@ -643,32 +643,18 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
-  // --- AMBIENT CELL CANVAS ---
+ // --- AMBIENT CELL CANVAS ---
   const headerContainer = document.getElementById("hud-header-container");
   const canvas = document.getElementById("header-cell-canvas");
   const ctx = canvas.getContext("2d");
 
-  function resizeCanvas() {
-    const prevHeight = canvas.height || 120;
-    canvas.width = headerContainer.clientWidth;
-    canvas.height = headerContainer.clientHeight;
-
-    if (canvas.height > prevHeight && typeof cells !== 'undefined' && cells.length > 0) {
-      cells.forEach(c => {
-        if (Math.random() > 0.45) {
-          c.y = Math.random() * canvas.height;
-        }
-      });
-    }
-  }
-  window.addEventListener("resize", resizeCanvas);
-  resizeCanvas();
-
+  // 1. Core registry
   const clusterCorePool = {};
   NODES.forEach(n => {
     clusterCorePool[n.id] = new Array(n.cores).fill(0);
   });
 
+  // 2. DECLARE AND INITIALIZE CELLS FIRST
   let cellIndex = 0;
   const cells = [];
   NODES.forEach(n => {
@@ -678,8 +664,8 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         id: cellIndex++,
         nodeId: n.id,
         coreIdx: c,
-        x: Math.random() * (canvas.width || 800),
-        y: Math.random() * (canvas.height || 120),
+        x: Math.random() * 800,
+        y: Math.random() * 120,
         vx: Math.cos(angle) * (0.04 + Math.random() * 0.05),
         vy: Math.sin(angle) * (0.04 + Math.random() * 0.05),
         currentLoad: 0,
@@ -695,6 +681,23 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   });
 
   const temporaryDaughters = [];
+
+  // 3. NOW RESIZE CANVAS SAFELY
+  function resizeCanvas() {
+    const prevHeight = canvas.height || 120;
+    canvas.width = headerContainer.clientWidth;
+    canvas.height = headerContainer.clientHeight;
+
+    if (canvas.height > prevHeight && cells.length > 0) {
+      cells.forEach(c => {
+        if (Math.random() > 0.45) {
+          c.y = Math.random() * canvas.height;
+        }
+      });
+    }
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas(); // Safe! `cells` is already allocated in memory.
 
   function spawnIndependentDaughter(x, y, angle, load) {
     const speed = 0.08 + Math.random() * 0.05;
