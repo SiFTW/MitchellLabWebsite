@@ -6,13 +6,59 @@ type: page
 ---
 
 <style>
+  /* HEADER BAR & ADVANCED VIEW BUTTON */
+  .telemetry-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 16px 0;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .telemetry-header-info {
+    font-size: 0.88rem;
+    color: #4b5563;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .btn-advanced-view {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #0f172a;
+    color: #f8fafc !important;
+    text-decoration: none !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.80rem;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    border: 1px solid #1e293b;
+  }
+  .btn-advanced-view:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    color: #38bdf8 !important;
+    border-color: #38bdf8;
+  }
+  .pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ec4899;
+    box-shadow: 0 0 6px #ec4899;
+    display: inline-block;
+  }
+
   .telemetry-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 20px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: #1f2937;
-    margin: 20px 0;
+    margin: 10px 0 20px 0;
     position: relative;
     z-index: 10;
   }
@@ -222,27 +268,36 @@ type: page
   }
 </style>
 
+<div class="telemetry-header-bar">
+  <div class="telemetry-header-info">
+    Live cluster compute and storage nodes
+  </div>
+  <a href="/status/kiosk/" class="btn-advanced-view">
+    <span class="pulse-dot"></span> Advanced View ↗
+  </a>
+</div>
+
 <div class="telemetry-container" id="telemetryGrid"></div>
 
 <div id="clusterModalOverlay">
-<div class="modal-window" id="modalWindow">
-<div class="modal-header">
-<h3 class="modal-title" id="modalNodeName">Workstation Details</h3>
-<button class="modal-close-btn" id="modalCloseBtn">&times;</button>
-</div>
-<div class="modal-body">
-<div class="chart-box">
-<div class="chart-heading">
-<span>Recent CPU Load Trend</span>
-<span id="chartLatestVal" style="color: #f59e0b;">--</span>
-</div>
-<svg class="sparkline-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
-<polyline id="sparklinePoly" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="2" points="" />
-</svg>
-</div>
-<div id="taskTableWrapper"></div>
-</div>
-</div>
+  <div class="modal-window" id="modalWindow">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalNodeName">Workstation Details</h3>
+      <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="chart-box">
+        <div class="chart-heading">
+          <span>Recent CPU Load Trend</span>
+          <span id="chartLatestVal" style="color: #f59e0b;">--</span>
+        </div>
+        <svg class="sparkline-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
+          <polyline id="sparklinePoly" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="2" points="" />
+        </svg>
+      </div>
+      <div id="taskTableWrapper"></div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -250,48 +305,49 @@ type: page
   const GIST_RAW_URL = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw/endpoints.json";
   const GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
 
-function renderCloudSyncBadge(sync) {
-  const statusEl = document.getElementById("nas-sync-status");
-  const pillEl = document.getElementById("nas-sync-pill");
-  const timeEl = document.getElementById("nas-sync-time");
-  const fileEl = document.getElementById("nas-sync-file");
+  function renderCloudSyncBadge(sync) {
+    const statusEl = document.getElementById("nas-sync-status");
+    const pillEl = document.getElementById("nas-sync-pill");
+    const timeEl = document.getElementById("nas-sync-time");
+    const fileEl = document.getElementById("nas-sync-file");
 
-  if (!statusEl || !pillEl || !timeEl || !sync) return;
+    if (!statusEl || !pillEl || !timeEl || !sync) return;
 
-  if (sync.state === "success") {
-    statusEl.innerText = "Synced";
-    statusEl.style.color = "#16a34a"; // Green
-    pillEl.style.background = "#10b981";
-    pillEl.style.boxShadow = "0 0 6px rgba(16, 185, 129, 0.4)";
-    timeEl.innerText = `Last synced: ${sync.last_synced}`;
-    if (fileEl && sync.last_file) {
-      fileEl.innerText = sync.last_file;
-      fileEl.title = `Last synced file: ${sync.last_file}`;
-    }
-  } else {
-    statusEl.innerText = sync.status || "Failed";
-    statusEl.style.color = "#dc2626"; // Red
-    pillEl.style.background = "#ef4444";
-    pillEl.style.boxShadow = "0 0 6px rgba(239, 68, 68, 0.4)";
-    timeEl.innerText = `Alert: ${sync.recent_errors || 1} error(s)`;
-    if (fileEl && sync.last_file) {
-      fileEl.innerText = sync.last_file;
-      fileEl.title = `File error: ${sync.last_file}`;
+    if (sync.state === "success") {
+      statusEl.innerText = "Synced";
+      statusEl.style.color = "#16a34a";
+      pillEl.style.background = "#10b981";
+      pillEl.style.boxShadow = "0 0 6px rgba(16, 185, 129, 0.4)";
+      timeEl.innerText = `Last synced: ${sync.last_synced}`;
+      if (fileEl && sync.last_file) {
+        fileEl.innerText = sync.last_file;
+        fileEl.title = `Last synced file: ${sync.last_file}`;
+      }
+    } else {
+      statusEl.innerText = sync.status || "Failed";
+      statusEl.style.color = "#dc2626";
+      pillEl.style.background = "#ef4444";
+      pillEl.style.boxShadow = "0 0 6px rgba(239, 68, 68, 0.4)";
+      timeEl.innerText = `Alert: ${sync.recent_errors || 1} error(s)`;
+      if (fileEl && sync.last_file) {
+        fileEl.innerText = sync.last_file;
+        fileEl.title = `File error: ${sync.last_file}`;
+      }
     }
   }
-}
 
-async function updateCloudSync() {
-  try {
-    const res = await fetch(`${GIST_BASE}/cloudsync.json?t=${Date.now()}`);
-    if (res.ok) {
-      const sync = await res.json();
-      renderCloudSyncBadge(sync);
+  async function updateCloudSync() {
+    try {
+      const res = await fetch(`${GIST_BASE}/cloudsync.json?t=${Date.now()}`);
+      if (res.ok) {
+        const sync = await res.json();
+        renderCloudSyncBadge(sync);
+      }
+    } catch (err) {
+      console.warn("Could not fetch cloudsync status", err);
     }
-  } catch (err) {
-    console.warn("Could not fetch cloudsync status", err);
   }
-}
+
   const NODES = [
     {
       id: "simon",
@@ -470,7 +526,6 @@ async function updateCloudSync() {
       card.className = "node-card";
       card.id = `card-${node.id}`;
 
-      // Conditionally render Cloud Sync details ONLY for NAS
       const isNas = node.id === "nas";
       const syncSectionHtml = isNas ? `
         <div style="margin-top: 14px; border-top: 1px solid rgba(229, 231, 235, 0.6); padding-top: 10px;">
@@ -554,11 +609,9 @@ async function updateCloudSync() {
     }
 
     const cleanUrl = node.url.replace(/\/+$/, "");
-    // Use /api/4 for Glances v4 on the NAS, /api/3 for the Linux workstations
     const apiVer = node.id === "nas" ? "4" : "3";
 
     try {
-      // 1. Fetch CPU & RAM (core metrics)
       const [cpuRes, memRes] = await Promise.all([
         fetch(`${cleanUrl}/api/${apiVer}/cpu`).then(r => {
           if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -592,7 +645,6 @@ async function updateCloudSync() {
         if (ramBar) ramBar.style.width = `${Math.min(ramPct, 100)}%`;
       }
 
-      // 2. Fetch Storage
       fetch(`${cleanUrl}/api/${apiVer}/fs`)
         .then(r => r.ok ? r.json() : null)
         .then(fsRes => {
@@ -615,7 +667,6 @@ async function updateCloudSync() {
         })
         .catch(() => {});
 
-      // 3. Fetch Core Heatmap
       fetch(`${cleanUrl}/api/${apiVer}/percpu`)
         .then(r => r.ok ? r.json() : null)
         .then(perCpuRes => {
@@ -634,7 +685,6 @@ async function updateCloudSync() {
         })
         .catch(() => {});
 
-      // 4. Fetch Uptime
       fetch(`${cleanUrl}/api/${apiVer}/uptime`)
         .then(r => r.ok ? r.json() : null)
         .then(uptimeRes => {
@@ -659,7 +709,6 @@ async function updateCloudSync() {
 
   async function startClusterMonitoring() {
     try {
-      // 1. Fetch dynamic Cloudflare endpoints for all nodes
       const res = await fetch(`${GIST_BASE}/endpoints.json?t=${Date.now()}`);
       if (res.ok) {
         const endpoints = await res.json();
@@ -674,14 +723,12 @@ async function updateCloudSync() {
       console.warn("Could not load dynamic endpoints", err);
     }
 
-    // 2. Initialize DOM & run first updates
     initDashboard();
     updateCloudSync();
     updateAll();
 
-    // 3. Regular polling intervals
-    setInterval(updateAll, 3000);         // Glances metrics every 3s
-    setInterval(updateCloudSync, 30000);   // Cloud Sync status every 30s
+    setInterval(updateAll, 3000);
+    setInterval(updateCloudSync, 30000);
   }
 
   if (document.readyState === "loading") {
