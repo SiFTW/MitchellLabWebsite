@@ -619,7 +619,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
-// --- AMBIENT BIOLOGICAL CELL CYCLE SIMULATION (MITOSIS & APOPTOSIS) ---
+// --- AMBIENT BIOLOGICAL CELL CANVAS (1:1 CORE-MAPPED WITH MITOSIS) ---
   const headerContainer = document.getElementById("hud-header-container");
   const canvas = document.getElementById("header-cell-canvas");
   const ctx = canvas.getContext("2d");
@@ -631,173 +631,131 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   window.addEventListener("resize", resizeCanvas);
   resizeCanvas();
 
-  // Registry of current cluster core loads
+  // Cluster core registry
   const clusterCorePool = {};
   NODES.forEach(n => {
     clusterCorePool[n.id] = new Array(n.cores).fill(0);
   });
 
-  // Cell pool: dynamic population driven by active cores
-  let cells = [];
-
-  function createCell(x, y, load = 10, isDaughter = false) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 0.12 + Math.random() * 0.14;
-    return {
-      x: x !== undefined ? x : Math.random() * (canvas.width || 800),
-      y: y !== undefined ? y : Math.random() * (canvas.height || 120),
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      load: load,
-      targetLoad: load,
-      // Mitosis state (0: normal, >0: dividing furrow)
-      splitProgress: isDaughter ? 0.35 : 0, 
-      splitAngle: Math.random() * Math.PI,
-      // Apoptosis state
-      opacity: 1.0,
-      dying: false
-    };
-  }
-
-  // Seed baseline population so canvas is never completely empty
-  for (let i = 0; i < 8; i++) {
-    cells.push(createCell());
-  }
-
-  function syncCellPopulationWithCluster() {
-    // 1. Collect all active core loads (>5%) across the entire cluster
-    const activeLoads = [];
-    NODES.forEach(n => {
-      const coreLoads = clusterCorePool[n.id] || [];
-      coreLoads.forEach(l => {
-        if (l >= 5) activeLoads.push(l);
+  // Spawn exactly 1 cell for every core in the cluster (192 total)
+  let cellIndex = 0;
+  const cells = [];
+  NODES.forEach(n => {
+    for (let c = 0; c < n.cores; c++) {
+      const angle = Math.random() * Math.PI * 2;
+      cells.push({
+        id: cellIndex++,
+        nodeId: n.id,
+        coreIdx: c,
+        x: Math.random() * (canvas.width || 800),
+        y: Math.random() * (canvas.height || 120),
+        // Ultra-low baseline velocity for a calm drift
+        vx: Math.cos(angle) * (0.05 + Math.random() * 0.06),
+        vy: Math.sin(angle) * (0.05 + Math.random() * 0.06),
+        currentLoad: 0,
+        // Mitosis state
+        dividing: false,
+        splitProgress: 0,
+        splitAngle: 0
       });
-    });
-
-    // If cluster is completely idle, keep a quiescent baseline of 4 tiny cells
-    const targetCount = Math.max(4, activeLoads.length);
-    const livingCells = cells.filter(c => !c.dying);
-
-    // Sort active loads highest to lowest so biggest cells match highest compute
-    activeLoads.sort((a, b) => b - a);
-
-    // 2. MITOSIS: If we need more cells, pick high-activity cells to divide
-    if (livingCells.length < targetCount) {
-      const needed = targetCount - livingCells.length;
-      for (let i = 0; i < needed; i++) {
-        // Pick an existing healthy cell to split from, preferably one under load
-        const parent = livingCells[i % livingCells.length] || { x: Math.random() * canvas.width, y: Math.random() * canvas.height };
-        
-        // Spawn daughter cell adjacent to parent (mitotic budding)
-        const spawnAngle = Math.random() * Math.PI * 2;
-        const daughter = createCell(
-          parent.x + Math.cos(spawnAngle) * 6,
-          parent.y + Math.sin(spawnAngle) * 6,
-          activeLoads[livingCells.length + i] || 15,
-          true
-        );
-        cells.push(daughter);
-        livingCells.push(daughter);
-      }
-    } 
-    // 3. APOPTOSIS: If cores went idle, mark excess cells for death
-    else if (livingCells.length > targetCount) {
-      const excess = livingCells.length - targetCount;
-      // Kill lowest-activity cells first
-      const sortedByLowestLoad = [...livingCells].sort((a, b) => a.load - b.load);
-      for (let i = 0; i < excess; i++) {
-        sortedByLowestLoad[i].dying = true;
-      }
     }
+  });
 
-    // 4. Assign target core loads to remaining healthy cells
-    livingCells.forEach((c, idx) => {
-      if (!c.dying) {
-        c.targetLoad = activeLoads[idx] !== undefined ? activeLoads[idx] : 0;
-      }
-    });
+  // Trigger at least one division every ~9-10 seconds
+  function triggerMitosisEvent() {
+    // Find active cells first, fallback to any available cell
+    const candidates = cells.filter(c => !c.dividing);
+    if (candidates.length === 0) return;
+
+    // Prioritize cells with load > 25%, otherwise pick a random candidate
+    const activeCandidates = candidates.filter(c => c.currentLoad > 25);
+    const chosen = (activeCandidates.length > 0)
+      ? activeCandidates[Math.floor(Math.random() * activeCandidates.length)]
+      : candidates[Math.floor(Math.random() * candidates.length)];
+
+    chosen.dividing = true;
+    chosen.splitProgress = 0.01;
+    chosen.splitAngle = Math.random() * Math.PI;
   }
 
-  // Reconcile cell population against cluster hardware every 1 second
-  setInterval(syncCellPopulationWithCluster, 1000);
+  setInterval(triggerMitosisEvent, 9500);
 
   function animateHeaderCells() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (let i = cells.length - 1; i >= 0; i--) {
-      const c = cells[i];
+    cells.forEach(c => {
+      // 1. Telemetry sync
+      const targetLoad = (clusterCorePool[c.nodeId] && clusterCorePool[c.nodeId][c.coreIdx] !== undefined)
+        ? clusterCorePool[c.nodeId][c.coreIdx]
+        : 0;
 
-      // Smoothly transition load
-      c.load += (c.targetLoad - c.load) * 0.08;
+      c.currentLoad += (targetLoad - c.currentLoad) * 0.08;
 
-      // Biological speed curve (calm, non-distracting drift)
-      const loadNorm = c.load / 100;
-      const speedMult = 0.22 + (loadNorm * 0.55);
+      // 2. Calibrated calm speed:
+      // Dark/idle cores drift almost imperceptibly (0.12x), active pink cores drift smoothly (0.42x)
+      const loadNorm = c.currentLoad / 100;
+      const speedMult = 0.12 + (loadNorm * 0.30);
 
       c.x += c.vx * speedMult;
       c.y += c.vy * speedMult;
 
-      // Screen boundary wrapping
-      if (c.x < -20) c.x = canvas.width + 20;
-      if (c.x > canvas.width + 20) c.x = -20;
-      if (c.y < -20) c.y = canvas.height + 20;
-      if (c.y > canvas.height + 20) c.y = -20;
+      // Wrap-around screen bounds
+      if (c.x < -15) c.x = canvas.width + 15;
+      if (c.x > canvas.width + 15) c.x = -15;
+      if (c.y < -15) c.y = canvas.height + 15;
+      if (c.y > canvas.height + 15) c.y = -15;
 
-      // Handle Apoptosis (Dying cells shrink and fade)
-      if (c.dying) {
-        c.opacity -= 0.035;
-        if (c.opacity <= 0) {
-          cells.splice(i, 1);
-          continue;
+      // 3. Exact continuous color matching with heatmaps
+      const color = getContinuousColor(c.currentLoad);
+
+      // Stable base size strictly driven by load:
+      // Idle (0%): 2.0px dark dot | Peak (100%): 4.8px
+      const baseRadius = 2.0 + (loadNorm * 2.8);
+      const glow = c.currentLoad > 75 ? (c.currentLoad - 75) * 0.25 : 0;
+
+      // 4. Handle Mitosis Progression
+      if (c.dividing) {
+        c.splitProgress += 0.007; // Smooth division cycle (~2.5 seconds total)
+
+        if (c.splitProgress >= 1.0) {
+          c.dividing = false;
+          c.splitProgress = 0;
         }
       }
 
-      // Finish mitosis daughter cell separation
-      if (c.splitProgress > 0) {
-        c.splitProgress -= 0.02;
-        if (c.splitProgress < 0) c.splitProgress = 0;
-      }
-
-      // Base radius directly driven by core compute
-      const baseRadius = (2.2 + loadNorm * 3.2) * (c.dying ? Math.max(0.2, c.opacity) : 1);
-      const color = getContinuousColor(c.load);
-
       ctx.save();
-      ctx.globalAlpha = Math.max(0, Math.min(1, c.opacity));
-
-      // Glow only on heavy saturated cores (>75%)
-      if (c.load > 75 && !c.dying) {
+      if (glow > 0) {
         ctx.shadowColor = color;
-        ctx.shadowBlur = (c.load - 75) * 0.3;
+        ctx.shadowBlur = glow;
       }
 
-      // If dividing: draw dual cleavage furrow separating into 2 daughter bodies
-      if (c.splitProgress > 0.05) {
-        const offset = (1 - c.splitProgress) * (baseRadius * 1.2);
-        const dx = Math.cos(c.splitAngle) * offset;
-        const dy = Math.sin(c.splitAngle) * offset;
+      if (c.dividing && c.splitProgress > 0) {
+        // Cytokinesis: draw mother & budding daughter nuclei separating
+        const separation = c.splitProgress * (baseRadius * 1.5);
+        const dx = Math.cos(c.splitAngle) * separation;
+        const dy = Math.sin(c.splitAngle) * separation;
 
-        // Primary nucleus
+        // Primary body
         ctx.beginPath();
-        ctx.arc(c.x - dx, c.y - dy, baseRadius * 0.85, 0, Math.PI * 2);
+        ctx.arc(c.x - dx, c.y - dy, Math.max(1.2, baseRadius * 0.85), 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
-        // Dividing daughter nucleus
+        // Dividing daughter body
         ctx.beginPath();
-        ctx.arc(c.x + dx, c.y + dy, baseRadius * 0.85, 0, Math.PI * 2);
+        ctx.arc(c.x + dx, c.y + dy, Math.max(1.2, baseRadius * 0.85), 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
       } else {
-        // Standard spherical cell body
+        // Quiescent / Standard spherical cell body
         ctx.beginPath();
-        ctx.arc(c.x, c.y, Math.max(1, baseRadius), 0, Math.PI * 2);
+        ctx.arc(c.x, c.y, Math.max(1.2, baseRadius), 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
       }
 
       ctx.restore();
-    }
+    });
 
     requestAnimationFrame(animateHeaderCells);
   }
