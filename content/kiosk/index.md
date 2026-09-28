@@ -173,18 +173,18 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     width: 64px;
     height: 6px;
     border-radius: 3px;
+    overflow: hidden;
     background: linear-gradient(to right, 
       rgb(40, 50, 70) 0%, 
-      rgb(40, 50, 70) 4%,
-      rgb(2, 132, 199) 22%, 
+      rgb(2, 132, 199) 20%, 
       rgb(16, 185, 129) 50%, 
       rgb(245, 158, 11) 75%, 
-      rgb(236, 72, 153) 96%,
       rgb(236, 72, 153) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     display: inline-block;
-    box-sizing: border-box;
-    border: 1px solid rgba(255, 255, 255, 0.14);
     vertical-align: middle;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
   }
 
   @media (max-width: 900px) {
@@ -619,7 +619,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
-  // --- AMBIENT HEADER CELL SIMULATION CANVAS ---
+ // --- AMBIENT HEADER CELL SIMULATION CANVAS (1:1 CORE MAPPED) ---
   const headerContainer = document.getElementById("hud-header-container");
   const canvas = document.getElementById("header-cell-canvas");
   const ctx = canvas.getContext("2d");
@@ -631,51 +631,67 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   window.addEventListener("resize", resizeCanvas);
   resizeCanvas();
 
-  const TOTAL_CELLS = 90;
-  const cells = Array.from({ length: TOTAL_CELLS }).map((_, i) => ({
-    x: Math.random() * (canvas.width || 800),
-    y: Math.random() * (canvas.height || 120),
-    vx: (Math.random() - 0.5) * 0.45,
-    vy: (Math.random() - 0.5) * 0.45,
-    tier: i / TOTAL_CELLS,
-    wobble: Math.random() * Math.PI * 2,
-    wobbleSpeed: 0.02 + Math.random() * 0.03
-  }));
+  // Cluster core registry: exactly 192 cores
+  const clusterCorePool = {};
+  NODES.forEach(n => {
+    clusterCorePool[n.id] = new Array(n.cores).fill(0);
+  });
+
+  // Spawn exactly 1 cell for every core in the cluster (192 total)
+  let cellIndex = 0;
+  const cells = [];
+  NODES.forEach(n => {
+    for (let c = 0; c < n.cores; c++) {
+      cells.push({
+        id: cellIndex++,
+        nodeId: n.id,
+        coreIdx: c,
+        x: Math.random() * (canvas.width || 800),
+        y: Math.random() * (canvas.height || 120),
+        baseVx: (Math.random() - 0.5) * 0.35,
+        baseVy: (Math.random() - 0.5) * 0.35,
+        wobble: Math.random() * Math.PI * 2,
+        wobbleSpeed: 0.015 + Math.random() * 0.02,
+        currentLoad: 0 // Smoothly interpolates to actual core load
+      });
+    }
+  });
 
   function animateHeaderCells() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const avgFrac = Math.min(1, Math.max(0, clusterState.cpuAvg / 100));
-    const peakFrac = Math.min(1, Math.max(0, clusterState.cpuMax / 100));
-    const speedMult = 0.4 + (avgFrac * 2.0);
-
     cells.forEach(c => {
-      c.x += c.vx * speedMult;
-      c.y += c.vy * speedMult;
-      c.wobble += c.wobbleSpeed * speedMult;
+      // 1. Fetch the actual core load reported by Glances
+      const targetLoad = (clusterCorePool[c.nodeId] && clusterCorePool[c.nodeId][c.coreIdx] !== undefined)
+        ? clusterCorePool[c.nodeId][c.coreIdx]
+        : 0;
 
-      if (c.x < -20) c.x = canvas.width + 20;
-      if (c.x > canvas.width + 20) c.x = -20;
-      if (c.y < -20) c.y = canvas.height + 20;
-      if (c.y > canvas.height + 20) c.y = -20;
+      // 2. Smoothly ease toward real-time core load
+      c.currentLoad += (targetLoad - c.currentLoad) * 0.1;
 
-      // Base activity distribution across cells:
-      // When peak cores are hot (>85%), top-tier cells scale all the way to peak load
-      let cellLoadPct = 0;
-      if (c.tier > 0.75) {
-        // High-activity cell cohort reflects peak core compute
-        cellLoadPct = Math.min(100, (c.tier * 20) + (peakFrac * 80));
-      } else {
-        // Baseline/quiescent cells reflect average cluster load
-        cellLoadPct = Math.min(100, (c.tier * 50) + (avgFrac * 40));
-      }
+      // 3. Dark/idle cells float slowly; active/pink cells move faster
+      const loadNorm = c.currentLoad / 100; // 0.0 to 1.0
+      const speedMult = 0.25 + (loadNorm * 2.2); // 0.25x (idle) to 2.45x (peak load)
 
-      const color = getContinuousColor(cellLoadPct);
-      const radius = 1.6 + (cellLoadPct / 100) * 4.4 + Math.sin(c.wobble) * 0.5;
-      const glow = cellLoadPct > 80 ? (cellLoadPct - 75) * 0.45 : 0;
+      c.x += c.baseVx * speedMult;
+      c.y += c.baseVy * speedMult;
+      c.wobble += c.wobbleSpeed * (0.5 + loadNorm * 2.0);
+
+      // Wrap-around screen bounds
+      if (c.x < -10) c.x = canvas.width + 10;
+      if (c.x > canvas.width + 10) c.x = -10;
+      if (c.y < -10) c.y = canvas.height + 10;
+      if (c.y > canvas.height + 10) c.y = -10;
+
+      // 4. Exact continuous color matching with core heatmaps
+      const color = getContinuousColor(c.currentLoad);
+
+      // Idle cores are small (2.0px), saturated pink cores grow up to 5.8px
+      const radius = 2.0 + (loadNorm * 3.8) + Math.sin(c.wobble) * (0.2 + loadNorm * 0.6);
+      const glow = c.currentLoad > 70 ? (c.currentLoad - 65) * 0.35 : 0;
 
       ctx.beginPath();
-      ctx.arc(c.x, c.y, Math.max(1, radius), 0, Math.PI * 2);
+      ctx.arc(c.x, c.y, Math.max(1.2, radius), 0, Math.PI * 2);
       ctx.fillStyle = color;
       if (glow > 0) {
         ctx.shadowColor = color;
@@ -985,18 +1001,22 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         }
       }
 
-      // Continuous Core Heatmap Rendering
+  // Continuous Core Heatmap Rendering & Cell Pool Synchronization
       if (Array.isArray(cpus) && cpus.length > 0) {
         cpus.forEach((core, i) => {
+          const loadVal = (typeof core.total === 'number') ? core.total : (100 - (core.idle ?? 100));
+
+          // Pipe directly to the header simulation
+          if (clusterCorePool[node.id] && clusterCorePool[node.id][i] !== undefined) {
+            clusterCorePool[node.id][i] = loadVal;
+          }
+
           const el = document.getElementById(`core-${node.id}-${i}`);
           if (el) {
-            const loadVal = (typeof core.total === 'number') ? core.total : (100 - (core.idle ?? 100));
             const color = getContinuousColor(loadVal);
             el.style.backgroundColor = color;
             el.style.boxShadow = loadVal > 65 ? `0 0 6px ${color}` : "none";
           }
-          const l = (typeof core.total === 'number') ? core.total : (100 - (core.idle ?? 100));
-          if (l > clusterState.cpuMax) clusterState.cpuMax = l;
         });
       }
 
