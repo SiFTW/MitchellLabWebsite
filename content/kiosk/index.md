@@ -752,16 +752,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   setInterval(triggerMitosisEvent, 9000);
   
   // --- VISCOUS FLUID MOUSE / TOUCH INTERACTION ---
-    const fluidMouse = {
-      x: -9999,
-      y: -9999,
-      prevX: -9999,
-      prevY: -9999,
-      vx: 0,
-      vy: 0,
-      active: false,
-      radius: 120 // Interaction influence bubble (pixels)
-    };
+// Dissipate cursor shear momentum between frames
+    fluidMouse.vx *= 0.85;
+    fluidMouse.vy *= 0.85;
   
     function updatePointerPosition(clientX, clientY) {
       const rect = headerContainer.getBoundingClientRect();
@@ -829,29 +822,29 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
       const loadNorm = c.currentLoad / 100;
       const speedMult = 0.10 + (loadNorm * 0.28);
-      // 1. Viscous Fluid Medium Physics
+      // 1. Viscous Hydrodynamic Drag (Subtle, high-density gel)
       if (fluidMouse.active) {
         const dx = c.x - fluidMouse.x;
         const dy = c.y - fluidMouse.y;
         const dist = Math.hypot(dx, dy);
 
         if (dist < fluidMouse.radius && dist > 1) {
-          // Soft exponential falloff force
-          const force = (1 - dist / fluidMouse.radius) * 0.85;
+          // Quadratic falloff: soft nudges near the center, vanishing at the edge
+          const force = Math.pow(1 - dist / fluidMouse.radius, 2) * 0.22;
           const normalX = dx / dist;
           const normalY = dy / dist;
 
-          // Radial displacement away from cursor + shear drag from cursor speed
-          c.fluidVx += (normalX * force * 1.4) + (fluidMouse.vx * force * 0.4);
-          c.fluidVy += (normalY * force * 1.4) + (fluidMouse.vy * force * 0.4);
+          // Tiny radial displacement + gentle shear wake
+          c.fluidVx += (normalX * force * 0.45) + (fluidMouse.vx * force * 0.12);
+          c.fluidVy += (normalY * force * 0.45) + (fluidMouse.vy * force * 0.12);
         }
       }
 
-      // High viscosity damping (thick media drag)
-      c.fluidVx = (c.fluidVx || 0) * 0.91;
-      c.fluidVy = (c.fluidVy || 0) * 0.91;
+      // Stronger viscous damping (thick agar/glycerol resistance)
+      c.fluidVx = (c.fluidVx || 0) * 0.82;
+      c.fluidVy = (c.fluidVy || 0) * 0.82;
 
-      // Combine base natural drift + viscous medium displacement
+      // Base natural drift + damped fluid displacement
       c.x += (c.vx * speedMult) + c.fluidVx;
       c.y += (c.vy * speedMult) + c.fluidVy;
 
@@ -967,7 +960,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     // ==========================================
     // 2. INDEPENDENT TEMPORARY DAUGHTERS
     // ==========================================
-    for (let i = temporaryDaughters.length - 1; i >= 0; i--) {
+   for (let i = temporaryDaughters.length - 1; i >= 0; i--) {
       const d = temporaryDaughters[i];
 
       if (fluidMouse.active) {
@@ -976,14 +969,14 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         const dist = Math.hypot(dx, dy);
 
         if (dist < fluidMouse.radius && dist > 1) {
-          const force = (1 - dist / fluidMouse.radius) * 0.85;
-          d.fluidVx = (d.fluidVx || 0) + ((dx / dist) * force * 1.4) + (fluidMouse.vx * force * 0.4);
-          d.fluidVy = (d.fluidVy || 0) + ((dy / dist) * force * 1.4) + (fluidMouse.vy * force * 0.4);
+          const force = Math.pow(1 - dist / fluidMouse.radius, 2) * 0.22;
+          d.fluidVx = (d.fluidVx || 0) + ((dx / dist) * force * 0.45) + (fluidMouse.vx * force * 0.12);
+          d.fluidVy = (d.fluidVy || 0) + ((dy / dist) * force * 0.45) + (fluidMouse.vy * force * 0.12);
         }
       }
 
-      d.fluidVx = (d.fluidVx || 0) * 0.91;
-      d.fluidVy = (d.fluidVy || 0) * 0.91;
+      d.fluidVx = (d.fluidVx || 0) * 0.82;
+      d.fluidVy = (d.fluidVy || 0) * 0.82;
 
       d.x += d.vx + d.fluidVx;
       d.y += d.vy + d.fluidVy;
