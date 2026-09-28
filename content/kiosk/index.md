@@ -670,6 +670,8 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         id: cellIndex++,
         nodeId: n.id,
         coreIdx: c,
+        fluidVx: 0,
+        fluidVy: 0,
         // Disperse evenly across the full width and height
         x: Math.random() * initialWidth,
         y: Math.random() * initialHeight,
@@ -748,7 +750,63 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     chosen.splitAngle = Math.random() * Math.PI * 2;
   }
   setInterval(triggerMitosisEvent, 9000);
-
+  
+  // --- VISCOUS FLUID MOUSE / TOUCH INTERACTION ---
+    const fluidMouse = {
+      x: -9999,
+      y: -9999,
+      prevX: -9999,
+      prevY: -9999,
+      vx: 0,
+      vy: 0,
+      active: false,
+      radius: 120 // Interaction influence bubble (pixels)
+    };
+  
+    function updatePointerPosition(clientX, clientY) {
+      const rect = headerContainer.getBoundingClientRect();
+      const currX = clientX - rect.left;
+      const currY = clientY - rect.top;
+  
+      if (fluidMouse.prevX !== -9999) {
+        // Calculate cursor fluid velocity
+        fluidMouse.vx = (currX - fluidMouse.prevX) * 0.35;
+        fluidMouse.vy = (currY - fluidMouse.prevY) * 0.35;
+      }
+  
+      fluidMouse.prevX = currX;
+      fluidMouse.prevY = currY;
+      fluidMouse.x = currX;
+      fluidMouse.y = currY;
+      fluidMouse.active = true;
+    }
+  
+    headerContainer.addEventListener("mousemove", (e) => {
+      updatePointerPosition(e.clientX, e.clientY);
+    });
+  
+    headerContainer.addEventListener("mouseleave", () => {
+      fluidMouse.active = false;
+      fluidMouse.x = -9999;
+      fluidMouse.y = -9999;
+      fluidMouse.prevX = -9999;
+      fluidMouse.prevY = -9999;
+      fluidMouse.vx = 0;
+      fluidMouse.vy = 0;
+    });
+  
+    // Tablet / Touchscreen kiosk support
+    headerContainer.addEventListener("touchmove", (e) => {
+      if (e.touches.length > 0) {
+        updatePointerPosition(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+  
+    headerContainer.addEventListener("touchend", () => {
+      fluidMouse.active = false;
+      fluidMouse.x = -9999;
+      fluidMouse.y = -9999;
+    });
   function animateHeaderCells() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -771,9 +829,31 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
       const loadNorm = c.currentLoad / 100;
       const speedMult = 0.10 + (loadNorm * 0.28);
+      // 1. Viscous Fluid Medium Physics
+      if (fluidMouse.active) {
+        const dx = c.x - fluidMouse.x;
+        const dy = c.y - fluidMouse.y;
+        const dist = Math.hypot(dx, dy);
 
-      c.x += c.vx * speedMult;
-      c.y += c.vy * speedMult;
+        if (dist < fluidMouse.radius && dist > 1) {
+          // Soft exponential falloff force
+          const force = (1 - dist / fluidMouse.radius) * 0.85;
+          const normalX = dx / dist;
+          const normalY = dy / dist;
+
+          // Radial displacement away from cursor + shear drag from cursor speed
+          c.fluidVx += (normalX * force * 1.4) + (fluidMouse.vx * force * 0.4);
+          c.fluidVy += (normalY * force * 1.4) + (fluidMouse.vy * force * 0.4);
+        }
+      }
+
+      // High viscosity damping (thick media drag)
+      c.fluidVx = (c.fluidVx || 0) * 0.91;
+      c.fluidVy = (c.fluidVy || 0) * 0.91;
+
+      // Combine base natural drift + viscous medium displacement
+      c.x += (c.vx * speedMult) + c.fluidVx;
+      c.y += (c.vy * speedMult) + c.fluidVy;
 
       // Screen wrapping
       if (c.x < -20) c.x = canvas.width + 20;
@@ -890,11 +970,23 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     for (let i = temporaryDaughters.length - 1; i >= 0; i--) {
       const d = temporaryDaughters[i];
 
-      // Eased natural transition
-      d.currentLoad += (5 - d.currentLoad) * 0.008;
+      if (fluidMouse.active) {
+        const dx = d.x - fluidMouse.x;
+        const dy = d.y - fluidMouse.y;
+        const dist = Math.hypot(dx, dy);
 
-      d.x += d.vx;
-      d.y += d.vy;
+        if (dist < fluidMouse.radius && dist > 1) {
+          const force = (1 - dist / fluidMouse.radius) * 0.85;
+          d.fluidVx = (d.fluidVx || 0) + ((dx / dist) * force * 1.4) + (fluidMouse.vx * force * 0.4);
+          d.fluidVy = (d.fluidVy || 0) + ((dy / dist) * force * 1.4) + (fluidMouse.vy * force * 0.4);
+        }
+      }
+
+      d.fluidVx = (d.fluidVx || 0) * 0.91;
+      d.fluidVy = (d.fluidVy || 0) * 0.91;
+
+      d.x += d.vx + d.fluidVx;
+      d.y += d.vy + d.fluidVy;
 
       if (d.x < -20) d.x = canvas.width + 20;
       if (d.x > canvas.width + 20) d.x = -20;
@@ -950,7 +1042,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
       ctx.restore();
     }
-
+    // Dissipate cursor shear momentum between frames
+    fluidMouse.vx *= 0.85;
+    fluidMouse.vy *= 0.85;
     requestAnimationFrame(animateHeaderCells);
   }
   requestAnimationFrame(animateHeaderCells);
