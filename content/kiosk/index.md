@@ -521,7 +521,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 <div class="hud-wrapper">
   <div class="cluster-hud-header" id="hud-header-container">
     <canvas id="header-cell-canvas"></canvas>
-    
     <div class="hud-top-bar">
       <div class="hud-title-group">
         <h1>OVERALL SIMULATION STATUS</h1>
@@ -531,7 +530,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       </div>
       <div class="hud-activity-badge" id="mitotic-index">Active Load: 0%</div>
     </div>
-
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
         <div class="val" id="total-cores">192 Cores</div>
