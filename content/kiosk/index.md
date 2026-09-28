@@ -554,7 +554,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 </div>
 
 <div class="kiosk-controls">
-  <button class="kiosk-btn" id="ambient-toggle-btn" onclick="toggleAmbientFocus()">🔬 Ambient View</button>
+  <button class="kiosk-btn" id="ambient-toggle-btn" onclick="toggleAmbientFocus()">Ambient View</button>
   <button class="kiosk-btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
 </div>
 
@@ -623,11 +623,11 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     if (isAmbientFocus) {
       wrapper.classList.add("ambient-focus");
       btn.classList.add("active");
-      btn.innerText = "📊 Dashboard View";
+      btn.innerText = "Dashboard View";
     } else {
       wrapper.classList.remove("ambient-focus");
       btn.classList.remove("active");
-      btn.innerText = "🔬 Ambient View";
+      btn.innerText = "Ambient View";
     }
 
     setTimeout(resizeCanvas, 60);
@@ -754,7 +754,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     vx: 0,
     vy: 0,
     active: false,
-    radius: 50
+    radius: 100
   };
 
   function updatePointerPosition(clientX, clientY) {
