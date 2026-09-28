@@ -752,28 +752,36 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   function animateHeaderCells() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // ==========================================
+    // 1. PERSISTENT CORE CELLS (192)
+    // ==========================================
     cells.forEach(c => {
       const targetLoad = (clusterCorePool[c.nodeId] && clusterCorePool[c.nodeId][c.coreIdx] !== undefined)
         ? clusterCorePool[c.nodeId][c.coreIdx]
         : 0;
 
-      if (c.currentLoad > 35 && targetLoad < 8 && c.deathState === 'none' && c.mitosisState === 'none') {
+      // Trigger pop only when active compute drops significantly
+      if (c.currentLoad > 40 && targetLoad < 8 && c.deathState === 'none' && c.mitosisState === 'none') {
         c.deathState = 'swelling';
         c.deathProgress = 0;
       }
 
-      c.currentLoad += (targetLoad - c.currentLoad) * 0.06;
+      // Ultra-gradual color & size easing (~3-4 seconds for large shifts)
+      c.currentLoad += (targetLoad - c.currentLoad) * 0.010;
+
       const loadNorm = c.currentLoad / 100;
       const speedMult = 0.10 + (loadNorm * 0.28);
 
       c.x += c.vx * speedMult;
       c.y += c.vy * speedMult;
 
+      // Screen wrapping
       if (c.x < -20) c.x = canvas.width + 20;
       if (c.x > canvas.width + 20) c.x = -20;
       if (c.y < -20) c.y = canvas.height + 20;
       if (c.y > canvas.height + 20) c.y = -20;
 
+      // Color and size derived strictly from smoothly eased load
       const color = getContinuousColor(c.currentLoad);
       const baseRadius = 2.0 + (loadNorm * 2.6);
       const glow = c.currentLoad > 75 ? (c.currentLoad - 75) * 0.25 : 0;
@@ -784,8 +792,10 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         ctx.shadowBlur = glow;
       }
 
+      // STAGE A: APOPTOSIS / POPPING
       if (c.deathState !== 'none') {
         c.deathProgress += 0.035;
+
         if (c.deathState === 'swelling') {
           const swellScale = 1.0 + (c.deathProgress * 0.7);
           const currentRadius = baseRadius * swellScale;
@@ -812,14 +822,19 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           if (c.popAlpha <= 0) {
             c.deathState = 'none';
             c.deathProgress = 0;
-            c.currentLoad = 0;
+            c.currentLoad = Math.min(c.currentLoad, 10);
           }
         }
-      } else if (c.mitosisState === 'growing') {
+      }
+
+      // STAGE B1: MITOSIS INTERPHASE (Smooth 2x Growth)
+      else if (c.mitosisState === 'growing') {
         c.mitosisProgress += 0.009;
         const growthFactor = 1.0 + c.mitosisProgress;
+        const currentRadius = baseRadius * growthFactor;
+
         ctx.beginPath();
-        ctx.arc(c.x, c.y, baseRadius * growthFactor, 0, Math.PI * 2);
+        ctx.arc(c.x, c.y, currentRadius, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
@@ -827,7 +842,10 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           c.mitosisState = 'splitting';
           c.mitosisProgress = 0;
         }
-      } else if (c.mitosisState === 'splitting') {
+      }
+
+      // STAGE B2: MITOSIS CYTOKINESIS (Separation)
+      else if (c.mitosisState === 'splitting') {
         c.mitosisProgress += 0.014;
         const daughterRadius = baseRadius;
         const separation = c.mitosisProgress * (daughterRadius * 2.8);
@@ -853,7 +871,10 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           c.vy = -Math.sin(c.splitAngle) * 0.08;
           spawnIndependentDaughter(c.x + dx, c.y + dy, c.splitAngle, c.currentLoad);
         }
-      } else {
+      }
+
+      // STAGE C: NORMAL CALM DRIFT
+      else {
         ctx.beginPath();
         ctx.arc(c.x, c.y, Math.max(1.2, baseRadius), 0, Math.PI * 2);
         ctx.fillStyle = color;
@@ -863,8 +884,15 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       ctx.restore();
     });
 
+    // ==========================================
+    // 2. INDEPENDENT TEMPORARY DAUGHTERS
+    // ==========================================
     for (let i = temporaryDaughters.length - 1; i >= 0; i--) {
       const d = temporaryDaughters[i];
+
+      // Eased natural transition
+      d.currentLoad += (5 - d.currentLoad) * 0.008;
+
       d.x += d.vx;
       d.y += d.vy;
 
