@@ -183,7 +183,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     display: inline-block;
   }
 
-  .dot-idle { background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2); }
+  .dot-idle { background: rgba(71, 85, 105, 0.5); }
   .dot-low  { background: #0284c7; }
   .dot-mid  { background: #10b981; }
   .dot-high { background: #f59e0b; }
@@ -441,8 +441,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   .core-cell {
     aspect-ratio: 1;
     border-radius: 1px;
-    background: rgba(255, 255, 255, 0.04);
-    transition: background 0.25s ease, box-shadow 0.25s ease;
+    background: rgba(71, 85, 105, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .process-box {
@@ -804,7 +805,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   }
 
   function getHeatmapColor(load) {
-    if (load < 5)   return "rgba(255, 255, 255, 0.04)";
+    if (load < 5)   return "rgba(71, 85, 105, 0.4)";
     if (load < 30)  return "#0284c7";
     if (load < 70)  return "#10b981";
     if (load < 90)  return "#f59e0b";
@@ -884,7 +885,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         }
       }
 
-      // Top Processes Table (Placed early so it always renders first!)
+      // Top Processes Table
       const tbody = document.getElementById(`proc-tbody-${node.id}`);
       if (tbody && Array.isArray(procs) && procs.length > 0) {
         const sorted = [...procs]
@@ -983,17 +984,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       console.warn(`Telemetry error on node ${node.id}:`, e);
       const dotEl = document.getElementById(`dot-${node.id}`);
       if (dotEl) dotEl.className = "status-dot";
-      if (node.hasJupyter) {
-        const jupDot = document.getElementById(`jup-dot-${node.id}`);
-        const jupTxt = document.getElementById(`jup-txt-${node.id}`);
-        if (jupDot) jupDot.className = "service-dot inactive";
-        if (jupTxt) jupTxt.innerText = "OFFLINE";
-      }
-    }
-  }
-      updateClusterAggregates();
-    } catch (e) {
-      document.getElementById(`dot-${node.id}`).className = "status-dot";
       if (node.hasJupyter) {
         const jupDot = document.getElementById(`jup-dot-${node.id}`);
         const jupTxt = document.getElementById(`jup-txt-${node.id}`);
