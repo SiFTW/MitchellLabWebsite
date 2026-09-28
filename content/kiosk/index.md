@@ -170,17 +170,21 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   }
 
   .legend-bar {
-    width: 58px;
-    height: 5px;
-    border-radius: 2px;
-    background: linear-gradient(90deg, 
+    width: 64px;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, 
       rgb(40, 50, 70) 0%, 
-      rgb(2, 132, 199) 20%, 
+      rgb(40, 50, 70) 4%,
+      rgb(2, 132, 199) 22%, 
       rgb(16, 185, 129) 50%, 
       rgb(245, 158, 11) 75%, 
+      rgb(236, 72, 153) 96%,
       rgb(236, 72, 153) 100%);
     display: inline-block;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    vertical-align: middle;
   }
 
   @media (max-width: 900px) {
@@ -558,12 +562,13 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   ];
 
   const clusterState = {
-    mem: { simon: 0, jlp: 0, priti: 0, nas: 0 },
-    netRx: { simon: 0, jlp: 0, priti: 0, nas: 0 },
-    netTx: { simon: 0, jlp: 0, priti: 0, nas: 0 },
-    cpu: { simon: 0, jlp: 0, priti: 0, nas: 0 },
-    cpuAvg: 0
-  };
+      mem: { simon: 0, jlp: 0, priti: 0, nas: 0 },
+      netRx: { simon: 0, jlp: 0, priti: 0, nas: 0 },
+      netTx: { simon: 0, jlp: 0, priti: 0, nas: 0 },
+      cpu: { simon: 0, jlp: 0, priti: 0, nas: 0 },
+      cpuAvg: 0,
+      cpuMax: 0
+    };
 
   // --- CONTINUOUS COLOR INTERPOLATION ---
   const COLOR_STOPS = [
@@ -640,8 +645,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   function animateHeaderCells() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const loadFrac = Math.min(1, Math.max(0, clusterState.cpuAvg / 100));
-    const speedMult = 0.4 + (loadFrac * 2.2);
+    const avgFrac = Math.min(1, Math.max(0, clusterState.cpuAvg / 100));
+    const peakFrac = Math.min(1, Math.max(0, clusterState.cpuMax / 100));
+    const speedMult = 0.4 + (avgFrac * 2.0);
 
     cells.forEach(c => {
       c.x += c.vx * speedMult;
@@ -653,11 +659,20 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       if (c.y < -20) c.y = canvas.height + 20;
       if (c.y > canvas.height + 20) c.y = -20;
 
-      // Continuous individual load percentile
-      const cellLoadPct = Math.min(100, (c.tier * 60) + (loadFrac * 60));
+      // Base activity distribution across cells:
+      // When peak cores are hot (>85%), top-tier cells scale all the way to peak load
+      let cellLoadPct = 0;
+      if (c.tier > 0.75) {
+        // High-activity cell cohort reflects peak core compute
+        cellLoadPct = Math.min(100, (c.tier * 20) + (peakFrac * 80));
+      } else {
+        // Baseline/quiescent cells reflect average cluster load
+        cellLoadPct = Math.min(100, (c.tier * 50) + (avgFrac * 40));
+      }
+
       const color = getContinuousColor(cellLoadPct);
-      const radius = 1.6 + (cellLoadPct / 100) * 4.2 + Math.sin(c.wobble) * 0.5;
-      const glow = cellLoadPct > 65 ? (cellLoadPct - 65) * 0.35 : 0;
+      const radius = 1.6 + (cellLoadPct / 100) * 4.4 + Math.sin(c.wobble) * 0.5;
+      const glow = cellLoadPct > 80 ? (cellLoadPct - 75) * 0.45 : 0;
 
       ctx.beginPath();
       ctx.arc(c.x, c.y, Math.max(1, radius), 0, Math.PI * 2);
@@ -812,7 +827,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     });
   }
 
-  function updateClusterAggregates() {
+ function updateClusterAggregates() {
     const totalUsed = Object.values(clusterState.mem).reduce((a, b) => a + b, 0);
     const ramEl = document.getElementById("total-ram-active");
     if (ramEl) ramEl.innerText = `${totalUsed.toFixed(0)} / 324 GB`;
@@ -824,13 +839,17 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
     let weightedCpuSum = 0;
     let totalCores = 0;
+    let maxLoad = 0;
+
     NODES.forEach(n => {
       const load = clusterState.cpu[n.id] || 0;
       weightedCpuSum += (load * n.cores);
       totalCores += n.cores;
+      if (load > maxLoad) maxLoad = load;
     });
 
     clusterState.cpuAvg = totalCores > 0 ? (weightedCpuSum / totalCores) : 0;
+    clusterState.cpuMax = maxLoad;
 
     const mitEl = document.getElementById("mitotic-index");
     if (mitEl) {
@@ -976,6 +995,8 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
             el.style.backgroundColor = color;
             el.style.boxShadow = loadVal > 65 ? `0 0 6px ${color}` : "none";
           }
+          const l = (typeof core.total === 'number') ? core.total : (100 - (core.idle ?? 100));
+          if (l > clusterState.cpuMax) clusterState.cpuMax = l;
         });
       }
 
