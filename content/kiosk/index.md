@@ -483,7 +483,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   <div class="cluster-hud-header">
     <div class="hud-top-bar">
       <div class="hud-title-group">
-        <h1><span style="color:var(--accent-tumor);">🔬</span> OVERALL SIMULATION STATUS</h1>
+        <h1><span style="color:var(--accent-tumor);"></span> OVERALL SIMULATION STATUS</h1>
         <div class="hud-subtitle">
           <span>SYSTEMS ONCOLOGY SERVERS</span> • <span id="hud-last-update">CONNECTING...</span>
         </div>
@@ -492,7 +492,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       <div class="tumor-canvas-wrapper">
         <canvas id="tumor-spheroid-canvas" width="170" height="96"></canvas>
         <div class="canvas-meta">
-          <div style="color:var(--accent-tumor); font-weight:800; font-size:0.70rem;">CELL SIMULATION</div>
+          <div style="color:var(--accent-tumor); font-weight:800; font-size:0.70rem;">CONNECTION LIVE</div>
           <div style="color:var(--accent-cyan); margin-top:2px;" id="mitotic-index">Active Load: 0%</div>
         </div>
       </div>
@@ -529,7 +529,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
   // Real, uniform Systems Oncology Roles
   const NODES = [
-    { id: "simon", name: "SIMON", role: "Systems Oncology Compute", bioRole: "72 Cores • 62GB RAM",  hasJupyter: true,  cores: 72, columns: 12, apiVer: 3, url: "" },
+    { id: "simon", name: "HP-Z4", role: "Systems Oncology Compute", bioRole: "72 Cores • 62GB RAM",  hasJupyter: true,  cores: 72, columns: 12, apiVer: 3, url: "" },
     { id: "jlp",   name: "JLP",   role: "Systems Oncology Compute", bioRole: "104 Cores • 188GB RAM", hasJupyter: true,  cores: 104, columns: 13, apiVer: 3, url: "" },
     { id: "priti", name: "PRITI", role: "Systems Oncology Compute", bioRole: "12 Cores • 64GB RAM",  hasJupyter: true,  cores: 12, columns: 6,  apiVer: 3, url: "" },
     { id: "nas",   name: "NAS",   role: "Storage Node",            bioRole: "4 Cores • 23TB RAID",    hasJupyter: false, cores: 4, columns: 4,  apiVer: 4, url: "" }
