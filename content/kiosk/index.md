@@ -521,6 +521,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 <div class="hud-wrapper">
   <div class="cluster-hud-header" id="hud-header-container">
     <canvas id="header-cell-canvas"></canvas>
+    
     <div class="hud-top-bar">
       <div class="hud-title-group">
         <h1>OVERALL SIMULATION STATUS</h1>
@@ -530,6 +531,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       </div>
       <div class="hud-activity-badge" id="mitotic-index">Active Load: 0%</div>
     </div>
+
     <div class="hud-metrics-row">
       <div class="hud-stat-box">
         <div class="val" id="total-cores">192 Cores</div>
@@ -554,7 +556,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 </div>
 
 <div class="kiosk-controls">
-  <button class="kiosk-btn" id="ambient-toggle-btn" onclick="toggleAmbientFocus()">Ambient View</button>
+  <button class="kiosk-btn" id="ambient-toggle-btn" onclick="toggleAmbientFocus()">🔬 Ambient View</button>
   <button class="kiosk-btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
 </div>
 
@@ -623,11 +625,11 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     if (isAmbientFocus) {
       wrapper.classList.add("ambient-focus");
       btn.classList.add("active");
-      btn.innerText = "Dashboard View";
+      btn.innerText = "📊 Dashboard View";
     } else {
       wrapper.classList.remove("ambient-focus");
       btn.classList.remove("active");
-      btn.innerText = "Ambient View";
+      btn.innerText = "🔬 Ambient View";
     }
 
     setTimeout(resizeCanvas, 60);
@@ -643,24 +645,21 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
- // --- AMBIENT CELL CANVAS ---
+  // --- AMBIENT CELL CANVAS ---
   const headerContainer = document.getElementById("hud-header-container");
   const canvas = document.getElementById("header-cell-canvas");
   const ctx = canvas.getContext("2d");
 
-  // Determine actual available pixel width immediately
   const initialWidth = headerContainer.clientWidth || window.innerWidth || 1920;
   const initialHeight = headerContainer.clientHeight || 140;
   canvas.width = initialWidth;
   canvas.height = initialHeight;
 
-  // 1. Core registry
   const clusterCorePool = {};
   NODES.forEach(n => {
     clusterCorePool[n.id] = new Array(n.cores).fill(0);
   });
 
-  // 2. Initialize cells across the ENTIRE widescreen display width
   let cellIndex = 0;
   const cells = [];
   NODES.forEach(n => {
@@ -672,7 +671,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         coreIdx: c,
         fluidVx: 0,
         fluidVy: 0,
-        // Disperse evenly across the full width and height
         x: Math.random() * initialWidth,
         y: Math.random() * initialHeight,
         vx: Math.cos(angle) * (0.04 + Math.random() * 0.05),
@@ -691,7 +689,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
   const temporaryDaughters = [];
 
-  // 3. Responsive Resize Handler (Horizontal + Vertical Scaling)
   function resizeCanvas() {
     const prevWidth = canvas.width || initialWidth;
     const prevHeight = canvas.height || initialHeight;
@@ -702,7 +699,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     canvas.width = newWidth;
     canvas.height = newHeight;
 
-    // Proportionally redistribute cells if the viewport width or height grew
     if (cells.length > 0 && (newWidth > prevWidth || newHeight > prevHeight)) {
       cells.forEach(c => {
         if (newWidth > prevWidth && c.x < prevWidth) {
@@ -715,8 +711,6 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     }
   }
   window.addEventListener("resize", resizeCanvas);
-  
-  // Call once after layout renders to capture real dimensions
   requestAnimationFrame(resizeCanvas);
 
   function spawnIndependentDaughter(x, y, angle, load) {
@@ -727,6 +721,8 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       y: y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
+      fluidVx: 0,
+      fluidVy: 0,
       currentLoad: load,
       deathState: 'none',
       deathProgress: 0,
@@ -750,111 +746,106 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     chosen.splitAngle = Math.random() * Math.PI * 2;
   }
   setInterval(triggerMitosisEvent, 9000);
-  
+
   // --- VISCOUS FLUID MOUSE / TOUCH INTERACTION ---
-// Dissipate cursor shear momentum between frames
-    fluidMouse.vx *= 0.85;
-    fluidMouse.vy *= 0.85;
-  
-    function updatePointerPosition(clientX, clientY) {
-      const rect = headerContainer.getBoundingClientRect();
-      const currX = clientX - rect.left;
-      const currY = clientY - rect.top;
-  
-      if (fluidMouse.prevX !== -9999) {
-        // Calculate cursor fluid velocity
-        fluidMouse.vx = (currX - fluidMouse.prevX) * 0.35;
-        fluidMouse.vy = (currY - fluidMouse.prevY) * 0.35;
-      }
-  
-      fluidMouse.prevX = currX;
-      fluidMouse.prevY = currY;
-      fluidMouse.x = currX;
-      fluidMouse.y = currY;
-      fluidMouse.active = true;
+  const fluidMouse = {
+    x: -9999,
+    y: -9999,
+    prevX: -9999,
+    prevY: -9999,
+    vx: 0,
+    vy: 0,
+    active: false,
+    radius: 50
+  };
+
+  function updatePointerPosition(clientX, clientY) {
+    const rect = headerContainer.getBoundingClientRect();
+    const currX = clientX - rect.left;
+    const currY = clientY - rect.top;
+
+    if (fluidMouse.prevX !== -9999) {
+      fluidMouse.vx = (currX - fluidMouse.prevX) * 0.35;
+      fluidMouse.vy = (currY - fluidMouse.prevY) * 0.35;
     }
-  
-    headerContainer.addEventListener("mousemove", (e) => {
-      updatePointerPosition(e.clientX, e.clientY);
-    });
-  
-    headerContainer.addEventListener("mouseleave", () => {
-      fluidMouse.active = false;
-      fluidMouse.x = -9999;
-      fluidMouse.y = -9999;
-      fluidMouse.prevX = -9999;
-      fluidMouse.prevY = -9999;
-      fluidMouse.vx = 0;
-      fluidMouse.vy = 0;
-    });
-  
-    // Tablet / Touchscreen kiosk support
-    headerContainer.addEventListener("touchmove", (e) => {
-      if (e.touches.length > 0) {
-        updatePointerPosition(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    }, { passive: true });
-  
-    headerContainer.addEventListener("touchend", () => {
-      fluidMouse.active = false;
-      fluidMouse.x = -9999;
-      fluidMouse.y = -9999;
-    });
+
+    fluidMouse.prevX = currX;
+    fluidMouse.prevY = currY;
+    fluidMouse.x = currX;
+    fluidMouse.y = currY;
+    fluidMouse.active = true;
+  }
+
+  headerContainer.addEventListener("mousemove", (e) => {
+    updatePointerPosition(e.clientX, e.clientY);
+  });
+
+  headerContainer.addEventListener("mouseleave", () => {
+    fluidMouse.active = false;
+    fluidMouse.x = -9999;
+    fluidMouse.y = -9999;
+    fluidMouse.prevX = -9999;
+    fluidMouse.prevY = -9999;
+    fluidMouse.vx = 0;
+    fluidMouse.vy = 0;
+  });
+
+  headerContainer.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 0) {
+      updatePointerPosition(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
+
+  headerContainer.addEventListener("touchend", () => {
+    fluidMouse.active = false;
+    fluidMouse.x = -9999;
+    fluidMouse.y = -9999;
+  });
+
   function animateHeaderCells() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // ==========================================
     // 1. PERSISTENT CORE CELLS (192)
-    // ==========================================
     cells.forEach(c => {
       const targetLoad = (clusterCorePool[c.nodeId] && clusterCorePool[c.nodeId][c.coreIdx] !== undefined)
         ? clusterCorePool[c.nodeId][c.coreIdx]
         : 0;
 
-      // Trigger pop only when active compute drops significantly
       if (c.currentLoad > 40 && targetLoad < 8 && c.deathState === 'none' && c.mitosisState === 'none') {
         c.deathState = 'swelling';
         c.deathProgress = 0;
       }
 
-      // Ultra-gradual color & size easing (~3-4 seconds for large shifts)
       c.currentLoad += (targetLoad - c.currentLoad) * 0.010;
-
       const loadNorm = c.currentLoad / 100;
       const speedMult = 0.10 + (loadNorm * 0.28);
-      // 1. Viscous Hydrodynamic Drag (Subtle, high-density gel)
+
+      // Viscous Fluid Media Displacement
       if (fluidMouse.active) {
         const dx = c.x - fluidMouse.x;
         const dy = c.y - fluidMouse.y;
         const dist = Math.hypot(dx, dy);
 
         if (dist < fluidMouse.radius && dist > 1) {
-          // Quadratic falloff: soft nudges near the center, vanishing at the edge
           const force = Math.pow(1 - dist / fluidMouse.radius, 2) * 0.22;
           const normalX = dx / dist;
           const normalY = dy / dist;
-
-          // Tiny radial displacement + gentle shear wake
           c.fluidVx += (normalX * force * 0.45) + (fluidMouse.vx * force * 0.12);
           c.fluidVy += (normalY * force * 0.45) + (fluidMouse.vy * force * 0.12);
         }
       }
 
-      // Stronger viscous damping (thick agar/glycerol resistance)
       c.fluidVx = (c.fluidVx || 0) * 0.82;
       c.fluidVy = (c.fluidVy || 0) * 0.82;
 
-      // Base natural drift + damped fluid displacement
       c.x += (c.vx * speedMult) + c.fluidVx;
       c.y += (c.vy * speedMult) + c.fluidVy;
 
-      // Screen wrapping
       if (c.x < -20) c.x = canvas.width + 20;
       if (c.x > canvas.width + 20) c.x = -20;
       if (c.y < -20) c.y = canvas.height + 20;
       if (c.y > canvas.height + 20) c.y = -20;
 
-      // Color and size derived strictly from smoothly eased load
       const color = getContinuousColor(c.currentLoad);
       const baseRadius = 2.0 + (loadNorm * 2.6);
       const glow = c.currentLoad > 75 ? (c.currentLoad - 75) * 0.25 : 0;
@@ -865,10 +856,8 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         ctx.shadowBlur = glow;
       }
 
-      // STAGE A: APOPTOSIS / POPPING
       if (c.deathState !== 'none') {
         c.deathProgress += 0.035;
-
         if (c.deathState === 'swelling') {
           const swellScale = 1.0 + (c.deathProgress * 0.7);
           const currentRadius = baseRadius * swellScale;
@@ -898,16 +887,11 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
             c.currentLoad = Math.min(c.currentLoad, 10);
           }
         }
-      }
-
-      // STAGE B1: MITOSIS INTERPHASE (Smooth 2x Growth)
-      else if (c.mitosisState === 'growing') {
+      } else if (c.mitosisState === 'growing') {
         c.mitosisProgress += 0.009;
         const growthFactor = 1.0 + c.mitosisProgress;
-        const currentRadius = baseRadius * growthFactor;
-
         ctx.beginPath();
-        ctx.arc(c.x, c.y, currentRadius, 0, Math.PI * 2);
+        ctx.arc(c.x, c.y, baseRadius * growthFactor, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
@@ -915,10 +899,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           c.mitosisState = 'splitting';
           c.mitosisProgress = 0;
         }
-      }
-
-      // STAGE B2: MITOSIS CYTOKINESIS (Separation)
-      else if (c.mitosisState === 'splitting') {
+      } else if (c.mitosisState === 'splitting') {
         c.mitosisProgress += 0.014;
         const daughterRadius = baseRadius;
         const separation = c.mitosisProgress * (daughterRadius * 2.8);
@@ -944,10 +925,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           c.vy = -Math.sin(c.splitAngle) * 0.08;
           spawnIndependentDaughter(c.x + dx, c.y + dy, c.splitAngle, c.currentLoad);
         }
-      }
-
-      // STAGE C: NORMAL CALM DRIFT
-      else {
+      } else {
         ctx.beginPath();
         ctx.arc(c.x, c.y, Math.max(1.2, baseRadius), 0, Math.PI * 2);
         ctx.fillStyle = color;
@@ -957,10 +935,8 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       ctx.restore();
     });
 
-    // ==========================================
     // 2. INDEPENDENT TEMPORARY DAUGHTERS
-    // ==========================================
-   for (let i = temporaryDaughters.length - 1; i >= 0; i--) {
+    for (let i = temporaryDaughters.length - 1; i >= 0; i--) {
       const d = temporaryDaughters[i];
 
       if (fluidMouse.active) {
@@ -1035,7 +1011,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
       ctx.restore();
     }
-    // Dissipate cursor shear momentum between frames
+
     fluidMouse.vx *= 0.85;
     fluidMouse.vy *= 0.85;
     requestAnimationFrame(animateHeaderCells);
