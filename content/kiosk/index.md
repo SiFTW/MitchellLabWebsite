@@ -777,20 +777,20 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
           ${syncSnippet}
 
-          <div class="heatmap-wrap">
-          <div class="section-label">
-          <span>Cores (${n.cores})</span>
-          <div class="heatmap-legend">
-          <span class="legend-item"><span class="legend-dot dot-idle"></span>&lt;5%</span>
-          <span class="legend-item"><span class="legend-dot dot-low"></span>&lt;30%</span>
-          <span class="legend-item"><span class="legend-dot dot-mid"></span>&lt;70%</span>
-          <span class="legend-item"><span class="legend-dot dot-high"></span>&lt;90%</span>
-          <span class="legend-item"><span class="legend-dot dot-max"></span>&gt;90%</span>
-          </div>
-          </div>
-          <div class="core-grid" id="grid-${n.id}" style="grid-template-columns: repeat(${n.columns}, 1fr);">
-          ${Array.from({ length: n.cores }).map((_, i) => `<div class="core-cell" id="core-${n.id}-${i}"></div>`).join('')}
-          </div>
+         <div class="heatmap-wrap">
+            <div class="section-label">
+              <span>Cores (${n.cores})</span>
+              <div class="heatmap-legend">
+                <span class="legend-item"><span class="legend-dot dot-idle"></span>0%</span>
+                <span class="legend-item"><span class="legend-dot dot-low"></span>30%</span>
+                <span class="legend-item"><span class="legend-dot dot-mid"></span>70%</span>
+                <span class="legend-item"><span class="legend-dot dot-high"></span>90%</span>
+                <span class="legend-item"><span class="legend-dot dot-max"></span>Max</span>
+              </div>
+            </div>
+            <div class="core-grid" id="grid-${n.id}" style="grid-template-columns: repeat(${n.columns}, 1fr);">
+              ${Array.from({ length: n.cores }).map((_, i) => `<div class="core-cell" id="core-${n.id}-${i}"></div>`).join('')}
+            </div>
           </div>
 
         <div class="process-box">
