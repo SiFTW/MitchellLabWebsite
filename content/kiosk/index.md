@@ -554,7 +554,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 </div>
 
 <div class="kiosk-controls">
-  <button class="kiosk-btn" id="ambient-toggle-btn" onclick="toggleAmbientFocus()">🔬 Ambient View</button>
+  <button class="kiosk-btn" id="ambient-toggle-btn" onclick="toggleAmbientFocus()">Ambient View</button>
   <button class="kiosk-btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
 </div>
 
@@ -623,11 +623,11 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     if (isAmbientFocus) {
       wrapper.classList.add("ambient-focus");
       btn.classList.add("active");
-      btn.innerText = "📊 Dashboard View";
+      btn.innerText = "Dashboard View";
     } else {
       wrapper.classList.remove("ambient-focus");
       btn.classList.remove("active");
-      btn.innerText = "🔬 Ambient View";
+      btn.innerText = "Ambient View";
     }
 
     setTimeout(resizeCanvas, 60);
@@ -648,13 +648,19 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   const canvas = document.getElementById("header-cell-canvas");
   const ctx = canvas.getContext("2d");
 
+  // Determine actual available pixel width immediately
+  const initialWidth = headerContainer.clientWidth || window.innerWidth || 1920;
+  const initialHeight = headerContainer.clientHeight || 140;
+  canvas.width = initialWidth;
+  canvas.height = initialHeight;
+
   // 1. Core registry
   const clusterCorePool = {};
   NODES.forEach(n => {
     clusterCorePool[n.id] = new Array(n.cores).fill(0);
   });
 
-  // 2. DECLARE AND INITIALIZE CELLS FIRST
+  // 2. Initialize cells across the ENTIRE widescreen display width
   let cellIndex = 0;
   const cells = [];
   NODES.forEach(n => {
@@ -664,8 +670,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         id: cellIndex++,
         nodeId: n.id,
         coreIdx: c,
-        x: Math.random() * 800,
-        y: Math.random() * 120,
+        // Disperse evenly across the full width and height
+        x: Math.random() * initialWidth,
+        y: Math.random() * initialHeight,
         vx: Math.cos(angle) * (0.04 + Math.random() * 0.05),
         vy: Math.sin(angle) * (0.04 + Math.random() * 0.05),
         currentLoad: 0,
@@ -682,22 +689,33 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
   const temporaryDaughters = [];
 
-  // 3. NOW RESIZE CANVAS SAFELY
+  // 3. Responsive Resize Handler (Horizontal + Vertical Scaling)
   function resizeCanvas() {
-    const prevHeight = canvas.height || 120;
-    canvas.width = headerContainer.clientWidth;
-    canvas.height = headerContainer.clientHeight;
+    const prevWidth = canvas.width || initialWidth;
+    const prevHeight = canvas.height || initialHeight;
 
-    if (canvas.height > prevHeight && cells.length > 0) {
+    const newWidth = headerContainer.clientWidth || window.innerWidth;
+    const newHeight = headerContainer.clientHeight || 140;
+
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+
+    // Proportionally redistribute cells if the viewport width or height grew
+    if (cells.length > 0 && (newWidth > prevWidth || newHeight > prevHeight)) {
       cells.forEach(c => {
-        if (Math.random() > 0.45) {
-          c.y = Math.random() * canvas.height;
+        if (newWidth > prevWidth && c.x < prevWidth) {
+          c.x = (c.x / prevWidth) * newWidth;
+        }
+        if (newHeight > prevHeight && Math.random() > 0.4) {
+          c.y = Math.random() * newHeight;
         }
       });
     }
   }
   window.addEventListener("resize", resizeCanvas);
-  resizeCanvas(); // Safe! `cells` is already allocated in memory.
+  
+  // Call once after layout renders to capture real dimensions
+  requestAnimationFrame(resizeCanvas);
 
   function spawnIndependentDaughter(x, y, angle, load) {
     const speed = 0.08 + Math.random() * 0.05;
