@@ -63,27 +63,42 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
   }
 
-  /* TOP COMMAND BANNER */
+  /* TOP COMMAND BANNER (WITH SUBTLE CELL BACKDROP) */
   .cluster-hud-header {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    background: rgba(10, 16, 28, 0.94);
+    gap: 12px;
+    background: rgba(10, 16, 28, 0.78);
     border: 1px solid rgba(236, 72, 153, 0.28);
     border-radius: 12px;
-    padding: 12px 16px;
+    padding: 14px 18px;
     margin-bottom: 14px;
     backdrop-filter: blur(16px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
     box-sizing: border-box;
     width: 100%;
+    overflow: hidden;
+  }
+
+  /* Absolute ambient canvas behind header elements */
+  #header-cell-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.75;
   }
 
   .hud-top-bar {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding-bottom: 10px;
     gap: 14px;
     flex-wrap: wrap;
@@ -105,6 +120,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     gap: 8px;
     flex-wrap: wrap;
     line-height: 1.2;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
   }
 
   .hud-subtitle {
@@ -117,35 +133,25 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     gap: 6px;
     margin-top: 3px;
     flex-wrap: wrap;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
   }
 
-  /* DYNAMIC SIZING CELL SIMULATION CANVAS */
-  .tumor-canvas-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(236, 72, 153, 0.25);
-    border-radius: 10px;
-    padding: 6px 12px;
-    flex-shrink: 0;
-  }
-
-  #tumor-spheroid-canvas {
-    width: 85px;
-    height: 48px;
-    border-radius: 6px;
-    background: #020408;
-  }
-
-  .canvas-meta {
+  .hud-activity-badge {
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    border-radius: 8px;
+    padding: 4px 10px;
     font-family: var(--mono-font);
-    font-size: 0.65rem;
-    line-height: 1.3;
+    font-size: 0.68rem;
+    color: var(--accent-cyan);
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
   }
 
   /* FLUID AGGREGATE STATS ROW */
   .hud-metrics-row {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
@@ -166,13 +172,14 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   }
 
   .hud-stat-box {
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(4, 8, 16, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 8px;
     padding: 6px 10px;
     text-align: left;
     min-width: 0;
     overflow: hidden;
+    backdrop-filter: blur(10px);
   }
 
   .hud-stat-box .val {
@@ -479,8 +486,9 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 </style>
 
 <div class="hud-wrapper">
-  <!-- TOP COMMAND BANNER -->
-  <div class="cluster-hud-header">
+  <!-- TOP COMMAND BANNER (WITH INTEGRATED CELL BACKDROP) -->
+  <div class="cluster-hud-header" id="hud-header-container">
+    <canvas id="header-cell-canvas"></canvas>
     <div class="hud-top-bar">
       <div class="hud-title-group">
         <h1><span style="color:var(--accent-tumor);"></span> OVERALL SIMULATION STATUS</h1>
@@ -488,13 +496,8 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           <span>SYSTEMS ONCOLOGY SERVERS</span> • <span id="hud-last-update">CONNECTING...</span>
         </div>
       </div>
-      <!-- Cell Simulation Canvas -->
-      <div class="tumor-canvas-wrapper">
-        <canvas id="tumor-spheroid-canvas" width="170" height="96"></canvas>
-        <div class="canvas-meta">
-          <div style="color:var(--accent-tumor); font-weight:800; font-size:0.70rem;">CELL SIMULATION</div>
-          <div style="color:var(--accent-cyan); margin-top:2px;" id="mitotic-index">Cluster utilisation: 0%</div>
-        </div>
+      <div class="hud-activity-badge" id="mitotic-index">
+        Active Load: 0%
       </div>
     </div>
     <!-- Cluster Aggregate Hardware Stats -->
@@ -558,78 +561,93 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
-  // --- DYNAMIC CPU-DRIVEN CELLULAR CLUSTER SIMULATION ---
-  const canvas = document.getElementById("tumor-spheroid-canvas");
+  // --- AMBIENT HEADER CELL SIMULATION CANVAS ---
+  const headerContainer = document.getElementById("hud-header-container");
+  const canvas = document.getElementById("header-cell-canvas");
   const ctx = canvas.getContext("2d");
-  const centerX = 85;
-  const centerY = 48;
-  const MAX_CELLS = 70;
 
-  // Initialize pool of cells with angle and radial distance
-  const cells = Array.from({ length: MAX_CELLS }).map((_, i) => ({
-    angle: Math.random() * Math.PI * 2,
-    baseDist: Math.pow(Math.random(), 0.65), // Density concentrated toward center
-    angularSpeed: (Math.random() - 0.5) * 0.02,
-    radialWobble: Math.random() * Math.PI * 2,
-    baseRadius: Math.random() * 1.6 + 1.6,
-    type: i % 3 === 0 ? "quiescent" : "tumor",
-    phase: Math.random() * Math.PI * 2
+  function resizeCanvas() {
+    canvas.width = headerContainer.clientWidth;
+    canvas.height = headerContainer.clientHeight;
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+
+  // Create a field of cells distributed across the header
+  const TOTAL_CELLS = 90;
+  const cells = Array.from({ length: TOTAL_CELLS }).map((_, i) => ({
+    x: Math.random() * (canvas.width || 800),
+    y: Math.random() * (canvas.height || 120),
+    vx: (Math.random() - 0.5) * 0.45,
+    vy: (Math.random() - 0.5) * 0.45,
+    tier: i / TOTAL_CELLS, // Percentile rank in the population (0.0 to 1.0)
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: 0.02 + Math.random() * 0.03
   }));
 
-  function animateTumorLattice() {
-    ctx.fillStyle = "rgba(2, 4, 8, 0.3)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  function animateHeaderCells() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Dynamic factors calculated purely from cluster CPU activity
-    const loadFraction = Math.min(1, Math.max(0, clusterState.cpuAvg / 100)); // 0.0 to 1.0
-    
-    // Cluster grows outwards as CPU load increases:
-    // Low load: compact core (radius ~14px). High load: expands to ~40px across canvas.
-    const clusterRadius = 14 + (loadFraction * 26);
-    
-    // More cells activate and divide as load increases
-    const activeCount = Math.floor(20 + (loadFraction * (MAX_CELLS - 20)));
-    
-    // Mitotic velocity / agitation scales with CPU load
-    const speedMult = 0.5 + (loadFraction * 2.5);
+    const loadFrac = Math.min(1, Math.max(0, clusterState.cpuAvg / 100)); // 0.0 to 1.0
+    const speedMult = 0.4 + (loadFrac * 2.2);
 
-    for (let i = 0; i < activeCount; i++) {
-      const c = cells[i];
-      c.angle += c.angularSpeed * speedMult;
-      c.radialWobble += 0.03 * speedMult;
-      c.phase += 0.05 * speedMult;
+    cells.forEach(c => {
+      c.x += c.vx * speedMult;
+      c.y += c.vy * speedMult;
+      c.wobble += c.wobbleSpeed * speedMult;
 
-      // Current distance based on dynamic clusterRadius + slight organic wobble
-      const currentDist = (c.baseDist * clusterRadius) + (Math.sin(c.radialWobble) * 2.5);
-      const x = centerX + Math.cos(c.angle) * currentDist;
-      const y = centerY + Math.sin(c.angle) * currentDist * 0.85; // Spheroid aspect
+      // Wrap-around edges
+      if (c.x < -20) c.x = canvas.width + 20;
+      if (c.x > canvas.width + 20) c.x = -20;
+      if (c.y < -20) c.y = canvas.height + 20;
+      if (c.y > canvas.height + 20) c.y = -20;
 
-      // Cell size grows slightly during active mitotic synthesis
-      const currentRadius = c.baseRadius * (1 + (loadFraction * 0.45)) + (Math.sin(c.phase) * 0.35);
+      // Effective activity tier shifts upward as cluster CPU increases
+      const effectiveActivity = Math.min(1, c.tier + (loadFrac * 0.65));
+
+      let color, radius, glow = 0;
+
+      // Exact 1:1 mapping with cluster core heatmap states
+      if (effectiveActivity < 0.28) {
+        // Inactive / Quiescent (<5%): Small, dark slate/violet dots
+        color = "rgba(71, 85, 105, 0.45)";
+        radius = 1.6 + Math.sin(c.wobble) * 0.3;
+      } else if (effectiveActivity < 0.55) {
+        // Low (<30%): Small Blue Nodes
+        color = "rgba(2, 132, 199, 0.7)";
+        radius = 2.4 + Math.sin(c.wobble) * 0.4;
+      } else if (effectiveActivity < 0.78) {
+        // Medium (30-70%): Emerald Nodes
+        color = "rgba(16, 185, 129, 0.85)";
+        radius = 3.4 + Math.sin(c.wobble) * 0.5;
+        glow = 4;
+      } else if (effectiveActivity < 0.90) {
+        // High (70-90%): Amber Nodes
+        color = "rgba(245, 158, 11, 0.9)";
+        radius = 4.4 + Math.sin(c.wobble) * 0.6;
+        glow = 6;
+      } else {
+        // Peak / Mitotic (>90%): Big, bright, glowing pink nodes
+        color = "#ec4899";
+        radius = 6.2 + Math.sin(c.wobble) * 0.9;
+        glow = 12;
+      }
 
       ctx.beginPath();
-      ctx.arc(x, y, Math.max(1, currentRadius), 0, Math.PI * 2);
-      
-      if (c.type === "tumor") {
-        if (loadFraction > 0.45) {
-          ctx.fillStyle = "#f43f5e"; // Mitotic Rose/Pink flush under high CPU
-          ctx.shadowColor = "#f43f5e";
-          ctx.shadowBlur = 4;
-        } else {
-          ctx.fillStyle = "#ec4899";
-          ctx.shadowColor = "#ec4899";
-          ctx.shadowBlur = 2;
-        }
+      ctx.arc(c.x, c.y, Math.max(1, radius), 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      if (glow > 0) {
+        ctx.shadowColor = color;
+        ctx.shadowBlur = glow;
       } else {
-        ctx.fillStyle = "#38bdf8"; // Quiescent Cyan
         ctx.shadowBlur = 0;
       }
       ctx.fill();
-    }
+    });
 
-    requestAnimationFrame(animateTumorLattice);
+    requestAnimationFrame(animateHeaderCells);
   }
-  requestAnimationFrame(animateTumorLattice);
+  requestAnimationFrame(animateHeaderCells);
 
   // --- TRUTHFUL TASK CLASSIFIER ---
   function classifyBioTask(cmdName, cmdLine = "") {
@@ -765,12 +783,13 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     });
   }
 
+  // Exact shared heatmap color scale
   function getHeatmapColor(load) {
     if (load < 5)   return "rgba(255, 255, 255, 0.04)";
-    if (load < 30)  return "#0284c7";
-    if (load < 70)  return "#10b981";
-    if (load < 90)  return "#f59e0b";
-    return "#ec4899";
+    if (load < 30)  return "#0284c7"; // Cyan / Blue
+    if (load < 70)  return "#10b981"; // Emerald
+    if (load < 90)  return "#f59e0b"; // Amber
+    return "#ec4899";                 // Big Pink Mitotic Node
   }
 
   function updateClusterAggregates() {
@@ -800,7 +819,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     const mitEl = document.getElementById("mitotic-index");
     if (mitEl) {
       const roundedCpu = Math.round(clusterState.cpuAvg);
-      mitEl.innerText = `Utilisation: ${roundedCpu}%`;
+      mitEl.innerText = `Active Load: ${roundedCpu}%`;
     }
   }
 
