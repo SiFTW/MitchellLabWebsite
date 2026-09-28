@@ -483,7 +483,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   <div class="cluster-hud-header">
     <div class="hud-top-bar">
       <div class="hud-title-group">
-        <h1><span style="color:var(--accent-tumor);">🔬</span> OVERALL SIMULATION STATUS</h1>
+        <h1><span style="color:var(--accent-tumor);"></span> OVERALL SIMULATION STATUS</h1>
         <div class="hud-subtitle">
           <span>SYSTEMS ONCOLOGY SERVERS</span> • <span id="hud-last-update">CONNECTING...</span>
         </div>
@@ -493,7 +493,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
         <canvas id="tumor-spheroid-canvas" width="170" height="96"></canvas>
         <div class="canvas-meta">
           <div style="color:var(--accent-tumor); font-weight:800; font-size:0.70rem;">CELL SIMULATION</div>
-          <div style="color:var(--accent-cyan); margin-top:2px;" id="mitotic-index">Mitotic Index: 0%</div>
+          <div style="color:var(--accent-cyan); margin-top:2px;" id="mitotic-index">Cluster utilisation: 0%</div>
         </div>
       </div>
     </div>
