@@ -619,7 +619,7 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
- // --- AMBIENT HEADER CELL SIMULATION CANVAS (1:1 CORE MAPPED) ---
+// --- AMBIENT BIOLOGICAL CELL CYCLE SIMULATION (MITOSIS & APOPTOSIS) ---
   const headerContainer = document.getElementById("hud-header-container");
   const canvas = document.getElementById("header-cell-canvas");
   const ctx = canvas.getContext("2d");
@@ -631,78 +631,173 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
   window.addEventListener("resize", resizeCanvas);
   resizeCanvas();
 
-  // Cluster core registry: exactly 192 cores
+  // Registry of current cluster core loads
   const clusterCorePool = {};
   NODES.forEach(n => {
     clusterCorePool[n.id] = new Array(n.cores).fill(0);
   });
 
- // Spawn exactly 1 cell for every core in the cluster (192 total)
-  let cellIndex = 0;
-  const cells = [];
-  NODES.forEach(n => {
-    for (let c = 0; c < n.cores; c++) {
-      cells.push({
-        id: cellIndex++,
-        nodeId: n.id,
-        coreIdx: c,
-        x: Math.random() * (canvas.width || 800),
-        y: Math.random() * (canvas.height || 120),
-        // Gentle baseline velocity
-        baseVx: (Math.random() - 0.5) * 0.18,
-        baseVy: (Math.random() - 0.5) * 0.18,
-        currentLoad: 0
+  // Cell pool: dynamic population driven by active cores
+  let cells = [];
+
+  function createCell(x, y, load = 10, isDaughter = false) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 0.12 + Math.random() * 0.14;
+    return {
+      x: x !== undefined ? x : Math.random() * (canvas.width || 800),
+      y: y !== undefined ? y : Math.random() * (canvas.height || 120),
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      load: load,
+      targetLoad: load,
+      // Mitosis state (0: normal, >0: dividing furrow)
+      splitProgress: isDaughter ? 0.35 : 0, 
+      splitAngle: Math.random() * Math.PI,
+      // Apoptosis state
+      opacity: 1.0,
+      dying: false
+    };
+  }
+
+  // Seed baseline population so canvas is never completely empty
+  for (let i = 0; i < 8; i++) {
+    cells.push(createCell());
+  }
+
+  function syncCellPopulationWithCluster() {
+    // 1. Collect all active core loads (>5%) across the entire cluster
+    const activeLoads = [];
+    NODES.forEach(n => {
+      const coreLoads = clusterCorePool[n.id] || [];
+      coreLoads.forEach(l => {
+        if (l >= 5) activeLoads.push(l);
       });
+    });
+
+    // If cluster is completely idle, keep a quiescent baseline of 4 tiny cells
+    const targetCount = Math.max(4, activeLoads.length);
+    const livingCells = cells.filter(c => !c.dying);
+
+    // Sort active loads highest to lowest so biggest cells match highest compute
+    activeLoads.sort((a, b) => b - a);
+
+    // 2. MITOSIS: If we need more cells, pick high-activity cells to divide
+    if (livingCells.length < targetCount) {
+      const needed = targetCount - livingCells.length;
+      for (let i = 0; i < needed; i++) {
+        // Pick an existing healthy cell to split from, preferably one under load
+        const parent = livingCells[i % livingCells.length] || { x: Math.random() * canvas.width, y: Math.random() * canvas.height };
+        
+        // Spawn daughter cell adjacent to parent (mitotic budding)
+        const spawnAngle = Math.random() * Math.PI * 2;
+        const daughter = createCell(
+          parent.x + Math.cos(spawnAngle) * 6,
+          parent.y + Math.sin(spawnAngle) * 6,
+          activeLoads[livingCells.length + i] || 15,
+          true
+        );
+        cells.push(daughter);
+        livingCells.push(daughter);
+      }
+    } 
+    // 3. APOPTOSIS: If cores went idle, mark excess cells for death
+    else if (livingCells.length > targetCount) {
+      const excess = livingCells.length - targetCount;
+      // Kill lowest-activity cells first
+      const sortedByLowestLoad = [...livingCells].sort((a, b) => a.load - b.load);
+      for (let i = 0; i < excess; i++) {
+        sortedByLowestLoad[i].dying = true;
+      }
     }
-  });
+
+    // 4. Assign target core loads to remaining healthy cells
+    livingCells.forEach((c, idx) => {
+      if (!c.dying) {
+        c.targetLoad = activeLoads[idx] !== undefined ? activeLoads[idx] : 0;
+      }
+    });
+  }
+
+  // Reconcile cell population against cluster hardware every 1 second
+  setInterval(syncCellPopulationWithCluster, 1000);
 
   function animateHeaderCells() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    cells.forEach(c => {
-      // 1. Fetch real-time core load reported by Glances
-      const targetLoad = (clusterCorePool[c.nodeId] && clusterCorePool[c.nodeId][c.coreIdx] !== undefined)
-        ? clusterCorePool[c.nodeId][c.coreIdx]
-        : 0;
+    for (let i = cells.length - 1; i >= 0; i--) {
+      const c = cells[i];
 
-      // 2. Smoothly ease toward real-time core load (no instant jumps)
-      c.currentLoad += (targetLoad - c.currentLoad) * 0.08;
+      // Smoothly transition load
+      c.load += (c.targetLoad - c.load) * 0.08;
 
-      // 3. Calm speed curve:
-      // Idle: 0.2x speed | Peak (100%): 0.85x speed (subtle, non-distracting drift)
-      const loadNorm = c.currentLoad / 100;
-      const speedMult = 0.20 + (loadNorm * 0.65);
+      // Biological speed curve (calm, non-distracting drift)
+      const loadNorm = c.load / 100;
+      const speedMult = 0.22 + (loadNorm * 0.55);
 
-      c.x += c.baseVx * speedMult;
-      c.y += c.baseVy * speedMult;
+      c.x += c.vx * speedMult;
+      c.y += c.vy * speedMult;
 
-      // Wrap-around bounds smoothly
-      if (c.x < -15) c.x = canvas.width + 15;
-      if (c.x > canvas.width + 15) c.x = -15;
-      if (c.y < -15) c.y = canvas.height + 15;
-      if (c.y > canvas.height + 15) c.y = -15;
+      // Screen boundary wrapping
+      if (c.x < -20) c.x = canvas.width + 20;
+      if (c.x > canvas.width + 20) c.x = -20;
+      if (c.y < -20) c.y = canvas.height + 20;
+      if (c.y > canvas.height + 20) c.y = -20;
 
-      // 4. Exact continuous color matching with core heatmaps
-      const color = getContinuousColor(c.currentLoad);
-
-      // 5. Purely telemetry-driven size (NO artificial sine pulse)
-      // Idle (0%): 2.2px -> Peak (100%): 5.2px
-      const radius = 2.2 + (loadNorm * 3.0);
-
-      // Soft ambient glow only for heavy/saturated compute
-      const glow = c.currentLoad > 75 ? (c.currentLoad - 75) * 0.25 : 0;
-
-      ctx.beginPath();
-      ctx.arc(c.x, c.y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      if (glow > 0) {
-        ctx.shadowColor = color;
-        ctx.shadowBlur = glow;
-      } else {
-        ctx.shadowBlur = 0;
+      // Handle Apoptosis (Dying cells shrink and fade)
+      if (c.dying) {
+        c.opacity -= 0.035;
+        if (c.opacity <= 0) {
+          cells.splice(i, 1);
+          continue;
+        }
       }
-      ctx.fill();
-    });
+
+      // Finish mitosis daughter cell separation
+      if (c.splitProgress > 0) {
+        c.splitProgress -= 0.02;
+        if (c.splitProgress < 0) c.splitProgress = 0;
+      }
+
+      // Base radius directly driven by core compute
+      const baseRadius = (2.2 + loadNorm * 3.2) * (c.dying ? Math.max(0.2, c.opacity) : 1);
+      const color = getContinuousColor(c.load);
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, c.opacity));
+
+      // Glow only on heavy saturated cores (>75%)
+      if (c.load > 75 && !c.dying) {
+        ctx.shadowColor = color;
+        ctx.shadowBlur = (c.load - 75) * 0.3;
+      }
+
+      // If dividing: draw dual cleavage furrow separating into 2 daughter bodies
+      if (c.splitProgress > 0.05) {
+        const offset = (1 - c.splitProgress) * (baseRadius * 1.2);
+        const dx = Math.cos(c.splitAngle) * offset;
+        const dy = Math.sin(c.splitAngle) * offset;
+
+        // Primary nucleus
+        ctx.beginPath();
+        ctx.arc(c.x - dx, c.y - dy, baseRadius * 0.85, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        // Dividing daughter nucleus
+        ctx.beginPath();
+        ctx.arc(c.x + dx, c.y + dy, baseRadius * 0.85, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+      } else {
+        // Standard spherical cell body
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, Math.max(1, baseRadius), 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
 
     requestAnimationFrame(animateHeaderCells);
   }
@@ -1004,23 +1099,23 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       }
 
   // Continuous Core Heatmap Rendering & Cell Pool Synchronization
-      if (Array.isArray(cpus) && cpus.length > 0) {
-        cpus.forEach((core, i) => {
-          const loadVal = (typeof core.total === 'number') ? core.total : (100 - (core.idle ?? 100));
-
-          // Pipe directly to the header simulation
-          if (clusterCorePool[node.id] && clusterCorePool[node.id][i] !== undefined) {
-            clusterCorePool[node.id][i] = loadVal;
-          }
-
-          const el = document.getElementById(`core-${node.id}-${i}`);
-          if (el) {
-            const color = getContinuousColor(loadVal);
-            el.style.backgroundColor = color;
-            el.style.boxShadow = loadVal > 65 ? `0 0 6px ${color}` : "none";
-          }
-        });
-      }
+        if (Array.isArray(cpus) && cpus.length > 0) {
+          cpus.forEach((core, i) => {
+            const loadVal = (typeof core.total === 'number') ? core.total : (100 - (core.idle ?? 100));
+  
+            // Pipe directly to the biological cell pool
+            if (clusterCorePool[node.id] && clusterCorePool[node.id][i] !== undefined) {
+              clusterCorePool[node.id][i] = loadVal;
+            }
+  
+            const el = document.getElementById(`core-${node.id}-${i}`);
+            if (el) {
+              const color = getContinuousColor(loadVal);
+              el.style.backgroundColor = color;
+              el.style.boxShadow = loadVal > 65 ? `0 0 6px ${color}` : "none";
+            }
+          });
+        }
 
       updateClusterAggregates();
     } catch (e) {
