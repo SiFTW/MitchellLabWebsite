@@ -41,40 +41,43 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
 +++
 
 <style>
-  #skills, 
-  section[id*="skills"],
-  section[id*="what-we-do"],
-  .wg-featurette,
-  .wg-featurette4 {
+  /* Lock parent section for full-bleed layering */
+  .skills-widget-parent {
     position: relative !important;
     overflow: hidden !important;
+    padding-bottom: 50px !important; /* Space for the bottom badge */
   }
 
+  /* Full-bleed background canvas covering entire section */
   #home-skills-cell-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
     opacity: 0.65;
   }
 
-  #skills .container,
-  section[id*="skills"] .container,
-  section[id*="what-we-do"] .container,
-  .wg-featurette .container,
-  .wg-featurette4 .container {
+  /* Keep all Wowchemy text, titles, and icons raised above the canvas */
+  .skills-widget-parent .container,
+  .skills-widget-parent .row,
+  .skills-widget-parent .featurette {
     position: relative !important;
     z-index: 1 !important;
   }
 
-  .skills-cluster-badge-wrap {
-    position: relative;
-    z-index: 2;
+  /* Bottom badge pinned to the bottom of the entire widget */
+  #skills-badge-container {
+    position: absolute !important;
+    bottom: 14px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 2 !important;
     text-align: center;
-    margin-top: 28px;
-    margin-bottom: 6px;
+    width: 100%;
+    pointer-events: none;
   }
 
   .skills-cluster-badge {
@@ -85,27 +88,28 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
     font-size: 0.74rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     color: #64748b !important;
-    background: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(226, 232, 240, 0.85);
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(226, 232, 240, 0.9);
     border-radius: 9999px;
     backdrop-filter: blur(8px);
     text-decoration: none !important;
+    pointer-events: auto !important;
     transition: all 0.25s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   .dark .skills-cluster-badge {
     color: #94a3b8 !important;
-    background: rgba(15, 23, 42, 0.65);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: rgba(15, 23, 42, 0.75);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   }
 
   .skills-cluster-badge:hover {
     color: #0284c7 !important;
     border-color: rgba(56, 189, 248, 0.45);
     transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   .dark .skills-cluster-badge:hover {
@@ -125,7 +129,7 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
 
 <canvas id="home-skills-cell-canvas"></canvas>
 
-<div class="skills-cluster-badge-wrap">
+<div id="skills-badge-container">
   <a href="/status/" class="skills-cluster-badge">
     <span class="skills-live-dot"></span>
     This animation reflects the live status of our cluster ↗
@@ -173,14 +177,42 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
   }
 
   var canvas = document.getElementById("home-skills-cell-canvas");
+  var badge = document.getElementById("skills-badge-container");
   if (!canvas) return;
-  var ctx = canvas.getContext("2d");
-  var parentSection = canvas.closest("section") || canvas.parentElement;
 
-  var initialWidth = parentSection.clientWidth || window.innerWidth || 1200;
-  var initialHeight = parentSection.clientHeight || 450;
-  canvas.width = initialWidth;
-  canvas.height = initialHeight;
+  // Find the true outer section container
+  var parentSection = canvas.closest("section");
+  if (!parentSection) {
+    parentSection = canvas.parentElement;
+    while (parentSection && parentSection.tagName !== "SECTION" && !parentSection.classList.contains("wg-featurette")) {
+      parentSection = parentSection.parentElement;
+    }
+  }
+  if (!parentSection) parentSection = canvas.parentElement;
+
+  // Add the class so CSS applies cleanly to the full section
+  parentSection.classList.add("skills-widget-parent");
+
+  // Move canvas and badge directly under the section so they are not confined by inner rows
+  if (canvas.parentElement !== parentSection) {
+    parentSection.insertBefore(canvas, parentSection.firstChild);
+  }
+  if (badge && badge.parentElement !== parentSection) {
+    parentSection.appendChild(badge);
+  }
+
+  var ctx = canvas.getContext("2d");
+
+  function getSectionDims() {
+    return {
+      w: parentSection.offsetWidth || window.innerWidth || 1200,
+      h: parentSection.offsetHeight || 500
+    };
+  }
+
+  var dims = getSectionDims();
+  canvas.width = dims.w;
+  canvas.height = dims.h;
 
   var clusterCorePool = {};
   for (var n = 0; n < NODES.length; n++) {
@@ -202,8 +234,8 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
         coreIdx: c,
         fluidVx: 0,
         fluidVy: 0,
-        x: Math.random() * initialWidth,
-        y: Math.random() * initialHeight,
+        x: Math.random() * dims.w,
+        y: Math.random() * dims.h,
         vx: Math.cos(angle) * (0.04 + Math.random() * 0.05),
         vy: Math.sin(angle) * (0.04 + Math.random() * 0.05),
         currentLoad: 0,
@@ -221,27 +253,27 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
   var temporaryDaughters = [];
 
   function resizeCanvas() {
-    var prevWidth = canvas.width || initialWidth;
-    var prevHeight = canvas.height || initialHeight;
-    var newWidth = parentSection.clientWidth || window.innerWidth;
-    var newHeight = parentSection.clientHeight || 450;
+    var prevW = canvas.width || dims.w;
+    var prevH = canvas.height || dims.h;
+    var cur = getSectionDims();
 
-    canvas.width = newWidth;
-    canvas.height = newHeight;
+    canvas.width = cur.w;
+    canvas.height = cur.h;
 
-    if (cells.length > 0 && (newWidth > prevWidth || newHeight > prevHeight)) {
+    if (cells.length > 0 && (cur.w > prevW || cur.h > prevH)) {
       for (var i = 0; i < cells.length; i++) {
-        if (newWidth > prevWidth && cells[i].x < prevWidth) {
-          cells[i].x = (cells[i].x / prevWidth) * newWidth;
+        if (cur.w > prevW && cells[i].x < prevW) {
+          cells[i].x = (cells[i].x / prevW) * cur.w;
         }
-        if (newHeight > prevHeight && Math.random() > 0.4) {
-          cells[i].y = Math.random() * newHeight;
+        if (cur.h > prevH && Math.random() > 0.4) {
+          cells[i].y = Math.random() * cur.h;
         }
       }
     }
   }
   window.addEventListener("resize", resizeCanvas);
-  setTimeout(resizeCanvas, 150);
+  setTimeout(resizeCanvas, 100);
+  setTimeout(resizeCanvas, 500);
 
   function spawnIndependentDaughter(x, y, angle, load) {
     var speed = 0.08 + Math.random() * 0.05;
@@ -293,7 +325,7 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
     vx: 0,
     vy: 0,
     active: false,
-    radius: 65
+    radius: 70
   };
 
   function updatePointerPosition(clientX, clientY) {
@@ -466,8 +498,8 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
 
         if (ddist < fluidMouse.radius && ddist > 1) {
           var dforce = Math.pow(1 - ddist / fluidMouse.radius, 2) * 0.22;
-          d.fluidVx = (d.fluidVx || 0) + ((ddx / ddist) * dforce * 0.45) + (fluidMouse.vx * dforce * 0.12);
-          d.fluidVy = (d.fluidVy || 0) + ((ddy / ddist) * dforce * 0.45) + (fluidMouse.vy * dforce * 0.12);
+          d.fluidVx = (d.fluidVx || 0) + ((ddx / ddist) * dforce * 0.45) + (fluidMouse.vx * force * 0.12);
+          d.fluidVy = (d.fluidVy || 0) + ((ddy / ddist) * dforce * 0.45) + (fluidMouse.vy * force * 0.12);
         }
       }
 
@@ -521,73 +553,4 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
         ctx.arc(d.x, d.y, d.popRadius, 0, Math.PI * 2);
         ctx.strokeStyle = dColor;
         ctx.lineWidth = 1.2;
-        ctx.globalAlpha = Math.max(0, d.popAlpha);
-        ctx.stroke();
-
-        if (d.popAlpha <= 0) {
-          temporaryDaughters.splice(dIdx, 1);
-        }
-      }
-
-      ctx.restore();
-    }
-
-    fluidMouse.vx *= 0.85;
-    fluidMouse.vy *= 0.85;
-    requestAnimationFrame(animateCells);
-  }
-  requestAnimationFrame(animateCells);
-
-  function fetchNodeTelemetry(node) {
-    if (!node.url) return;
-    fetch(node.url + "/api/" + node.apiVer + "/percpu")
-      .then(function(res) {
-        if (!res.ok) return null;
-        return res.json();
-      })
-      .then(function(cpus) {
-        if (Array.isArray(cpus)) {
-          for (var i = 0; i < cpus.length; i++) {
-            var core = cpus[i];
-            var loadVal = (typeof core.total === 'number') ? core.total : (100 - (core.idle !== undefined ? core.idle : 100));
-            if (clusterCorePool[node.id] && clusterCorePool[node.id][i] !== undefined) {
-              clusterCorePool[node.id][i] = loadVal;
-            }
-          }
-        }
-      })
-      .catch(function() {});
-  }
-
-  function initSkillsCanvas() {
-    fetch(GIST_BASE + "/endpoints.json?t=" + Date.now())
-      .then(function(res) {
-        if (!res.ok) return null;
-        return res.json();
-      })
-      .then(function(endpoints) {
-        if (endpoints) {
-          for (var i = 0; i < NODES.length; i++) {
-            var n = NODES[i];
-            if (endpoints[n.id]) n.url = endpoints[n.id].replace(/\/+$/, "");
-          }
-        }
-      })
-      .catch(function() {});
-
-    var refresh = function() {
-      for (var i = 0; i < NODES.length; i++) {
-        fetchNodeTelemetry(NODES[i]);
-      }
-    };
-    refresh();
-    setInterval(refresh, 3000);
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initSkillsCanvas);
-  } else {
-    initSkillsCanvas();
-  }
-})();
-</script>
+        ctx.globalAlpha = Math.max(0
