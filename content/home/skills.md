@@ -44,7 +44,7 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
   .skills-widget-parent {
     position: relative !important;
     overflow: hidden !important;
-    padding-bottom: 50px !important;
+    padding-bottom: 3.5rem !important;
   }
 
   #home-skills-cell-canvas {
@@ -65,70 +65,48 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
     z-index: 1 !important;
   }
 
+  /* Centered link container with breathing room below skills */
   #skills-badge-container {
-    position: absolute !important;
-    bottom: 14px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+    position: relative !important;
     z-index: 2 !important;
-    text-align: center;
-    width: 100%;
-    pointer-events: none;
+    text-align: center !important;
+    width: 100% !important;
+    margin-top: 3.5rem !important;
+    margin-bottom: 0.5rem !important;
   }
 
-  .skills-cluster-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 5px 14px;
-    font-size: 0.74rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    color: #64748b !important;
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    border-radius: 9999px;
-    backdrop-filter: blur(8px);
-    text-decoration: none !important;
-    pointer-events: auto !important;
-    transition: all 0.25s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .dark .skills-cluster-badge {
-    color: #94a3b8 !important;
-    background: rgba(15, 23, 42, 0.75);
-    border-color: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-  }
-
-  .skills-cluster-badge:hover {
-    color: #0284c7 !important;
-    border-color: rgba(56, 189, 248, 0.45);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .dark .skills-cluster-badge:hover {
-    color: #38bdf8 !important;
-    border-color: rgba(56, 189, 248, 0.45);
-  }
-
-  .skills-live-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 6px #10b981;
+  /* Text link styled to mirror the widget's subtitle typography */
+  .skills-cluster-link {
     display: inline-block;
+    font-family: inherit !important;
+    font-size: 0.85rem !important;
+    line-height: 1.5;
+    color: #64748b !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    opacity: 0.85;
+  }
+
+  .dark .skills-cluster-link {
+    color: #94a3b8 !important;
+  }
+
+  .skills-cluster-link:hover {
+    color: #0284c7 !important;
+    opacity: 1;
+    text-decoration: underline !important;
+  }
+
+  .dark .skills-cluster-link:hover {
+    color: #38bdf8 !important;
   }
 </style>
 
 <canvas id="home-skills-cell-canvas"></canvas>
 
 <div id="skills-badge-container">
-  <a href="/status/" class="skills-cluster-badge">
-    <span class="skills-live-dot"></span>
-    This animation reflects the live status of our cluster ↗
+  <a href="/status/" class="skills-cluster-link">
+    This animation reflects the live status of our computing cluster &rarr;
   </a>
 </div>
 
