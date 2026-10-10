@@ -63,9 +63,3 @@ hero_media = "2023Photo.png"
 +++
 
 Bridging mechanistic mathematical modeling and wet-lab biology to tailor cancer therapies at Brighton and Sussex Medical School.
-
-<div class="d-inline-flex align-items-center bg-dark text-white rounded-pill px-3 py-1 mt-3" style="font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.25);">
-  <span class="spinner-grow spinner-grow-sm text-success me-2" role="status" style="width: 8px; height: 8px;"></span>
-  <span class="text-white-50 me-2">High-Performance Cluster:</span>
-  <a href="/status/" class="text-white text-decoration-none fw-bold">Live Status & Workloads →</a>
-</div>
