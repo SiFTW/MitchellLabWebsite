@@ -1,3 +1,4 @@
++++
 widget = "featurette"
 headless = true
 weight = 20
@@ -29,3 +30,4 @@ subtitle = "An iterative cycle connecting mathematics, computation, and wet lab 
   icon_pack = "fas"
   name = "Medicine"
   description = "Translational stratification strategies to overcome drug resistance in lymphoma."
++++
