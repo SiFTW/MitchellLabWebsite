@@ -9,7 +9,7 @@ title = "Systems Biology for Precision Oncology"
 subtitle = "Bridging mechanistic mathematical modeling and wet-lab biology to tailor cancer therapies at Brighton and Sussex Medical School."
 
 # Hero image (optional). Enter filename of an image in the `static/media/` folder.
-#hero_media = "genericBackground copy.jpg"
+hero_media = "genericBackground.jpg"
 
 [design.background]
   # Apply a background color, gradient, or image.
@@ -25,7 +25,7 @@ subtitle = "Bridging mechanistic mathematical modeling and wet-lab biology to ta
   # gradient_end = "#2b94c3"
   
   # Background image.
-   image = "2023Photo.png"  # Name of image in `static/media/`.
+   image = "genericBackground.png"  # Name of image in `static/media/`.
    image_darken = 0.5  # Darken the image? Range 0-1 where 0 is transparent and 1 is opaque.
    image_size = "cover"  #  Options are `cover` (default), `contain`, or `actual` size.
    image_position = "center"  # Options include `left`, `center` (default), or `right`.
