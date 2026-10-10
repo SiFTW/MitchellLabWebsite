@@ -1,6 +1,8 @@
 import os
 import re
 import html
+import unicodedata
+from difflib import SequenceMatcher
 import requests
 import yaml
 
@@ -33,31 +35,45 @@ def extract_doi_string(raw_doi):
         return ""
     return re.sub(r'^https?://(dx\.)?doi\.org/', '', raw_doi.strip().lower())
 
+def super_clean_title(text):
+    if not text:
+        return ""
+    text = html.unescape(str(text))
+    text = re.sub(r'<[^>]+>', ' ', text)
+    text = re.sub(r'\$[^$]*\$', ' ', text)
+    text = unicodedata.normalize('NFKD', text)
+    text = text.lower()
+    text = text.replace("in vitro", "invitro").replace("in-vitro", "invitro")
+    text = re.sub(r'[^a-z0-9]', '', text)
+    return text
+
+def is_duplicate_title(candidate_title, existing_titles):
+    cand = super_clean_title(candidate_title)
+    if not cand:
+        return False
+    for ex in existing_titles:
+        if cand == ex:
+            return True
+        if len(cand) > 25 and len(ex) > 25:
+            if cand in ex or ex in cand:
+                return True
+        if SequenceMatcher(None, cand, ex).ratio() >= 0.85:
+            return True
+    return False
+
 def clean_jats_abstract(raw_text):
-    """Cleans JATS XML markup into readable plain text/markdown."""
     if not raw_text:
         return ""
-    
     text = html.unescape(raw_text)
-    
-    # Convert italic and bold tags to Markdown
     text = re.sub(r'</?jats:italic>', '*', text, flags=re.IGNORECASE)
     text = re.sub(r'</?jats:bold>', '**', text, flags=re.IGNORECASE)
     text = re.sub(r'</?italic>', '*', text, flags=re.IGNORECASE)
     text = re.sub(r'</?bold>', '**', text, flags=re.IGNORECASE)
-    
-    # Replace section titles with bold headers
     text = re.sub(r'<jats:title>(.*?)</jats:title>', r'\n\n**\1**\n', text, flags=re.IGNORECASE)
     text = re.sub(r'<title>(.*?)</title>', r'\n\n**\1**\n', text, flags=re.IGNORECASE)
-    
-    # Replace paragraph endings with newlines
     text = re.sub(r'</jats:p>', '\n\n', text, flags=re.IGNORECASE)
     text = re.sub(r'</p>', '\n\n', text, flags=re.IGNORECASE)
-    
-    # Strip any remaining XML/HTML tags
     text = re.sub(r'<[^>]+>', ' ', text)
-    
-    # Clean up excess spaces and leading/trailing blank lines
     text = re.sub(r'[ \t]+', ' ', text)
     text = re.sub(r'\n{3,}', '\n\n', text)
     return text.strip()
@@ -80,7 +96,7 @@ def determine_publication_type(doi, data):
     if isinstance(raw_container, list):
         raw_container = raw_container[0] if raw_container else ""
 
-    # Preprints
+    # 1. Preprints
     is_preprint = (
         any(norm_doi.startswith(prefix) for prefix in PREPRINT_DOI_PREFIXES)
         or csl_type in ["posted-content", "preprint"]
@@ -89,9 +105,10 @@ def determine_publication_type(doi, data):
     )
     if is_preprint:
         pub_venue = raw_container or ("Research Square" if "10.21203" in norm_doi else "bioRxiv")
-        return ["3"], pub_venue
+        # Explicit prefix ensures clarity in all views
+        return ["3"], f"Preprint ({pub_venue})"
 
-    # Conference abstracts / supplements
+    # 2. Conference Abstracts / Supplements
     is_conference_abstract = (
         csl_type in ["proceedings-article", "paper-conference"]
         or "supplement" in issue
@@ -104,22 +121,19 @@ def determine_publication_type(doi, data):
         raw_issue = str(data.get("issue", ""))
         if "supplement" in raw_issue.lower():
             pub_venue = f"{pub_venue} ({raw_issue.title()})"
-        return ["1"], pub_venue
+        return ["1"], f"Conference Abstract ({pub_venue})"
 
+    # 3. Standard Journal Article
     return ["2"], raw_container
 
 def get_pdf_url(doi, csl_data):
-    """Attempts to find an Open Access PDF via Unpaywall, Europe PMC, or Preprint sites."""
-    # 1. bioRxiv direct PDF URL pattern
     if doi.startswith("10.1101/"):
         return f"https://www.biorxiv.org/content/{doi}.full.pdf"
 
-    # 2. Research Square direct PDF URL
     if doi.startswith("10.21203/rs."):
         article_id = doi.split("10.21203/")[1]
         return f"https://www.researchsquare.com/article/{article_id}.pdf"
 
-    # 3. Unpaywall API
     try:
         url = f"https://api.unpaywall.org/v2/{doi}?email={USER_EMAIL}"
         r = requests.get(url, timeout=10)
@@ -128,27 +142,22 @@ def get_pdf_url(doi, csl_data):
             best_oa = oa_data.get("best_oa_location")
             if best_oa and best_oa.get("url_for_pdf"):
                 return best_oa.get("url_for_pdf")
-            # Fallback to any OA location with a PDF
             for loc in oa_data.get("oa_locations", []):
                 if loc.get("url_for_pdf"):
                     return loc.get("url_for_pdf")
     except Exception:
         pass
 
-    # 4. Europe PMC API
     try:
         epmc_url = f"https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:{doi}&format=json"
         r = requests.get(epmc_url, timeout=10)
         if r.status_code == 200:
             results = r.json().get("resultList", {}).get("result", [])
-            if results:
-                pmcid = results[0].get("pmcid")
-                if pmcid:
-                    return f"https://europepmc.org/backend/ptpmcrender.fcgi?accid={pmcid}&blobtype=pdf"
+            if results and results[0].get("pmcid"):
+                return f"https://europepmc.org/backend/ptpmcrender.fcgi?accid={results[0].get('pmcid')}&blobtype=pdf"
     except Exception:
         pass
 
-    # 5. CSL Link resources
     for item in csl_data.get("link", []):
         if item.get("content-type") == "application/pdf":
             return item.get("URL")
@@ -193,7 +202,7 @@ def get_existing_records():
                             if "doi" in data and data["doi"]:
                                 existing_dois.add(extract_doi_string(str(data["doi"])))
                             if "title" in data and data["title"]:
-                                existing_titles.add(re.sub(r'\W+', '', data["title"].lower()))
+                                existing_titles.add(super_clean_title(str(data["title"])))
                 except Exception:
                     pass
     return existing_dois, existing_titles, existing_folders
@@ -237,8 +246,8 @@ def sync():
             continue
 
         title = data.get("title", "").strip()
-        normalized_title = re.sub(r'\W+', '', title.lower())
-        if normalized_title in existing_titles:
+        if is_duplicate_title(title, existing_titles):
+            print(f"Skipping duplicate title: '{title}'")
             continue
 
         slug = clean_slug(title)
