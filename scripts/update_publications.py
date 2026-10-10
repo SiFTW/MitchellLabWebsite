@@ -205,7 +205,7 @@ def sync():
             "authors": authors,
             "date": date_str,
             "doi": f"https://doi.org/{normalized_doi}",
-            "publication": venue,
+            "publication": str(venue),
             "publication_types": pub_type,
             "abstract": data.get("abstract", "")
         }
