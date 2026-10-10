@@ -1,7 +1,7 @@
 +++
 widget = "featurette"
 headless = true
-weight = 20
+weight = 10
 active = true
 
 title = "Our Core Pillars"
