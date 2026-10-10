@@ -5,18 +5,24 @@ import datetime
 import requests
 import yaml
 
-CONTENT_DIR = "content/talk"
+CONTENT_DIR = "content/event"
 
 def clean_slug(title):
     slug = re.sub(r'[^a-zA-Z0-9_-]', '', title.lower().replace(' ', '-'))
     return slug[:50].strip('-')
 
 def parse_issue(body):
-    data = {"title": "", "summary": "", "link": "", "image_url": ""}
+    data = {"title": "", "date": "", "summary": "", "link": "", "image_url": ""}
     
     title_match = re.search(r'### News Title\s*\n\s*(.*?)(?=\n###|\Z)', body, re.DOTALL)
     if title_match:
         data["title"] = title_match.group(1).strip()
+
+    date_match = re.search(r'### Date\s*\n\s*(.*?)(?=\n###|\Z)', body, re.DOTALL)
+    if date_match:
+        val = date_match.group(1).strip()
+        if re.match(r'^\d{4}-\d{2}-\d{2}$', val):
+            data["date"] = val
 
     summary_match = re.search(r'### Brief Summary / Blurb\s*\n\s*(.*?)(?=\n###|\Z)', body, re.DOTALL)
     if summary_match:
@@ -29,7 +35,6 @@ def parse_issue(body):
     img_match = re.search(r'### Featured Image\s*\n\s*(.*?)(?=\n###|\Z)', body, re.DOTALL)
     if img_match:
         raw_img = img_match.group(1).strip()
-        # Extract URL whether user pasted a raw URL or uploaded via markdown ![...](url)
         url_match = re.search(r'https?://[^\s\)]+', raw_img)
         if url_match:
             data["image_url"] = url_match.group(0)
@@ -50,8 +55,12 @@ def main():
     bundle_dir = os.path.join(CONTENT_DIR, slug)
     os.makedirs(bundle_dir, exist_ok=True)
 
+    # Use provided date if supplied, otherwise use UTC now
     now = datetime.datetime.now(datetime.timezone.utc)
-    date_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    if news["date"]:
+        date_str = f"{news['date']}T12:00:00Z"
+    else:
+        date_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
 
     frontmatter = {
         "title": news["title"],
@@ -70,7 +79,6 @@ def main():
             "url": news["link"]
         }]
 
-    # Download featured image if available
     if news["image_url"]:
         try:
             r = requests.get(news["image_url"], timeout=15)
