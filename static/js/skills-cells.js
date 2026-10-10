@@ -63,15 +63,28 @@
     var ctx = canvas.getContext("2d");
 
     function getDims() {
-      var baseH = parentSection.offsetHeight || 500;
       return {
         w: parentSection.offsetWidth || window.innerWidth || 1200,
-        h: Math.round(baseH * 1.4) // match the 140% height in CSS
+        h: parentSection.offsetHeight || 500
       };
     }
+
     var dims = getDims();
     canvas.width = dims.w;
     canvas.height = dims.h;
+
+    // --- PARALLAX TRACKING ---
+    var scrollOffset = 0;
+    function updateScrollPosition() {
+      var rect = parentSection.getBoundingClientRect();
+      var winH = window.innerHeight || 800;
+      // Normalized offset: -1 (top of screen) to +1 (bottom of screen)
+      var progress = (rect.top - winH * 0.5) / winH;
+      // Noticeable 140px vertical translation travel
+      scrollOffset = progress * 140;
+    }
+    window.addEventListener("scroll", updateScrollPosition, { passive: true });
+    updateScrollPosition();
 
     var clusterCorePool = {};
     for (var n = 0; n < NODES.length; n++) {
@@ -87,10 +100,13 @@
       var node = NODES[ni];
       for (var c = 0; c < node.cores; c++) {
         var angle = Math.random() * Math.PI * 2;
+        // Depth layer: 0.35 (distant/slow) to 1.0 (foreground/fast)
+        var depth = 0.35 + Math.random() * 0.65;
         cells.push({
           id: cellIndex++,
           nodeId: node.id,
           coreIdx: c,
+          depth: depth,
           fluidVx: 0,
           fluidVy: 0,
           x: Math.random() * dims.w,
@@ -129,47 +145,18 @@
           }
         }
       }
+      updateScrollPosition();
     }
     window.addEventListener("resize", resizeCanvas);
+    setTimeout(resizeCanvas, 150);
 
-    // --- PARALLAX SCROLL LOGIC ---
-    var ticking = false;
-
-    function updateParallax() {
-      var rect = parentSection.getBoundingClientRect();
-      var winHeight = window.innerHeight;
-
-      // Only calculate when section is near or in the viewport
-      if (rect.bottom >= 0 && rect.top <= winHeight) {
-        // -1.0 (top of viewport) to 1.0 (bottom of viewport)
-        var relativeOffset = (rect.top - winHeight * 0.5) / winHeight;
-        
-        // Gentle parallax shift factor (~45px total range)
-        var translateY = relativeOffset * 45;
-        canvas.style.transform = "translate3d(0, " + translateY + "px, 0)";
-      }
-      ticking = false;
-    }
-
-    window.addEventListener("scroll", function() {
-      if (!ticking) {
-        window.requestAnimationFrame(updateParallax);
-        ticking = true;
-      }
-    }, { passive: true });
-
-    // Initial positioning
-    updateParallax();
-    
-    setTimeout(resizeCanvas, 100);
-    setTimeout(resizeCanvas, 500);
-
-    function spawnIndependentDaughter(x, y, angle, load) {
+    function spawnIndependentDaughter(x, y, angle, load, depth) {
       var speed = 0.08 + Math.random() * 0.05;
       temporaryDaughters.push({
         id: "daughter-" + Date.now() + "-" + Math.random(),
         x: x,
         y: y,
+        depth: depth || 0.7,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         fluidVx: 0,
@@ -206,6 +193,7 @@
     }
     setInterval(triggerMitosisEvent, 9000);
 
+    // --- ACCURATE POINTER COORDINATES ---
     var fluidMouse = {
       x: -9999,
       y: -9999,
@@ -214,7 +202,7 @@
       vx: 0,
       vy: 0,
       active: false,
-      radius: 70
+      radius: 90
     };
 
     function updatePointerPosition(clientX, clientY) {
@@ -223,8 +211,8 @@
       var currY = clientY - rect.top;
 
       if (fluidMouse.prevX !== -9999) {
-        fluidMouse.vx = (currX - fluidMouse.prevX) * 0.35;
-        fluidMouse.vy = (currY - fluidMouse.prevY) * 0.35;
+        fluidMouse.vx = (currX - fluidMouse.prevX) * 0.4;
+        fluidMouse.vy = (currY - fluidMouse.prevY) * 0.4;
       }
 
       fluidMouse.prevX = currX;
@@ -266,33 +254,39 @@
         var loadNorm = c.currentLoad * 0.01;
         var speedMult = 0.10 + (loadNorm * 0.28);
 
+        // Fluid displacement with depth factor
         if (fluidMouse.active) {
+          // Render Y includes the parallax shift
+          var renderY = c.y + (scrollOffset * c.depth);
           var dx = c.x - fluidMouse.x;
-          var dy = c.y - fluidMouse.y;
+          var dy = renderY - fluidMouse.y;
           var dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < fluidMouse.radius && dist > 1) {
-            var force = Math.pow(1 - dist / fluidMouse.radius, 2) * 0.22;
+            var force = Math.pow(1 - dist / fluidMouse.radius, 2) * 0.35 * c.depth;
             var normalX = dx / dist;
             var normalY = dy / dist;
-            c.fluidVx += (normalX * force * 0.45) + (fluidMouse.vx * force * 0.12);
-            c.fluidVy += (normalY * force * 0.45) + (fluidMouse.vy * force * 0.12);
+            c.fluidVx += (normalX * force * 0.55) + (fluidMouse.vx * force * 0.18);
+            c.fluidVy += (normalY * force * 0.55) + (fluidMouse.vy * force * 0.18);
           }
         }
 
-        c.fluidVx = (c.fluidVx || 0) * 0.82;
-        c.fluidVy = (c.fluidVy || 0) * 0.82;
+        c.fluidVx = (c.fluidVx || 0) * 0.84;
+        c.fluidVy = (c.fluidVy || 0) * 0.84;
 
         c.x += (c.vx * speedMult) + c.fluidVx;
         c.y += (c.vy * speedMult) + c.fluidVy;
 
-        if (c.x < -20) c.x = canvas.width + 20;
-        if (c.x > canvas.width + 20) c.x = -20;
-        if (c.y < -20) c.y = canvas.height + 20;
-        if (c.y > canvas.height + 20) c.y = -20;
+        // Wrap coordinates seamlessly
+        if (c.x < -30) c.x = canvas.width + 30;
+        if (c.x > canvas.width + 30) c.x = -30;
+        if (c.y < -100) c.y = canvas.height + 100;
+        if (c.y > canvas.height + 100) c.y = -100;
 
+        // Render point with parallax depth displacement
+        var drawY = c.y + (scrollOffset * c.depth);
         var color = getContinuousColor(c.currentLoad);
-        var baseRadius = 2.0 + (loadNorm * 2.6);
+        var baseRadius = (1.8 + (loadNorm * 2.6)) * (0.7 + c.depth * 0.4);
 
         ctx.save();
         if (c.currentLoad > 75) {
@@ -305,7 +299,7 @@
           if (c.deathState === 'swelling') {
             var swellScale = 1.0 + (c.deathProgress * 0.7);
             ctx.beginPath();
-            ctx.arc(c.x, c.y, baseRadius * swellScale, 0, Math.PI * 2);
+            ctx.arc(c.x, drawY, baseRadius * swellScale, 0, Math.PI * 2);
             ctx.fillStyle = color;
             ctx.fill();
 
@@ -318,7 +312,7 @@
             c.popRadius += 0.8;
             c.popAlpha -= 0.06;
             ctx.beginPath();
-            ctx.arc(c.x, c.y, c.popRadius, 0, Math.PI * 2);
+            ctx.arc(c.x, drawY, c.popRadius, 0, Math.PI * 2);
             ctx.strokeStyle = color;
             ctx.lineWidth = 1.2;
             ctx.globalAlpha = Math.max(0, c.popAlpha);
@@ -333,7 +327,7 @@
         } else if (c.mitosisState === 'growing') {
           c.mitosisProgress += 0.009;
           ctx.beginPath();
-          ctx.arc(c.x, c.y, baseRadius * (1.0 + c.mitosisProgress), 0, Math.PI * 2);
+          ctx.arc(c.x, drawY, baseRadius * (1.0 + c.mitosisProgress), 0, Math.PI * 2);
           ctx.fillStyle = color;
           ctx.fill();
 
@@ -349,12 +343,12 @@
           var splitDy = Math.sin(c.splitAngle) * separation;
 
           ctx.beginPath();
-          ctx.arc(c.x - (splitDx * 0.5), c.y - (splitDy * 0.5), daughterRadius, 0, Math.PI * 2);
+          ctx.arc(c.x - (splitDx * 0.5), drawY - (splitDy * 0.5), daughterRadius, 0, Math.PI * 2);
           ctx.fillStyle = color;
           ctx.fill();
 
           ctx.beginPath();
-          ctx.arc(c.x + (splitDx * 0.5), c.y + (splitDy * 0.5), daughterRadius, 0, Math.PI * 2);
+          ctx.arc(c.x + (splitDx * 0.5), drawY + (splitDy * 0.5), daughterRadius, 0, Math.PI * 2);
           ctx.fillStyle = color;
           ctx.fill();
 
@@ -365,11 +359,11 @@
             c.y -= splitDy * 0.5;
             c.vx = -Math.cos(c.splitAngle) * 0.08;
             c.vy = -Math.sin(c.splitAngle) * 0.08;
-            spawnIndependentDaughter(c.x + splitDx, c.y + splitDy, c.splitAngle, c.currentLoad);
+            spawnIndependentDaughter(c.x + splitDx, c.y + splitDy, c.splitAngle, c.currentLoad, c.depth);
           }
         } else {
           ctx.beginPath();
-          ctx.arc(c.x, c.y, Math.max(1.2, baseRadius), 0, Math.PI * 2);
+          ctx.arc(c.x, drawY, Math.max(1.2, baseRadius), 0, Math.PI * 2);
           ctx.fillStyle = color;
           ctx.fill();
         }
@@ -379,32 +373,33 @@
 
       for (var dIdx = temporaryDaughters.length - 1; dIdx >= 0; dIdx--) {
         var d = temporaryDaughters[dIdx];
+        var dDrawY = d.y + (scrollOffset * d.depth);
 
         if (fluidMouse.active) {
           var ddx = d.x - fluidMouse.x;
-          var ddy = d.y - fluidMouse.y;
+          var ddy = dDrawY - fluidMouse.y;
           var ddist = Math.sqrt(ddx * ddx + ddy * ddy);
 
           if (ddist < fluidMouse.radius && ddist > 1) {
-            var dforce = Math.pow(1 - ddist / fluidMouse.radius, 2) * 0.22;
-            d.fluidVx = (d.fluidVx || 0) + ((ddx / ddist) * dforce * 0.45) + (fluidMouse.vx * 0.12);
-            d.fluidVy = (d.fluidVy || 0) + ((ddy / ddist) * dforce * 0.45) + (fluidMouse.vy * 0.12);
+            var dforce = Math.pow(1 - ddist / fluidMouse.radius, 2) * 0.35 * d.depth;
+            d.fluidVx = (d.fluidVx || 0) + ((ddx / ddist) * dforce * 0.55) + (fluidMouse.vx * 0.18);
+            d.fluidVy = (d.fluidVy || 0) + ((ddy / ddist) * dforce * 0.55) + (fluidMouse.vy * 0.18);
           }
         }
 
-        d.fluidVx = (d.fluidVx || 0) * 0.82;
-        d.fluidVy = (d.fluidVy || 0) * 0.82;
+        d.fluidVx = (d.fluidVx || 0) * 0.84;
+        d.fluidVy = (d.fluidVy || 0) * 0.84;
 
         d.x += d.vx + d.fluidVx;
         d.y += d.vy + d.fluidVy;
 
-        if (d.x < -20) d.x = canvas.width + 20;
-        if (d.x > canvas.width + 20) d.x = -20;
-        if (d.y < -20) d.y = canvas.height + 20;
-        if (d.y > canvas.height + 20) d.y = -20;
+        if (d.x < -30) d.x = canvas.width + 30;
+        if (d.x > canvas.width + 30) d.x = -30;
+        if (d.y < -100) d.y = canvas.height + 100;
+        if (d.y > canvas.height + 100) d.y = -100;
 
         var dColor = getContinuousColor(d.currentLoad);
-        var dBaseRadius = 2.0 + (d.currentLoad * 0.01 * 2.6);
+        var dBaseRadius = (1.8 + (d.currentLoad * 0.01 * 2.6)) * (0.7 + d.depth * 0.4);
 
         ctx.save();
         if (d.currentLoad > 75) {
@@ -419,14 +414,14 @@
             d.deathProgress = 0;
           }
           ctx.beginPath();
-          ctx.arc(d.x, d.y, Math.max(1.2, dBaseRadius), 0, Math.PI * 2);
+          ctx.arc(d.x, dDrawY, Math.max(1.2, dBaseRadius), 0, Math.PI * 2);
           ctx.fillStyle = dColor;
           ctx.fill();
         } else if (d.deathState === 'swelling') {
           d.deathProgress += 0.035;
           var dSwellRadius = dBaseRadius * (1.0 + d.deathProgress * 0.7);
           ctx.beginPath();
-          ctx.arc(d.x, d.y, dSwellRadius, 0, Math.PI * 2);
+          ctx.arc(d.x, dDrawY, dSwellRadius, 0, Math.PI * 2);
           ctx.fillStyle = dColor;
           ctx.fill();
 
@@ -439,7 +434,7 @@
           d.popRadius += 0.8;
           d.popAlpha -= 0.06;
           ctx.beginPath();
-          ctx.arc(d.x, d.y, d.popRadius, 0, Math.PI * 2);
+          ctx.arc(d.x, dDrawY, d.popRadius, 0, Math.PI * 2);
           ctx.strokeStyle = dColor;
           ctx.lineWidth = 1.2;
           ctx.globalAlpha = Math.max(0, d.popAlpha);
