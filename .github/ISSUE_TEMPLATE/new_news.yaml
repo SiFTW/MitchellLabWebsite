@@ -1,0 +1,39 @@
+name: 📰 Post Lab News
+description: Publish a new news announcement to the Mitchell Lab website.
+title: "[News]: "
+labels: ["news"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill out this form to publish a news update to the lab website. Submitting this issue will create the page bundle, commit the image, and trigger Netlify/Hugo to deploy.
+  - type: input
+    id: news_title
+    attributes:
+      label: News Title
+      placeholder: "e.g., Prof Mitchell receives the 2026 Leukaemia UK Fellowship Follow-up Fund"
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Brief Summary / Blurb
+      description: 1–3 sentences describing the update. Supports standard Markdown.
+      placeholder: "This new research funding provides 3 years of support to bring computational systems biology closer to the clinic..."
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: External Link (Read More)
+      description: Link to a LinkedIn post, press release, or external article (leave blank if none).
+      placeholder: "https://www.linkedin.com/posts/..."
+    validations:
+      required: false
+  - type: textarea
+    id: image
+    attributes:
+      label: Featured Image
+      description: Drag & drop / paste an image directly into this box (GitHub will create a markdown image link like `![image](https://...)`), OR paste an external image URL.
+    validations:
+      required: false
