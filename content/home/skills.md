@@ -38,26 +38,9 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
   name = "Medicine"
   description = "to improve treatments"
 
-# Uncomment to use emoji icons.
-# [[feature]]
-#  icon = ":smile:"
-#  icon_pack = "emoji"
-#  name = "Emojiness"
-#  description = "100%"  
-
-# Uncomment to use custom SVG icons.
-# Place custom SVG icon in `assets/images/icon-pack/`, creating folders if necessary.
-# Reference the SVG icon name (without `.svg` extension) in the `icon` field.
-# [[feature]]
-#  icon = "your-custom-icon-name"
-#  icon_pack = "custom"
-#  name = "Surfing"
-#  description = "90%"
-
 +++
 
 <style>
-  /* Isolate section positioning for the background canvas layer */
   #skills, 
   section[id*="skills"],
   section[id*="what-we-do"],
@@ -67,7 +50,6 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
     overflow: hidden !important;
   }
 
-  /* Full-bleed background canvas behind Wowchemy icons and text */
   #home-skills-cell-canvas {
     position: absolute;
     inset: 0;
@@ -78,7 +60,6 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
     opacity: 0.65;
   }
 
-  /* Ensure Wowchemy container elements sit cleanly on top */
   #skills .container,
   section[id*="skills"] .container,
   section[id*="what-we-do"] .container,
@@ -88,7 +69,6 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
     z-index: 1 !important;
   }
 
-  /* Subtle link pill pointing to telemetry */
   .skills-cluster-badge-wrap {
     position: relative;
     z-index: 2;
@@ -114,7 +94,6 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
   }
 
-  /* Dark mode compatibility */
   .dark .skills-cluster-badge {
     color: #94a3b8 !important;
     background: rgba(15, 23, 42, 0.65);
@@ -155,29 +134,29 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
 
 <script>
 (function() {
-  const GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
+  var GIST_BASE = "https://gist.githubusercontent.com/SiFTW/b46bc084c972c7c87e3bc5c7849c7920/raw";
 
-  const NODES = [
+  var NODES = [
     { id: "simon", cores: 72, apiVer: 3, url: "" },
     { id: "jlp",   cores: 104, apiVer: 3, url: "" },
     { id: "priti", cores: 12,  apiVer: 3, url: "" },
     { id: "nas",   cores: 4,   apiVer: 4, url: "" }
   ];
 
-  const COLOR_STOPS = [
-    { p: 0.00, r: 140, g: 155, b: 180 }, // Slate backdrop
-    { p: 0.20, r: 2,   g: 132, b: 199 }, // Cyan
-    { p: 0.50, r: 16,  g: 185, b: 129 }, // Emerald
-    { p: 0.75, r: 245, g: 158, b: 11  }, // Amber
-    { p: 1.00, r: 236, g: 72,  b: 153 }  // Pink
+  var COLOR_STOPS = [
+    { p: 0.00, r: 140, g: 155, b: 180 },
+    { p: 0.20, r: 2,   g: 132, b: 199 },
+    { p: 0.50, r: 16,  g: 185, b: 129 },
+    { p: 0.75, r: 245, g: 158, b: 11  },
+    { p: 1.00, r: 236, g: 72,  b: 153 }
   ];
 
   function getContinuousColor(pct) {
-    const t = Math.max(0, Math.min(100, pct)) / 100;
-    let lower = COLOR_STOPS[0];
-    let upper = COLOR_STOPS[COLOR_STOPS.length - 1];
+    var t = Math.max(0, Math.min(100, pct)) / 100;
+    var lower = COLOR_STOPS[0];
+    var upper = COLOR_STOPS[COLOR_STOPS.length - 1];
 
-    for (let i = 0; i < COLOR_STOPS.length - 1; i++) {
+    for (var i = 0; i < COLOR_STOPS.length - 1; i++) {
       if (t >= COLOR_STOPS[i].p && t <= COLOR_STOPS[i + 1].p) {
         lower = COLOR_STOPS[i];
         upper = COLOR_STOPS[i + 1];
@@ -185,37 +164,41 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
       }
     }
 
-    const range = upper.p - lower.p;
-    const factor = range === 0 ? 0 : (t - lower.p) / range;
-    const r = Math.round(lower.r + (upper.r - lower.r) * factor);
-    const g = Math.round(lower.g + (upper.g - lower.g) * factor);
-    const b = Math.round(lower.b + (upper.b - lower.b) * factor);
-    return `rgb(${r}, ${g}, ${b})`;
+    var range = upper.p - lower.p;
+    var factor = range === 0 ? 0 : (t - lower.p) / range;
+    var r = Math.round(lower.r + (upper.r - lower.r) * factor);
+    var g = Math.round(lower.g + (upper.g - lower.g) * factor);
+    var b = Math.round(lower.b + (upper.b - lower.b) * factor);
+    return "rgb(" + r + ", " + g + ", " + b + ")";
   }
 
-  const canvas = document.getElementById("home-skills-cell-canvas");
+  var canvas = document.getElementById("home-skills-cell-canvas");
   if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  const parentSection = canvas.closest("section") || canvas.parentElement;
+  var ctx = canvas.getContext("2d");
+  var parentSection = canvas.closest("section") || canvas.parentElement;
 
-  let initialWidth = parentSection.clientWidth || window.innerWidth || 1200;
-  let initialHeight = parentSection.clientHeight || 450;
+  var initialWidth = parentSection.clientWidth || window.innerWidth || 1200;
+  var initialHeight = parentSection.clientHeight || 450;
   canvas.width = initialWidth;
   canvas.height = initialHeight;
 
-  const clusterCorePool = {};
-  NODES.forEach(n => {
-    clusterCorePool[n.id] = new Array(n.cores).fill(0);
-  });
+  var clusterCorePool = {};
+  for (var n = 0; n < NODES.length; n++) {
+    clusterCorePool[NODES[n].id] = new Array(NODES[n].cores);
+    for (var k = 0; k < NODES[n].cores; k++) {
+      clusterCorePool[NODES[n].id][k] = 0;
+    }
+  }
 
-  let cellIndex = 0;
-  const cells = [];
-  NODES.forEach(n => {
-    for (let c = 0; c < n.cores; c++) {
-      const angle = Math.random() * Math.PI * 2;
+  var cellIndex = 0;
+  var cells = [];
+  for (var ni = 0; ni < NODES.length; ni++) {
+    var node = NODES[ni];
+    for (var c = 0; c < node.cores; c++) {
+      var angle = Math.random() * Math.PI * 2;
       cells.push({
         id: cellIndex++,
-        nodeId: n.id,
+        nodeId: node.id,
         coreIdx: c,
         fluidVx: 0,
         fluidVy: 0,
@@ -233,37 +216,37 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
         popAlpha: 1
       });
     }
-  });
+  }
 
-  const temporaryDaughters = [];
+  var temporaryDaughters = [];
 
   function resizeCanvas() {
-    const prevWidth = canvas.width || initialWidth;
-    const prevHeight = canvas.height || initialHeight;
-    const newWidth = parentSection.clientWidth || window.innerWidth;
-    const newHeight = parentSection.clientHeight || 450;
+    var prevWidth = canvas.width || initialWidth;
+    var prevHeight = canvas.height || initialHeight;
+    var newWidth = parentSection.clientWidth || window.innerWidth;
+    var newHeight = parentSection.clientHeight || 450;
 
     canvas.width = newWidth;
     canvas.height = newHeight;
 
     if (cells.length > 0 && (newWidth > prevWidth || newHeight > prevHeight)) {
-      cells.forEach(c => {
-        if (newWidth > prevWidth && c.x < prevWidth) {
-          c.x = (c.x / prevWidth) * newWidth;
+      for (var i = 0; i < cells.length; i++) {
+        if (newWidth > prevWidth && cells[i].x < prevWidth) {
+          cells[i].x = (cells[i].x / prevWidth) * newWidth;
         }
         if (newHeight > prevHeight && Math.random() > 0.4) {
-          c.y = Math.random() * newHeight;
+          cells[i].y = Math.random() * newHeight;
         }
-      });
+      }
     }
   }
   window.addEventListener("resize", resizeCanvas);
   setTimeout(resizeCanvas, 150);
 
   function spawnIndependentDaughter(x, y, angle, load) {
-    const speed = 0.08 + Math.random() * 0.05;
+    var speed = 0.08 + Math.random() * 0.05;
     temporaryDaughters.push({
-      id: `daughter-${Date.now()}-${Math.random()}`,
+      id: "daughter-" + Date.now() + "-" + Math.random(),
       x: x,
       y: y,
       vx: Math.cos(angle) * speed,
@@ -280,11 +263,19 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
   }
 
   function triggerMitosisEvent() {
-    const candidates = cells.filter(c => c.mitosisState === 'none' && c.deathState === 'none');
+    var candidates = [];
+    for (var i = 0; i < cells.length; i++) {
+      if (cells[i].mitosisState === 'none' && cells[i].deathState === 'none') {
+        candidates.push(cells[i]);
+      }
+    }
     if (candidates.length === 0) return;
 
-    const active = candidates.filter(c => c.currentLoad > 25);
-    const chosen = (active.length > 0)
+    var active = [];
+    for (var j = 0; j < candidates.length; j++) {
+      if (candidates[j].currentLoad > 25) active.push(candidates[j]);
+    }
+    var chosen = (active.length > 0)
       ? active[Math.floor(Math.random() * active.length)]
       : candidates[Math.floor(Math.random() * candidates.length)];
 
@@ -294,7 +285,7 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
   }
   setInterval(triggerMitosisEvent, 9000);
 
-  const fluidMouse = {
+  var fluidMouse = {
     x: -9999,
     y: -9999,
     prevX: -9999,
@@ -306,9 +297,9 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
   };
 
   function updatePointerPosition(clientX, clientY) {
-    const rect = parentSection.getBoundingClientRect();
-    const currX = clientX - rect.left;
-    const currY = clientY - rect.top;
+    var rect = parentSection.getBoundingClientRect();
+    var currX = clientX - rect.left;
+    var currY = clientY - rect.top;
 
     if (fluidMouse.prevX !== -9999) {
       fluidMouse.vx = (currX - fluidMouse.prevX) * 0.35;
@@ -322,11 +313,11 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
     fluidMouse.active = true;
   }
 
-  parentSection.addEventListener("mousemove", (e) => {
+  parentSection.addEventListener("mousemove", function(e) {
     updatePointerPosition(e.clientX, e.clientY);
   });
 
-  parentSection.addEventListener("mouseleave", () => {
+  parentSection.addEventListener("mouseleave", function() {
     fluidMouse.active = false;
     fluidMouse.x = -9999;
     fluidMouse.y = -9999;
@@ -339,8 +330,9 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
   function animateCells() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    cells.forEach(c => {
-      const targetLoad = (clusterCorePool[c.nodeId] && clusterCorePool[c.nodeId][c.coreIdx] !== undefined)
+    for (var i = 0; i < cells.length; i++) {
+      var c = cells[i];
+      var targetLoad = (clusterCorePool[c.nodeId] && clusterCorePool[c.nodeId][c.coreIdx] !== undefined)
         ? clusterCorePool[c.nodeId][c.coreIdx]
         : 0;
 
@@ -350,18 +342,18 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
       }
 
       c.currentLoad += (targetLoad - c.currentLoad) * 0.010;
-      const loadNorm = c.currentLoad / 100;
-      const speedMult = 0.10 + (loadNorm * 0.28);
+      var loadNorm = c.currentLoad / 100;
+      var speedMult = 0.10 + (loadNorm * 0.28);
 
       if (fluidMouse.active) {
-        const dx = c.x - fluidMouse.x;
-        const dy = c.y - fluidMouse.y;
-        const dist = Math.hypot(dx, dy);
+        var dx = c.x - fluidMouse.x;
+        var dy = c.y - fluidMouse.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < fluidMouse.radius && dist > 1) {
-          const force = Math.pow(1 - dist / fluidMouse.radius, 2) * 0.22;
-          const normalX = dx / dist;
-          const normalY = dy / dist;
+          var force = Math.pow(1 - dist / fluidMouse.radius, 2) * 0.22;
+          var normalX = dx / dist;
+          var normalY = dy / dist;
           c.fluidVx += (normalX * force * 0.45) + (fluidMouse.vx * force * 0.12);
           c.fluidVy += (normalY * force * 0.45) + (fluidMouse.vy * force * 0.12);
         }
@@ -378,8 +370,8 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
       if (c.y < -20) c.y = canvas.height + 20;
       if (c.y > canvas.height + 20) c.y = -20;
 
-      const color = getContinuousColor(c.currentLoad);
-      const baseRadius = 2.0 + (loadNorm * 2.6);
+      var color = getContinuousColor(c.currentLoad);
+      var baseRadius = 2.0 + (loadNorm * 2.6);
 
       ctx.save();
       if (c.currentLoad > 75) {
@@ -390,7 +382,7 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
       if (c.deathState !== 'none') {
         c.deathProgress += 0.035;
         if (c.deathState === 'swelling') {
-          const swellScale = 1.0 + (c.deathProgress * 0.7);
+          var swellScale = 1.0 + (c.deathProgress * 0.7);
           ctx.beginPath();
           ctx.arc(c.x, c.y, baseRadius * swellScale, 0, Math.PI * 2);
           ctx.fillStyle = color;
@@ -430,29 +422,29 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
         }
       } else if (c.mitosisState === 'splitting') {
         c.mitosisProgress += 0.014;
-        const daughterRadius = baseRadius;
-        const separation = c.mitosisProgress * (daughterRadius * 2.8);
-        const dx = Math.cos(c.splitAngle) * separation;
-        const dy = Math.sin(c.splitAngle) * separation;
+        var daughterRadius = baseRadius;
+        var separation = c.mitosisProgress * (daughterRadius * 2.8);
+        var splitDx = Math.cos(c.splitAngle) * separation;
+        var splitDy = Math.sin(c.splitAngle) * separation;
 
         ctx.beginPath();
-        ctx.arc(c.x - (dx * 0.5), c.y - (dy * 0.5), daughterRadius, 0, Math.PI * 2);
+        ctx.arc(c.x - (splitDx * 0.5), c.y - (splitDy * 0.5), daughterRadius, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
         ctx.beginPath();
-        ctx.arc(c.x + (dx * 0.5), c.y + (dy * 0.5), daughterRadius, 0, Math.PI * 2);
+        ctx.arc(c.x + (splitDx * 0.5), c.y + (splitDy * 0.5), daughterRadius, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
         if (c.mitosisProgress >= 1.0) {
           c.mitosisState = 'none';
           c.mitosisProgress = 0;
-          c.x -= dx * 0.5;
-          c.y -= dy * 0.5;
+          c.x -= splitDx * 0.5;
+          c.y -= splitDy * 0.5;
           c.vx = -Math.cos(c.splitAngle) * 0.08;
           c.vy = -Math.sin(c.splitAngle) * 0.08;
-          spawnIndependentDaughter(c.x + dx, c.y + dy, c.splitAngle, c.currentLoad);
+          spawnIndependentDaughter(c.x + splitDx, c.y + splitDy, c.splitAngle, c.currentLoad);
         }
       } else {
         ctx.beginPath();
@@ -462,20 +454,20 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
       }
 
       ctx.restore();
-    });
+    }
 
-    for (let i = temporaryDaughters.length - 1; i >= 0; i--) {
-      const d = temporaryDaughters[i];
+    for (var dIdx = temporaryDaughters.length - 1; dIdx >= 0; dIdx--) {
+      var d = temporaryDaughters[dIdx];
 
       if (fluidMouse.active) {
-        const dx = d.x - fluidMouse.x;
-        const dy = d.y - fluidMouse.y;
-        const dist = Math.hypot(dx, dy);
+        var ddx = d.x - fluidMouse.x;
+        var ddy = d.y - fluidMouse.y;
+        var ddist = Math.sqrt(ddx * ddx + ddy * ddy);
 
-        if (dist < fluidMouse.radius && dist > 1) {
-          const force = Math.pow(1 - dist / fluidMouse.radius, 2) * 0.22;
-          d.fluidVx = (d.fluidVx || 0) + ((dx / dist) * force * 0.45) + (fluidMouse.vx * force * 0.12);
-          d.fluidVy = (d.fluidVy || 0) + ((dy / dist) * force * 0.45) + (fluidMouse.vy * force * 0.12);
+        if (ddist < fluidMouse.radius && ddist > 1) {
+          var dforce = Math.pow(1 - ddist / fluidMouse.radius, 2) * 0.22;
+          d.fluidVx = (d.fluidVx || 0) + ((ddx / ddist) * dforce * 0.45) + (fluidMouse.vx * dforce * 0.12);
+          d.fluidVy = (d.fluidVy || 0) + ((ddy / ddist) * dforce * 0.45) + (fluidMouse.vy * dforce * 0.12);
         }
       }
 
@@ -490,12 +482,12 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
       if (d.y < -20) d.y = canvas.height + 20;
       if (d.y > canvas.height + 20) d.y = -20;
 
-      const color = getContinuousColor(d.currentLoad);
-      const baseRadius = 2.0 + (d.currentLoad / 100 * 2.6);
+      var dColor = getContinuousColor(d.currentLoad);
+      var dBaseRadius = 2.0 + (d.currentLoad / 100 * 2.6);
 
       ctx.save();
       if (d.currentLoad > 75) {
-        ctx.shadowColor = color;
+        ctx.shadowColor = dColor;
         ctx.shadowBlur = (d.currentLoad - 75) * 0.25;
       }
 
@@ -506,22 +498,96 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
           d.deathProgress = 0;
         }
         ctx.beginPath();
-        ctx.arc(d.x, d.y, Math.max(1.2, baseRadius), 0, Math.PI * 2);
-        ctx.fillStyle = color;
+        ctx.arc(d.x, d.y, Math.max(1.2, dBaseRadius), 0, Math.PI * 2);
+        ctx.fillStyle = dColor;
         ctx.fill();
       } else if (d.deathState === 'swelling') {
         d.deathProgress += 0.035;
-        const swellRadius = baseRadius * (1.0 + d.deathProgress * 0.7);
+        var dSwellRadius = dBaseRadius * (1.0 + d.deathProgress * 0.7);
         ctx.beginPath();
-        ctx.arc(d.x, d.y, swellRadius, 0, Math.PI * 2);
-        ctx.fillStyle = color;
+        ctx.arc(d.x, d.y, dSwellRadius, 0, Math.PI * 2);
+        ctx.fillStyle = dColor;
         ctx.fill();
 
         if (d.deathProgress >= 1.0) {
           d.deathState = 'popping';
-          d.popRadius = swellRadius;
+          d.popRadius = dSwellRadius;
           d.popAlpha = 0.85;
         }
       } else if (d.deathState === 'popping') {
         d.popRadius += 0.8;
         d.popAlpha -= 0.06;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.popRadius, 0, Math.PI * 2);
+        ctx.strokeStyle = dColor;
+        ctx.lineWidth = 1.2;
+        ctx.globalAlpha = Math.max(0, d.popAlpha);
+        ctx.stroke();
+
+        if (d.popAlpha <= 0) {
+          temporaryDaughters.splice(dIdx, 1);
+        }
+      }
+
+      ctx.restore();
+    }
+
+    fluidMouse.vx *= 0.85;
+    fluidMouse.vy *= 0.85;
+    requestAnimationFrame(animateCells);
+  }
+  requestAnimationFrame(animateCells);
+
+  function fetchNodeTelemetry(node) {
+    if (!node.url) return;
+    fetch(node.url + "/api/" + node.apiVer + "/percpu")
+      .then(function(res) {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .then(function(cpus) {
+        if (Array.isArray(cpus)) {
+          for (var i = 0; i < cpus.length; i++) {
+            var core = cpus[i];
+            var loadVal = (typeof core.total === 'number') ? core.total : (100 - (core.idle !== undefined ? core.idle : 100));
+            if (clusterCorePool[node.id] && clusterCorePool[node.id][i] !== undefined) {
+              clusterCorePool[node.id][i] = loadVal;
+            }
+          }
+        }
+      })
+      .catch(function() {});
+  }
+
+  function initSkillsCanvas() {
+    fetch(GIST_BASE + "/endpoints.json?t=" + Date.now())
+      .then(function(res) {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .then(function(endpoints) {
+        if (endpoints) {
+          for (var i = 0; i < NODES.length; i++) {
+            var n = NODES[i];
+            if (endpoints[n.id]) n.url = endpoints[n.id].replace(/\/+$/, "");
+          }
+        }
+      })
+      .catch(function() {});
+
+    var refresh = function() {
+      for (var i = 0; i < NODES.length; i++) {
+        fetchNodeTelemetry(NODES[i]);
+      }
+    };
+    refresh();
+    setInterval(refresh, 3000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSkillsCanvas);
+  } else {
+    initSkillsCanvas();
+  }
+})();
+</script>
