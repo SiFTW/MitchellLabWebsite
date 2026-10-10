@@ -7,6 +7,15 @@ import yaml
 
 CONTENT_DIR = "content/event"
 
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
+}
+
 def clean_slug(title):
     slug = re.sub(r'[^a-zA-Z0-9_-]', '', title.lower().replace(' ', '-'))
     return slug[:50].strip('-')
@@ -35,11 +44,46 @@ def parse_issue(body):
     img_match = re.search(r'### Featured Image\s*\n\s*(.*?)(?=\n###|\Z)', body, re.DOTALL)
     if img_match:
         raw_img = img_match.group(1).strip()
-        url_match = re.search(r'https?://[^\s\)]+', raw_img)
+        # Captures markdown ![...](url), <img src="url">, or raw links
+        url_match = re.search(r'https?://[^\s\)\"\'>]+', raw_img)
         if url_match:
             data["image_url"] = url_match.group(0)
 
     return data
+
+def download_image(url, target_dir):
+    """Downloads image and saves it as featured.jpg or featured.png."""
+    try:
+        session = requests.Session()
+        # Optional: Pass GitHub token if downloading from private repository assets
+        token = os.environ.get("GITHUB_TOKEN")
+        headers = dict(HEADERS)
+        if token and "github" in url:
+            headers["Authorization"] = f"token {token}"
+
+        r = session.get(url, headers=headers, stream=True, timeout=20, allow_redirects=True)
+        if r.status_code == 200:
+            content_type = r.headers.get("Content-Type", "").lower()
+            if "png" in content_type:
+                ext = ".png"
+            elif "gif" in content_type:
+                ext = ".gif"
+            elif "webp" in content_type:
+                ext = ".webp"
+            else:
+                ext = ".jpg"
+
+            img_path = os.path.join(target_dir, f"featured{ext}")
+            with open(img_path, "wb") as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            print(f"Successfully downloaded image to {img_path}")
+            return True
+        else:
+            print(f"Failed to fetch image: HTTP {r.status_code} from {url}")
+    except Exception as e:
+        print(f"Error fetching image: {e}")
+    return False
 
 def main():
     issue_body = os.environ.get("ISSUE_BODY", "")
@@ -55,7 +99,6 @@ def main():
     bundle_dir = os.path.join(CONTENT_DIR, slug)
     os.makedirs(bundle_dir, exist_ok=True)
 
-    # Use provided date if supplied, otherwise use UTC now
     now = datetime.datetime.now(datetime.timezone.utc)
     if news["date"]:
         date_str = f"{news['date']}T12:00:00Z"
@@ -79,17 +122,12 @@ def main():
             "url": news["link"]
         }]
 
+    # Download image
     if news["image_url"]:
-        try:
-            r = requests.get(news["image_url"], timeout=15)
-            if r.status_code == 200:
-                ext = ".png" if "image/png" in r.headers.get("Content-Type", "") else ".jpg"
-                img_path = os.path.join(bundle_dir, f"featured{ext}")
-                with open(img_path, "wb") as f:
-                    f.write(r.content)
-                frontmatter["image"] = {"caption": "", "focal_point": "Smart"}
-        except Exception as e:
-            print(f"Warning: Failed to download image: {e}")
+        print(f"Detected image URL: {news['image_url']}")
+        saved = download_image(news["image_url"], bundle_dir)
+        if saved:
+            frontmatter["image"] = {"caption": "", "focal_point": "Smart"}
 
     md_content = "---\n"
     md_content += yaml.dump(frontmatter, sort_keys=False, allow_unicode=True)
