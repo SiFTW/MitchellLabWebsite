@@ -23,15 +23,33 @@ def extract_doi_string(raw_doi):
         return ""
     return re.sub(r'^https?://(dx\.)?doi\.org/', '', raw_doi.strip().lower())
 
-def determine_publication_type(doi, data):
-    norm_doi = doi.lower()
-    csl_type = data.get("type", "").lower()
-    container = data.get("container-title", "").lower()
-    publisher = data.get("publisher", "").lower()
-    issue = str(data.get("issue", "")).lower()
-    volume = str(data.get("volume", "")).lower()
-    page = str(data.get("page", "")).lower()
+def to_str(val):
+    """Safely convert CSL values (which can be list, str, int, None) to a lowercase string."""
+    if isinstance(val, list):
+        return " ".join(str(x) for x in val).lower()
+    return str(val).lower() if val else ""
 
+def determine_publication_type(doi, data):
+    """
+    Returns (type_code, display_name):
+      "1" -> Conference paper / abstract
+      "2" -> Journal article
+      "3" -> Preprint
+    """
+    norm_doi = doi.lower()
+    csl_type = to_str(data.get("type"))
+    container = to_str(data.get("container-title"))
+    publisher = to_str(data.get("publisher"))
+    issue = to_str(data.get("issue"))
+    volume = to_str(data.get("volume"))
+    page = to_str(data.get("page"))
+
+    # Raw display title for the venue (preserve string or grab first item if list)
+    raw_container = data.get("container-title", "")
+    if isinstance(raw_container, list):
+        raw_container = raw_container[0] if raw_container else ""
+
+    # 1. Check for Preprints
     is_preprint = (
         any(norm_doi.startswith(prefix) for prefix in PREPRINT_DOI_PREFIXES)
         or csl_type in ["posted-content", "preprint"]
@@ -39,9 +57,10 @@ def determine_publication_type(doi, data):
         or any(k in publisher for k in ["research square", "cold spring harbor"])
     )
     if is_preprint:
-        pub_venue = data.get("container-title") or ("Research Square" if "10.21203" in norm_doi else "bioRxiv")
+        pub_venue = raw_container or ("Research Square" if "10.21203" in norm_doi else "bioRxiv")
         return ["3"], pub_venue
 
+    # 2. Check for Conference Abstracts / Supplements
     is_conference_abstract = (
         csl_type in ["proceedings-article", "paper-conference"]
         or "supplement" in issue
@@ -50,12 +69,14 @@ def determine_publication_type(doi, data):
         or "meeting abstract" in container
     )
     if is_conference_abstract:
-        pub_venue = data.get("container-title", "")
-        if issue and "supplement" in issue:
-            pub_venue = f"{pub_venue} ({issue.title()})"
+        pub_venue = raw_container
+        raw_issue = str(data.get("issue", ""))
+        if "supplement" in raw_issue.lower():
+            pub_venue = f"{pub_venue} ({raw_issue.title()})"
         return ["1"], pub_venue
 
-    return ["2"], data.get("container-title", "")
+    # 3. Default: Journal Article
+    return ["2"], raw_container
 
 def get_pdf_url(doi, csl_data):
     """Attempts to find an Open Access PDF URL via Unpaywall or Preprint links."""
