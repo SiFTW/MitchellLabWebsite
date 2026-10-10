@@ -1,6 +1,7 @@
++++
 widget = "hero"
 headless = true
-weight = 10
+weight = 1
 active = true
 
 title = "Systems Biology for Precision Oncology"
