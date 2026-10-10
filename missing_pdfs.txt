@@ -1,0 +1,13 @@
+- [ ] **Missing PDF:** *Human DNA methylation signatures differentiate persistent from resolving MRSA bacteremia* (Upload `featured.pdf` into `content/publication/human-dna-methylation-signatures-differentiat`)
+- [ ] **Missing PDF:** *Hox Activity Levels Governs the Evolution of Homologous Behaviors.* (Upload `featured.pdf` into `content/publication/hox-activity-levels-governs-the-evolution-of-`)
+- [ ] **Missing PDF:** *P613: TLR9 SIGNALLING IS A POTENTIAL TUMOUR ESCAPE MECHANISM FOLLOWING BTKI THERAPY FOR THE TREATMENT OF CHRONIC LYMPHOCYTIC LEUKAEMIA.* (Upload `featured.pdf` into `content/publication/p613-tlr9-signalling-is-a-potential-tumour-es`)
+- [ ] **Missing PDF:** *Protective immunity in recurrent
+                    <i>Staphylococcus aureus</i>
+                    infection reflects localized immune signatures and macrophage-conferred memory* (Upload `featured.pdf` into `content/publication/protective-immunity-in-recurrent-------------`)
+- [ ] **Missing PDF:** *Applying computational modelling to a high-risk multiple myeloma data set to create novel risk stratification groupings* (Upload `featured.pdf` into `content/publication/applying-computational-modelling-to-a-high-ri`)
+- [ ] **Missing PDF:** *Genetic variation of DNA methyltransferase-3A contributes to protection against persistent MRSA bacteremia in patients* (Upload `featured.pdf` into `content/publication/genetic-variation-of-dna-methyltransferase-3a`)
+- [ ] **Missing PDF:** *P1252: PREDICTING THE RESPONSE OF DLBCL CELLS TO BH3-MIMETICS USING SYSTEMS BIOLOGY* (Upload `featured.pdf` into `content/publication/p1252-predicting-the-response-of-dlbcl-cells-`)
+- [ ] **Missing PDF:** *P1266: FLOW CYTOMETRY COMBINED WITH SYSTEMS BIOLOGY ENABLES RATIONAL TARGETING OF NFKB IN DLBCL* (Upload `featured.pdf` into `content/publication/p1266-flow-cytometry-combined-with-systems-bi`)
+- [ ] **Missing PDF:** *Tensor modeling of MRSA bacteremia cytokine and transcriptional patterns reveals coordinated, outcome-associated immunological programs* (Upload `featured.pdf` into `content/publication/tensor-modeling-of-mrsa-bacteremia-cytokine-a`)
+- [ ] **Missing PDF:** *Machine learning for determining accurate outcomes in criminal trials* (Upload `featured.pdf` into `content/publication/machine-learning-for-determining-accurate-out`)
+- [ ] **Missing PDF:** *TLR9-dependent migration identifies different Chronic Lymphocytic Leukemia signaling states under BTK inhibition.* (Upload `featured.pdf` into `content/publication/tlr9-dependent-migration-identifies-different`)
