@@ -6,18 +6,66 @@ import yaml
 ORCID_ID = "0000-0003-1091-6349"
 PUB_DIR = "content/publication"
 
+PREPRINT_DOI_PREFIXES = [
+    "10.1101/",   # bioRxiv / medRxiv
+    "10.21203/",  # Research Square
+    "10.48550/",  # arXiv
+    "10.20944/",  # Preprints.org
+    "10.31219/",  # OSF Preprints
+]
+
 def clean_slug(title):
     return re.sub(r'[^a-zA-Z0-9_-]', '', title.lower().replace(' ', '-'))[:45]
 
 def extract_doi_string(raw_doi):
     if not raw_doi:
         return ""
-    # Normalize DOI string (lowercase, remove url prefix)
-    doi = re.sub(r'^https?://(dx\.)?doi\.org/', '', raw_doi.strip().lower())
-    return doi
+    return re.sub(r'^https?://(dx\.)?doi\.org/', '', raw_doi.strip().lower())
+
+def determine_publication_type(doi, data):
+    """
+    Returns (type_code, display_name):
+      "1" -> Conference paper / abstract
+      "2" -> Journal article
+      "3" -> Preprint
+    """
+    norm_doi = doi.lower()
+    csl_type = data.get("type", "").lower()
+    container = data.get("container-title", "").lower()
+    publisher = data.get("publisher", "").lower()
+    issue = str(data.get("issue", "")).lower()
+    volume = str(data.get("volume", "")).lower()
+    page = str(data.get("page", "")).lower()
+
+    # 1. Check for Preprints
+    is_preprint = (
+        any(norm_doi.startswith(prefix) for prefix in PREPRINT_DOI_PREFIXES)
+        or csl_type in ["posted-content", "preprint"]
+        or any(k in container for k in ["biorxiv", "medrxiv", "research square", "arxiv", "preprints"])
+        or any(k in publisher for k in ["research square", "cold spring harbor"])
+    )
+    if is_preprint:
+        pub_venue = data.get("container-title") or ("Research Square" if "10.21203" in norm_doi else "bioRxiv")
+        return ["3"], pub_venue
+
+    # 2. Check for Conference Abstracts / Supplements
+    is_conference_abstract = (
+        csl_type in ["proceedings-article", "paper-conference"]
+        or "supplement" in issue
+        or "supplement" in volume
+        or "abstract" in page
+        or "meeting abstract" in container
+    )
+    if is_conference_abstract:
+        pub_venue = data.get("container-title", "")
+        if issue and "supplement" in issue:
+            pub_venue = f"{pub_venue} ({issue.title()})"
+        return ["1"], pub_venue
+
+    # 3. Default: Standard Journal Article
+    return ["2"], data.get("container-title", "")
 
 def get_existing_records():
-    """Scans all existing publications to prevent duplicates and overwrites."""
     existing_dois = set()
     existing_titles = set()
     existing_folders = set()
@@ -34,7 +82,6 @@ def get_existing_records():
                 try:
                     with open(index_path, "r", encoding="utf-8") as f:
                         content = f.read()
-                    # Extract YAML frontmatter
                     match = re.search(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
                     if match:
                         data = yaml.safe_load(match.group(1))
@@ -77,7 +124,7 @@ def sync():
     for doi in orcid_dois:
         normalized_doi = extract_doi_string(doi)
         if normalized_doi in existing_dois:
-            continue  # DOI already exists; skip safely
+            continue
 
         data = fetch_csl_json(doi)
         if not data:
@@ -86,7 +133,7 @@ def sync():
         title = data.get("title", "").strip()
         normalized_title = re.sub(r'\W+', '', title.lower())
         if normalized_title in existing_titles:
-            continue  # Title already exists under another folder; skip safely
+            continue
 
         slug = clean_slug(title)
         if slug in existing_folders:
@@ -96,13 +143,15 @@ def sync():
         date_parts = data.get("issued", {}).get("date-parts", [[2026, 1, 1]])[0]
         date_str = f"{date_parts[0]}-{date_parts[1] if len(date_parts) > 1 else 1:02d}-01"
 
+        pub_type, venue = determine_publication_type(normalized_doi, data)
+
         frontmatter = {
             "title": title,
             "authors": authors,
             "date": date_str,
             "doi": f"https://doi.org/{normalized_doi}",
-            "publication": data.get("container-title", ""),
-            "publication_types": ["2"],
+            "publication": venue,
+            "publication_types": pub_type,
             "abstract": data.get("abstract", "")
         }
 
@@ -114,7 +163,9 @@ def sync():
             f.write("---\n")
             f.write(yaml.dump(frontmatter, sort_keys=False))
             f.write("---\n")
-        print(f"Safe addition: Created bundle for '{title}'")
+
+        type_label = "Preprint" if pub_type == ["3"] else ("Conference Abstract" if pub_type == ["1"] else "Journal Article")
+        print(f"Added [{type_label}]: {title}")
 
 if __name__ == "__main__":
     sync()
