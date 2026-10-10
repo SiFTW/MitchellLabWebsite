@@ -11,15 +11,23 @@ body:
     id: news_title
     attributes:
       label: News Title
-      placeholder: "e.g., Prof Mitchell receives the 2026 Leukaemia UK Fellowship Follow-up Fund"
+      placeholder: "e.g., Mitchell Lab celebrates multiple presentations at Congress"
     validations:
       required: true
+  - type: input
+    id: news_date
+    attributes:
+      label: Date
+      description: "Format: YYYY-MM-DD (e.g. 2026-10-10). Leave blank to use today's date."
+      placeholder: "2026-10-10"
+    validations:
+      required: false
   - type: textarea
     id: summary
     attributes:
       label: Brief Summary / Blurb
       description: 1–3 sentences describing the update. Supports standard Markdown.
-      placeholder: "This new research funding provides 3 years of support to bring computational systems biology closer to the clinic..."
+      placeholder: "A fantastic showing for the Mitchell Lab at the Congress..."
     validations:
       required: true
   - type: input
@@ -34,6 +42,6 @@ body:
     id: image
     attributes:
       label: Featured Image
-      description: Drag & drop / paste an image directly into this box (GitHub will create a markdown image link like `![image](https://...)`), OR paste an external image URL.
+      description: Drag & drop / paste an image directly into this box, OR paste an image URL.
     validations:
       required: false
