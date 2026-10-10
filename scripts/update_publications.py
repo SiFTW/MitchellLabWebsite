@@ -5,6 +5,7 @@ import yaml
 
 ORCID_ID = "0000-0003-1091-6349"
 PUB_DIR = "content/publication"
+USER_EMAIL = "S.A.Mitchell@bsms.ac.uk"  # Required for Unpaywall polite API pool
 
 PREPRINT_DOI_PREFIXES = [
     "10.1101/",   # bioRxiv / medRxiv
@@ -23,12 +24,6 @@ def extract_doi_string(raw_doi):
     return re.sub(r'^https?://(dx\.)?doi\.org/', '', raw_doi.strip().lower())
 
 def determine_publication_type(doi, data):
-    """
-    Returns (type_code, display_name):
-      "1" -> Conference paper / abstract
-      "2" -> Journal article
-      "3" -> Preprint
-    """
     norm_doi = doi.lower()
     csl_type = data.get("type", "").lower()
     container = data.get("container-title", "").lower()
@@ -37,7 +32,6 @@ def determine_publication_type(doi, data):
     volume = str(data.get("volume", "")).lower()
     page = str(data.get("page", "")).lower()
 
-    # 1. Check for Preprints
     is_preprint = (
         any(norm_doi.startswith(prefix) for prefix in PREPRINT_DOI_PREFIXES)
         or csl_type in ["posted-content", "preprint"]
@@ -48,7 +42,6 @@ def determine_publication_type(doi, data):
         pub_venue = data.get("container-title") or ("Research Square" if "10.21203" in norm_doi else "bioRxiv")
         return ["3"], pub_venue
 
-    # 2. Check for Conference Abstracts / Supplements
     is_conference_abstract = (
         csl_type in ["proceedings-article", "paper-conference"]
         or "supplement" in issue
@@ -62,8 +55,47 @@ def determine_publication_type(doi, data):
             pub_venue = f"{pub_venue} ({issue.title()})"
         return ["1"], pub_venue
 
-    # 3. Default: Standard Journal Article
     return ["2"], data.get("container-title", "")
+
+def get_pdf_url(doi, csl_data):
+    """Attempts to find an Open Access PDF URL via Unpaywall or Preprint links."""
+    # 1. Try Unpaywall API
+    try:
+        url = f"https://api.unpaywall.org/v2/{doi}?email={USER_EMAIL}"
+        r = requests.get(url, timeout=10)
+        if r.status_code == 200:
+            best_oa = r.json().get("best_oa_location")
+            if best_oa and best_oa.get("url_for_pdf"):
+                return best_oa.get("url_for_pdf")
+    except Exception:
+        pass
+
+    # 2. Check bioRxiv direct PDF URL pattern
+    if doi.startswith("10.1101/"):
+        return f"https://www.biorxiv.org/content/{doi}.full.pdf"
+
+    # 3. Check CSL resource link
+    link = csl_data.get("link", [])
+    for item in link:
+        if item.get("content-type") == "application/pdf":
+            return item.get("URL")
+
+    return None
+
+def download_pdf(pdf_url, target_path):
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    try:
+        resp = requests.get(pdf_url, headers=headers, stream=True, timeout=15)
+        # Verify content type is actually PDF, not a paywall login page
+        content_type = resp.headers.get("content-type", "").lower()
+        if resp.status_code == 200 and ("pdf" in content_type or resp.content[:4] == b"%PDF"):
+            with open(target_path, "wb") as f:
+                for chunk in resp.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            return True
+    except Exception:
+        pass
+    return False
 
 def get_existing_records():
     existing_dois = set()
@@ -121,6 +153,8 @@ def sync():
     existing_dois, existing_titles, existing_folders = get_existing_records()
     orcid_dois = get_orcid_dois()
 
+    missing_pdfs = []
+
     for doi in orcid_dois:
         normalized_doi = extract_doi_string(doi)
         if normalized_doi in existing_dois:
@@ -164,8 +198,27 @@ def sync():
             f.write(yaml.dump(frontmatter, sort_keys=False))
             f.write("---\n")
 
+        # Attempt PDF download
+        pdf_url = get_pdf_url(normalized_doi, data)
+        # Wowchemy automatically recognizes featured.pdf in the bundle folder
+        pdf_saved = False
+        if pdf_url:
+            pdf_path = os.path.join(folder_path, "featured.pdf")
+            pdf_saved = download_pdf(pdf_url, pdf_path)
+
+        if pdf_saved:
+            print(f"Downloaded PDF for: {title}")
+        else:
+            missing_pdfs.append((title, folder_path))
+
         type_label = "Preprint" if pub_type == ["3"] else ("Conference Abstract" if pub_type == ["1"] else "Journal Article")
         print(f"Added [{type_label}]: {title}")
+
+    # Write missing PDFs list for the GitHub PR description
+    if missing_pdfs:
+        with open("missing_pdfs.txt", "w", encoding="utf-8") as f:
+            for item, path in missing_pdfs:
+                f.write(f"- [ ] **Missing PDF:** *{item}* (Upload `featured.pdf` into `{path}`)\n")
 
 if __name__ == "__main__":
     sync()
