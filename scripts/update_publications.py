@@ -1,11 +1,12 @@
 import os
 import re
+import html
 import requests
 import yaml
 
 ORCID_ID = "0000-0003-1091-6349"
 PUB_DIR = "content/publication"
-USER_EMAIL = "S.A.Mitchell@bsms.ac.uk"  # Required for Unpaywall polite API pool
+USER_EMAIL = "S.A.Mitchell@bsms.ac.uk"
 
 PREPRINT_DOI_PREFIXES = [
     "10.1101/",   # bioRxiv / medRxiv
@@ -15,6 +16,15 @@ PREPRINT_DOI_PREFIXES = [
     "10.31219/",  # OSF Preprints
 ]
 
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,application/pdf,*/*;q=0.8"
+}
+
 def clean_slug(title):
     return re.sub(r'[^a-zA-Z0-9_-]', '', title.lower().replace(' ', '-'))[:45]
 
@@ -23,19 +33,41 @@ def extract_doi_string(raw_doi):
         return ""
     return re.sub(r'^https?://(dx\.)?doi\.org/', '', raw_doi.strip().lower())
 
+def clean_jats_abstract(raw_text):
+    """Cleans JATS XML markup into readable plain text/markdown."""
+    if not raw_text:
+        return ""
+    
+    text = html.unescape(raw_text)
+    
+    # Convert italic and bold tags to Markdown
+    text = re.sub(r'</?jats:italic>', '*', text, flags=re.IGNORECASE)
+    text = re.sub(r'</?jats:bold>', '**', text, flags=re.IGNORECASE)
+    text = re.sub(r'</?italic>', '*', text, flags=re.IGNORECASE)
+    text = re.sub(r'</?bold>', '**', text, flags=re.IGNORECASE)
+    
+    # Replace section titles with bold headers
+    text = re.sub(r'<jats:title>(.*?)</jats:title>', r'\n\n**\1**\n', text, flags=re.IGNORECASE)
+    text = re.sub(r'<title>(.*?)</title>', r'\n\n**\1**\n', text, flags=re.IGNORECASE)
+    
+    # Replace paragraph endings with newlines
+    text = re.sub(r'</jats:p>', '\n\n', text, flags=re.IGNORECASE)
+    text = re.sub(r'</p>', '\n\n', text, flags=re.IGNORECASE)
+    
+    # Strip any remaining XML/HTML tags
+    text = re.sub(r'<[^>]+>', ' ', text)
+    
+    # Clean up excess spaces and leading/trailing blank lines
+    text = re.sub(r'[ \t]+', ' ', text)
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text.strip()
+
 def to_str(val):
-    """Safely convert CSL values (which can be list, str, int, None) to a lowercase string."""
     if isinstance(val, list):
         return " ".join(str(x) for x in val).lower()
     return str(val).lower() if val else ""
 
 def determine_publication_type(doi, data):
-    """
-    Returns (type_code, display_name):
-      "1" -> Conference paper / abstract
-      "2" -> Journal article
-      "3" -> Preprint
-    """
     norm_doi = doi.lower()
     csl_type = to_str(data.get("type"))
     container = to_str(data.get("container-title"))
@@ -44,12 +76,11 @@ def determine_publication_type(doi, data):
     volume = to_str(data.get("volume"))
     page = to_str(data.get("page"))
 
-    # Raw display title for the venue (preserve string or grab first item if list)
     raw_container = data.get("container-title", "")
     if isinstance(raw_container, list):
         raw_container = raw_container[0] if raw_container else ""
 
-    # 1. Check for Preprints
+    # Preprints
     is_preprint = (
         any(norm_doi.startswith(prefix) for prefix in PREPRINT_DOI_PREFIXES)
         or csl_type in ["posted-content", "preprint"]
@@ -60,7 +91,7 @@ def determine_publication_type(doi, data):
         pub_venue = raw_container or ("Research Square" if "10.21203" in norm_doi else "bioRxiv")
         return ["3"], pub_venue
 
-    # 2. Check for Conference Abstracts / Supplements
+    # Conference abstracts / supplements
     is_conference_abstract = (
         csl_type in ["proceedings-article", "paper-conference"]
         or "supplement" in issue
@@ -75,39 +106,59 @@ def determine_publication_type(doi, data):
             pub_venue = f"{pub_venue} ({raw_issue.title()})"
         return ["1"], pub_venue
 
-    # 3. Default: Journal Article
     return ["2"], raw_container
 
 def get_pdf_url(doi, csl_data):
-    """Attempts to find an Open Access PDF URL via Unpaywall or Preprint links."""
-    # 1. Try Unpaywall API
+    """Attempts to find an Open Access PDF via Unpaywall, Europe PMC, or Preprint sites."""
+    # 1. bioRxiv direct PDF URL pattern
+    if doi.startswith("10.1101/"):
+        return f"https://www.biorxiv.org/content/{doi}.full.pdf"
+
+    # 2. Research Square direct PDF URL
+    if doi.startswith("10.21203/rs."):
+        article_id = doi.split("10.21203/")[1]
+        return f"https://www.researchsquare.com/article/{article_id}.pdf"
+
+    # 3. Unpaywall API
     try:
         url = f"https://api.unpaywall.org/v2/{doi}?email={USER_EMAIL}"
         r = requests.get(url, timeout=10)
         if r.status_code == 200:
-            best_oa = r.json().get("best_oa_location")
+            oa_data = r.json()
+            best_oa = oa_data.get("best_oa_location")
             if best_oa and best_oa.get("url_for_pdf"):
                 return best_oa.get("url_for_pdf")
+            # Fallback to any OA location with a PDF
+            for loc in oa_data.get("oa_locations", []):
+                if loc.get("url_for_pdf"):
+                    return loc.get("url_for_pdf")
     except Exception:
         pass
 
-    # 2. Check bioRxiv direct PDF URL pattern
-    if doi.startswith("10.1101/"):
-        return f"https://www.biorxiv.org/content/{doi}.full.pdf"
+    # 4. Europe PMC API
+    try:
+        epmc_url = f"https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:{doi}&format=json"
+        r = requests.get(epmc_url, timeout=10)
+        if r.status_code == 200:
+            results = r.json().get("resultList", {}).get("result", [])
+            if results:
+                pmcid = results[0].get("pmcid")
+                if pmcid:
+                    return f"https://europepmc.org/backend/ptpmcrender.fcgi?accid={pmcid}&blobtype=pdf"
+    except Exception:
+        pass
 
-    # 3. Check CSL resource link
-    link = csl_data.get("link", [])
-    for item in link:
+    # 5. CSL Link resources
+    for item in csl_data.get("link", []):
         if item.get("content-type") == "application/pdf":
             return item.get("URL")
 
     return None
 
 def download_pdf(pdf_url, target_path):
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
     try:
-        resp = requests.get(pdf_url, headers=headers, stream=True, timeout=15)
-        # Verify content type is actually PDF, not a paywall login page
+        session = requests.Session()
+        resp = session.get(pdf_url, headers=HEADERS, stream=True, timeout=20, allow_redirects=True)
         content_type = resp.headers.get("content-type", "").lower()
         if resp.status_code == 200 and ("pdf" in content_type or resp.content[:4] == b"%PDF"):
             with open(target_path, "wb") as f:
@@ -199,6 +250,7 @@ def sync():
         date_str = f"{date_parts[0]}-{date_parts[1] if len(date_parts) > 1 else 1:02d}-01"
 
         pub_type, venue = determine_publication_type(normalized_doi, data)
+        cleaned_abstract = clean_jats_abstract(data.get("abstract", ""))
 
         frontmatter = {
             "title": title,
@@ -207,7 +259,7 @@ def sync():
             "doi": f"https://doi.org/{normalized_doi}",
             "publication": str(venue),
             "publication_types": pub_type,
-            "abstract": data.get("abstract", "")
+            "abstract": cleaned_abstract
         }
 
         folder_path = os.path.join(PUB_DIR, slug)
@@ -216,12 +268,11 @@ def sync():
 
         with open(file_path, "w", encoding="utf-8") as f:
             f.write("---\n")
-            f.write(yaml.dump(frontmatter, sort_keys=False))
+            f.write(yaml.dump(frontmatter, sort_keys=False, allow_unicode=True))
             f.write("---\n")
 
         # Attempt PDF download
         pdf_url = get_pdf_url(normalized_doi, data)
-        # Wowchemy automatically recognizes featured.pdf in the bundle folder
         pdf_saved = False
         if pdf_url:
             pdf_path = os.path.join(folder_path, "featured.pdf")
@@ -235,7 +286,6 @@ def sync():
         type_label = "Preprint" if pub_type == ["3"] else ("Conference Abstract" if pub_type == ["1"] else "Journal Article")
         print(f"Added [{type_label}]: {title}")
 
-    # Write missing PDFs list for the GitHub PR description
     if missing_pdfs:
         with open("missing_pdfs.txt", "w", encoding="utf-8") as f:
             for item, path in missing_pdfs:
