@@ -47,19 +47,17 @@ subtitle = "Our interdisciplinary approach aims to bring systems biology approac
     padding-bottom: 3.5rem !important;
   }
 
-/* Canvas with vertical bleed for parallax motion */
-  #home-skills-cell-canvas {
+#home-skills-cell-canvas {
     position: absolute !important;
-    top: -20% !important;
+    top: 0 !important;
     left: 0 !important;
     width: 100% !important;
-    height: 140% !important; /* 40% taller than the section */
+    height: 100% !important;
     z-index: 0 !important;
     pointer-events: none !important;
     opacity: 0.65;
-    will-change: transform;
   }
-
+  
   .skills-widget-parent .container,
   .skills-widget-parent .row,
   .skills-widget-parent .featurette {
