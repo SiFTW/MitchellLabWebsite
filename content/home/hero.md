@@ -9,7 +9,7 @@ title = "Systems Biology for Precision Oncology"
 subtitle = "Bridging mechanistic mathematical modeling and wet-lab biology to tailor cancer therapies at Brighton and Sussex Medical School."
 
 # Hero image (optional). Enter filename of an image in the `static/media/` folder.
-hero_media = "genericBackground.jpg"
+hero_media = "2023Photo.png"
 
 [design.background]
   # Apply a background color, gradient, or image.
