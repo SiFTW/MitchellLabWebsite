@@ -33,8 +33,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "feat(news): publish '${{ github.event.issue.title }}'"
-          file_pattern: "content/talk/*"
-
+          file_pattern: "content/event/*"
       - name: Close Issue with Confirmation
         uses: actions/github-script@v7
         with:
