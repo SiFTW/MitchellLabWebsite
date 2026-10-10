@@ -63,12 +63,12 @@
     var ctx = canvas.getContext("2d");
 
     function getDims() {
+      var baseH = parentSection.offsetHeight || 500;
       return {
         w: parentSection.offsetWidth || window.innerWidth || 1200,
-        h: parentSection.offsetHeight || 500
+        h: Math.round(baseH * 1.4) // match the 140% height in CSS
       };
     }
-
     var dims = getDims();
     canvas.width = dims.w;
     canvas.height = dims.h;
@@ -131,6 +131,36 @@
       }
     }
     window.addEventListener("resize", resizeCanvas);
+
+    // --- PARALLAX SCROLL LOGIC ---
+    var ticking = false;
+
+    function updateParallax() {
+      var rect = parentSection.getBoundingClientRect();
+      var winHeight = window.innerHeight;
+
+      // Only calculate when section is near or in the viewport
+      if (rect.bottom >= 0 && rect.top <= winHeight) {
+        // -1.0 (top of viewport) to 1.0 (bottom of viewport)
+        var relativeOffset = (rect.top - winHeight * 0.5) / winHeight;
+        
+        // Gentle parallax shift factor (~45px total range)
+        var translateY = relativeOffset * 45;
+        canvas.style.transform = "translate3d(0, " + translateY + "px, 0)";
+      }
+      ticking = false;
+    }
+
+    window.addEventListener("scroll", function() {
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Initial positioning
+    updateParallax();
+    
     setTimeout(resizeCanvas, 100);
     setTimeout(resizeCanvas, 500);
 
