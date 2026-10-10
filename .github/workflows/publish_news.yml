@@ -27,6 +27,7 @@ jobs:
       - name: Generate News Bundle
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/publish_news.py
 
       - name: Commit and Push News Bundle
