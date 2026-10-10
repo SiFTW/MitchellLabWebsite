@@ -8,3 +8,54 @@
 html {
 	scroll-behavior: smooth;
 }
+
+/* --- Modernized Hero Section & Visual Accents --- */
+
+// Hero Headline Typography
+.hero-title {
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.15 !important;
+  font-size: 2.75rem !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.hero-lead {
+  font-size: 1.25rem !important;
+  max-width: 720px;
+  margin: 1rem auto 2rem auto;
+  opacity: 0.95;
+}
+
+// Modern Dual Call-To-Action Buttons
+.hero-cta .btn {
+  border-radius: 30px !important;
+  padding: 0.65rem 1.6rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+}
+
+// Modern Cards for Pillars & Featurettes
+.featurette .col-12 {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+
+  &:hover {
+    transform: translateY(-4px);
+    background: rgba(var(--bs-primary-rgb), 0.04);
+  }
+
+  .featurette-icon {
+    font-size: 2.2rem !important;
+    margin-bottom: 0.8rem;
+    color: var(--bs-primary);
+  }
+}
