@@ -172,30 +172,40 @@ html {
   object-position: center !important;
 }
 
-/* --- Hero Full-Width Video Background Reset --- */
+/* --- Hero Video Full Section Breakout Fix --- */
+
+/* 1. Make the outer section the sole positioning parent */
+section#hero,
 .wg-hero {
   position: relative !important;
   overflow: hidden !important;
+  min-height: 520px; /* Ensures ample vertical room */
 }
 
-/* Force video wrapper to fill the ENTIRE hero section, breaking out of .col-md-6 */
+/* 2. Neutralize any positioning traps on the inner columns */
+.wg-hero .container,
+.wg-hero .row,
+.wg-hero [class*="col-"] {
+  position: static !important; /* Lets .hero-video-wrapper ignore the column boundaries! */
+}
+
+/* 3. Stretch video across the ENTIRE section */
 .hero-video-wrapper {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
-  width: 100vw !important;
+  width: 100% !important;
   height: 100% !important;
-  z-index: 0 !important;
+  z-index: 1 !important;
   pointer-events: none !important;
+  overflow: hidden !important;
 }
 
 .hero-bg-video {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
+  object-position: center !important;
 }
 
 .hero-video-overlay {
@@ -204,16 +214,26 @@ html {
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  background: rgba(10, 15, 25, 0.65) !important; /* Dark tint over video */
-  z-index: 1 !important;
+  background: rgba(15, 23, 42, 0.7) !important; /* Clean modern slate dark tint */
+  z-index: 2 !important;
 }
 
-/* Ensure all foreground text, CTAs, and the lab photo sit in front of the video */
-.wg-hero .container,
+/* 4. Elevate all foreground elements and text ABOVE the video */
 .wg-hero .hero-title,
 .wg-hero .hero-lead,
 .wg-hero .hero-cta,
-.wg-hero .hero-media {
+.wg-hero .hero-media,
+.wg-hero .hero-mission-statement {
   position: relative !important;
-  z-index: 2 !important;
+  z-index: 10 !important; /* Puts text firmly above z-index: 2 overlay */
+  color: #ffffff !important;
+}
+
+.hero-mission-statement {
+  font-size: 1.25rem !important;
+  line-height: 1.6 !important;
+  color: #f1f5f9 !important;
+  margin-top: 1.2rem !important;
+  margin-bottom: 2rem !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
