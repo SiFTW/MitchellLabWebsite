@@ -126,34 +126,40 @@ html {
 }
 
 
-/* --- Balanced 2x2 Layout for Projects Section --- */
-.projects-container,
-.isotope {
+/* --- Balanced 2x2 Grid for Projects --- */
+.projects-container {
+  /* Override Isotope's hardcoded inline height */
+  height: auto !important;
   display: flex !important;
   flex-wrap: wrap !important;
-  justify-content: center !important;
+  margin: 0 -15px !important;
 
-  /* Target each project card item */
-  .project-item,
+  /* Target each project wrapper */
   .isotope-item {
-    position: static !important; // Disables awkward absolute pixel offsets from isotope
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
     transform: none !important;
+    float: none !important;
     padding: 15px !important;
+    margin-bottom: 1.5rem !important;
 
-    /* 1 per line on mobile, 2 per line on tablets & desktop */
-    flex: 0 0 100% !important;
+    /* 1 card per row on mobile, exactly 2 across (50%) on tablets & desktop */
+    width: 100% !important;
     max-width: 100% !important;
 
     @media (min-width: 768px) {
-      flex: 0 0 50% !important;
+      width: 50% !important;
       max-width: 50% !important;
+      flex: 0 0 50% !important;
     }
   }
 
-  /* Make sure internal cards fill their container evenly */
+  /* Equal height card styling */
   .card {
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
+    margin-bottom: 0 !important;
   }
 }
