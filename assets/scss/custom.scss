@@ -237,3 +237,81 @@ section#hero,
   margin-bottom: 2rem !important;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
+/* ==========================================================================
+   HERO VIDEO BACKGROUND FIX
+   ========================================================================== */
+
+/* 1. Ensure the hero section acts as the relative boundary and has vertical height */
+#hero,
+section#hero,
+.wg-hero {
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 520px !important;
+}
+
+/* 2. Break .hero-video-wrapper out of .hero-lead to cover the WHOLE section */
+.wg-hero .hero-video-wrapper {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 3. Make video fill the entire container */
+.wg-hero .hero-bg-video {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  transform: translate(-50%, -50%) !important;
+  object-fit: cover !important;
+}
+
+/* 4. Tint overlay so white text has strong contrast */
+.wg-hero .hero-video-overlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(15, 23, 42, 0.65) !important; /* Elegant dark navy/slate */
+  z-index: 1 !important;
+}
+
+/* 5. Force text, CTA buttons, and the lab picture forward */
+.wg-hero .container {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.wg-hero .hero-title {
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+.wg-hero .hero-mission-statement {
+  font-size: 1.25rem !important;
+  line-height: 1.55 !important;
+  color: #f8fafc !important;
+  margin: 1.2rem 0 1.8rem 0 !important;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+.wg-hero .hero-media img {
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
