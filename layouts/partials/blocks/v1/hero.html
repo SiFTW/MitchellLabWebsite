@@ -1,51 +1,42 @@
-{{/* Support all Wowchemy context conventions */}}
-{{ $page := or .page .root . }}
-{{ $params := or $page.Params .Params }}
-{{ $title := or $page.Title .Title }}
-{{ $content := or $page.Content .Content }}
-
-<!-- Video layer breaks out of Bootstrap container to cover the full hero section -->
+<!-- Full-bleed background video layer covering the entire section -->
 <div class="hero-video-bg-container">
-  <video autoplay loop muted playsinline poster="{{ "media/genericBackgroundLarge.jpg" | relURL }}" class="hero-video-bg-element">
-    <source src="{{ "media/featured.mp4" | relURL }}" type="video/mp4">
+  <video autoplay loop muted playsinline poster="/media/genericBackgroundLarge.jpg" class="hero-video-bg-element">
+    <source src="/media/featured.mp4" type="video/mp4">
   </video>
   <div class="hero-video-bg-overlay"></div>
 </div>
 
-<!-- Foreground hero content -->
-<div class="row align-items-center hero-content-row" style="position: relative; z-index: 5;">
+<div class="row align-items-center hero-content-row">
   <div class="col-12 col-md-6 text-center text-md-left">
-    {{ with $title }}
-      <h1 class="hero-title">{{ . | markdownify | emojify }}</h1>
-    {{ end }}
+    <h1 class="hero-title">{{ .Title | markdownify | emojify }}</h1>
 
-    {{ with $params.subtitle }}
+    {{ with .Params.subtitle }}
       <p class="hero-lead">{{ . | markdownify | emojify }}</p>
     {{ end }}
 
-    {{ with $content }}
+    {{ with .Content }}
       <div class="hero-lead">{{ . }}</div>
     {{ end }}
 
-    {{ if $params.cta.url }}
+    {{ if .Params.cta.url }}
       <div class="hero-cta">
-        <a href="{{ $params.cta.url }}" class="btn btn-primary btn-lg">
-          {{ with $params.cta.icon }}<i class="{{ $params.cta.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-          {{ $params.cta.label }}
+        <a href="{{ .Params.cta.url }}" class="btn btn-primary btn-lg">
+          {{ with .Params.cta.icon }}<i class="{{ $.Params.cta.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
+          {{ .Params.cta.label }}
         </a>
-        {{ if $params.cta_alt.url }}
-          <a href="{{ $params.cta_alt.url }}" class="btn btn-outline-light btn-lg ms-3">
-            {{ with $params.cta_alt.icon }}<i class="{{ $params.cta_alt.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-            {{ $params.cta_alt.label }}
+        {{ if .Params.cta_alt.url }}
+          <a href="{{ .Params.cta_alt.url }}" class="btn btn-outline-light btn-lg ms-3">
+            {{ with .Params.cta_alt.icon }}<i class="{{ $.Params.cta_alt.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
+            {{ .Params.cta_alt.label }}
           </a>
         {{ end }}
       </div>
     {{ end }}
   </div>
 
-  {{ with $params.hero_media }}
+  {{ with .Params.hero_media }}
   <div class="col-12 mx-auto col-md-6 hero-media text-center mt-4 mt-md-0">
-    <img src="{{ printf "media/%s" . | relURL }}" alt="Mitchell Lab" class="img-fluid rounded shadow-lg" style="max-height: 420px; object-fit: cover;">
+    <img src="/media/{{ . }}" alt="Mitchell Lab" class="img-fluid rounded shadow-lg" style="max-height: 420px; object-fit: cover;">
   </div>
   {{ end }}
 </div>
