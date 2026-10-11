@@ -1,324 +1,20 @@
-/*disable parallax for background image on mobile*/
-@media only screen and (max-width:900px) {
-  .parallax {
-    background-attachment: inherit;
-  }
-}
-
-html {
-	scroll-behavior: smooth;
-}
-
-/* --- Modernized Hero Section & Visual Accents --- */
-
-// Hero Headline Typography
-.hero-title {
-  font-weight: 800 !important;
-  letter-spacing: -0.03em !important;
-  line-height: 1.15 !important;
-  font-size: 2.75rem !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-}
-
-.hero-lead {
-  font-size: 1.25rem !important;
-  max-width: 720px;
-  margin: 1rem auto 2rem auto;
-  opacity: 0.95;
-}
-
-// Modern Dual Call-To-Action Buttons
-.hero-cta .btn {
-  border-radius: 30px !important;
-  padding: 0.65rem 1.6rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.02em;
-  transition: all 0.25s ease-in-out;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  }
-}
-
-/* --- Force 4-Column Layout on Featurettes / Pillars --- */
-.wg-featurette .row:has(.col-sm-4) {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: center !important;
-
-  > .col-sm-4 {
-    /* Responsive: 2 per line on tablets, exactly 4 across on desktop */
-    flex: 0 0 50% !important;
-    max-width: 50% !important;
-
-    @media (min-width: 992px) {
-      flex: 0 0 25% !important;
-      max-width: 25% !important;
-    }
-  }
-}
-
-// Modern Cards for Pillars & Featurettes
-.featurette .col-12 {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border-radius: 12px;
-  padding: 1.5rem 1rem;
-
-  &:hover {
-    transform: translateY(-4px);
-    background: rgba(var(--bs-primary-rgb), 0.04);
-  }
-
-  .featurette-icon {
-    font-size: 2.2rem !important;
-    margin-bottom: 0.8rem;
-    color: var(--bs-primary);
-  }
-}
-/* --- Modern Visual Cards for Projects --- */
-.projects-container .card,
-.wg-portfolio .card {
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  border-radius: 12px !important;
-  overflow: hidden;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-  &:hover {
-    transform: translateY(-6px) !important;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12) !important;
-  }
-
-  /* Card image framing */
-  .card-img-top,
-  img {
-    height: 220px;
-    object-fit: cover;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  }
-
-  .card-body {
-    padding: 1.5rem;
-
-    .card-title {
-      font-weight: 700;
-      font-size: 1.15rem;
-      line-height: 1.35;
-      margin-bottom: 0.75rem;
-    }
-
-    .card-text {
-      font-size: 0.92rem;
-      line-height: 1.55;
-      color: #555;
-    }
-  }
-
-  /* Tag pills */
-  .badge {
-    border-radius: 20px;
-    padding: 0.35rem 0.75rem;
-    font-weight: 600;
-    font-size: 0.75rem;
-  }
-}
-
-
-/* --- Balanced 2x2 Grid for Projects --- */
-.projects-container {
-  /* Override Isotope's hardcoded inline height */
-  height: auto !important;
-  display: flex !important;
-  flex-wrap: wrap !important;
-  margin: 0 -15px !important;
-
-  /* Target each project wrapper */
-  .isotope-item {
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-    float: none !important;
-    padding: 15px !important;
-    margin-bottom: 1.5rem !important;
-
-    /* 1 card per row on mobile, exactly 2 across (50%) on tablets & desktop */
-    width: 100% !important;
-    max-width: 100% !important;
-
-    @media (min-width: 768px) {
-      width: 50% !important;
-      max-width: 50% !important;
-      flex: 0 0 50% !important;
-    }
-  }
-
-  /* Equal height card styling */
-  .card {
-    height: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    margin-bottom: 0 !important;
-  }
-}
-
-.projects-container .card-img-top,
-.projects-container .card img {
-  height: 220px !important;
-  width: 100% !important;
-  object-fit: cover !important;
-  object-position: center !important;
-}
-
-/* --- Hero Video Full Section Breakout Fix --- */
-
-/* 1. Make the outer section the sole positioning parent */
-section#hero,
-.wg-hero {
-  position: relative !important;
-  overflow: hidden !important;
-  min-height: 520px; /* Ensures ample vertical room */
-}
-
-/* 2. Neutralize any positioning traps on the inner columns */
-.wg-hero .container,
-.wg-hero .row,
-.wg-hero [class*="col-"] {
-  position: static !important; /* Lets .hero-video-wrapper ignore the column boundaries! */
-}
-
-/* 3. Stretch video across the ENTIRE section */
-.hero-video-wrapper {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 1 !important;
-  pointer-events: none !important;
-  overflow: hidden !important;
-}
-
-.hero-bg-video {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center !important;
-}
-
-.hero-video-overlay {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: rgba(15, 23, 42, 0.7) !important; /* Clean modern slate dark tint */
-  z-index: 2 !important;
-}
-
-/* 4. Elevate all foreground elements and text ABOVE the video */
-.wg-hero .hero-title,
-.wg-hero .hero-lead,
-.wg-hero .hero-cta,
-.wg-hero .hero-media,
-.wg-hero .hero-mission-statement {
-  position: relative !important;
-  z-index: 10 !important; /* Puts text firmly above z-index: 2 overlay */
-  color: #ffffff !important;
-}
-
-.hero-mission-statement {
-  font-size: 1.25rem !important;
-  line-height: 1.6 !important;
-  color: #f1f5f9 !important;
-  margin-top: 1.2rem !important;
-  margin-bottom: 2rem !important;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
 /* ==========================================================================
-   HERO VIDEO BACKGROUND FIX
+   1. GLOBAL & ACCESSIBILITY
    ========================================================================== */
 
-/* 1. Ensure the hero section acts as the relative boundary and has vertical height */
-#hero,
-section#hero,
-.wg-hero {
-  position: relative !important;
-  overflow: hidden !important;
-  min-height: 520px !important;
+html {
+  scroll-behavior: smooth;
 }
 
-/* 2. Break .hero-video-wrapper out of .hero-lead to cover the WHOLE section */
-.wg-hero .hero-video-wrapper {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
+/* Disable parallax on mobile devices for smooth scrolling */
+@media only screen and (max-width: 900px) {
+  .parallax {
+    background-attachment: inherit !important;
+  }
 }
-
-/* 3. Make video fill the entire container */
-.wg-hero .hero-bg-video {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  min-width: 100% !important;
-  min-height: 100% !important;
-  width: auto !important;
-  height: auto !important;
-  transform: translate(-50%, -50%) !important;
-  object-fit: cover !important;
-}
-
-/* 4. Tint overlay so white text has strong contrast */
-.wg-hero .hero-video-overlay {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: rgba(15, 23, 42, 0.65) !important; /* Elegant dark navy/slate */
-  z-index: 1 !important;
-}
-
-/* 5. Force text, CTA buttons, and the lab picture forward */
-.wg-hero .container {
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-.wg-hero .hero-title {
-  color: #ffffff !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
-}
-
-.wg-hero .hero-mission-statement {
-  font-size: 1.25rem !important;
-  line-height: 1.55 !important;
-  color: #f8fafc !important;
-  margin: 1.2rem 0 1.8rem 0 !important;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
-  display: block !important;
-  position: relative !important;
-  z-index: 3 !important;
-}
-
-.wg-hero .hero-media img {
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-}
-
 
 /* ==========================================================================
-   PERFECT HERO FULL-SECTION VIDEO BACKGROUND
+   2. HERO SECTION & BACKGROUND VIDEO
    ========================================================================== */
 
 #hero,
@@ -330,7 +26,7 @@ section#hero,
   padding: 5rem 0 !important;
 }
 
-/* Background video container filling 100% of the entire section */
+/* Video canvas spanning 100% of the hero section */
 .hero-video-bg-container {
   position: absolute !important;
   top: 0 !important;
@@ -354,32 +50,160 @@ section#hero,
   object-fit: cover !important;
 }
 
+/* Dark slate overlay for high contrast text readability */
 .hero-video-bg-overlay {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  background: rgba(15, 23, 42, 0.72) !important; /* Deep dark overlay for high readability */
+  background: rgba(15, 23, 42, 0.72) !important;
   z-index: 1 !important;
 }
 
-/* Ensure foreground content floats cleanly above the video */
+/* Foreground content elevated above video and overlay */
 .hero-content-container {
   position: relative !important;
   z-index: 2 !important;
 }
 
-.wg-hero .hero-title {
+.hero-title {
   color: #ffffff !important;
   font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.15 !important;
+  font-size: 2.75rem !important;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
-.wg-hero .hero-lead {
+.hero-lead {
   color: #f1f5f9 !important;
   font-size: 1.25rem !important;
   line-height: 1.6 !important;
+  max-width: 720px;
   margin: 1.25rem 0 2rem 0 !important;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
+  opacity: 0.95;
+}
+
+/* Dual Call-To-Action buttons */
+.hero-cta .btn {
+  border-radius: 30px !important;
+  padding: 0.65rem 1.6rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  }
+}
+
+.wg-hero .hero-media img {
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* ==========================================================================
+   3. CORE PILLARS & FEATURETTES (featurette4)
+   ========================================================================== */
+
+.featurette .col-sm-3,
+.featurette .col-12 {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+
+  &:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .featurette-icon {
+    font-size: 2.4rem !important;
+    margin-bottom: 0.8rem;
+    color: var(--bs-primary, #38bdf8);
+  }
+}
+
+/* ==========================================================================
+   4. RESEARCH PROJECTS (Balanced 2x2 Grid & Card View)
+   ========================================================================== */
+
+.projects-container {
+  height: auto !important; /* Neutralizes Isotope's locked inline height */
+  display: flex !important;
+  flex-wrap: wrap !important;
+  margin: 0 -15px !important;
+
+  /* Force 1 card on mobile, exactly 2 per line on desktop/tablets */
+  .isotope-item {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    float: none !important;
+    padding: 15px !important;
+    margin-bottom: 1.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+
+    @media (min-width: 768px) {
+      width: 50% !important;
+      max-width: 50% !important;
+      flex: 0 0 50% !important;
+    }
+  }
+
+  /* Equal height card styling */
+  .card {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: translateY(-6px) !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25) !important;
+    }
+  }
+
+  /* Consistent image aspect ratios */
+  .card-img-top,
+  img {
+    height: 220px !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .card-body {
+    padding: 1.5rem;
+
+    .card-title {
+      font-weight: 700;
+      font-size: 1.15rem;
+      line-height: 1.35;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-text {
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+  }
+
+  .badge {
+    border-radius: 20px;
+    padding: 0.35rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
 }
