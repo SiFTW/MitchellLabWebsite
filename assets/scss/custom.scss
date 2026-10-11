@@ -183,3 +183,54 @@ section#hero,
     font-size: 0.75rem;
   }
 }
+
+/* --- Hero Call-To-Action Buttons Styling --- */
+.hero-cta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 1rem !important; /* Adds clean spacing between the two buttons */
+  align-items: center !important;
+
+  .btn {
+    border-radius: 30px !important;
+    padding: 0.65rem 1.6rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+    color: #ffffff !important; /* Forces all button text bright white */
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+
+    /* Force button icons and any child spans/svgs bright white */
+    i, svg, span {
+      color: #ffffff !important;
+      fill: #ffffff !important;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      color: #ffffff !important;
+
+      i, svg, span {
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  /* Distinct visual separation between primary and secondary button */
+  .btn-primary {
+    background-color: var(--bs-primary, #0d6efd) !important;
+    border-color: var(--bs-primary, #0d6efd) !important;
+  }
+
+  .btn-outline-light {
+    border: 2px solid rgba(255, 255, 255, 0.8) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(4px);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.25) !important;
+      border-color: #ffffff !important;
+    }
+  }
+}
