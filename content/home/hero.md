@@ -64,7 +64,7 @@ hero_media = "2023Photo.png"
 <!-- Looping Background Video & Dark Overlay -->
 <div class="hero-video-wrapper">
   <video autoplay loop muted playsinline poster="/media/genericBackground Large.png" class="hero-bg-video">
-    <source src="/media/hero-loop.mp4" type="video/mp4">
+    <source src="/media/featured.mp4" type="video/mp4">
   </video>
   <div class="hero-video-overlay"></div>
 </div>
