@@ -1,4 +1,5 @@
 +++
+# Hero widget.
 widget = "hero"
 headless = true
 active = true
@@ -24,5 +25,3 @@ hero_media = "2023Photo.png"
   icon_pack = "fas"
   icon = "users"
 +++
-
-Bridging mechanistic mathematical modeling and wet-lab biology to tailor cancer therapies at Brighton and Sussex Medical School.
