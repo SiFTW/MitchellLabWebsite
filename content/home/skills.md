@@ -11,7 +11,7 @@ subtitle = "An iterative cycle connecting mathematics, computation, and wet lab 
   icon = "square-root-alt"
   icon_pack = "fas"
   name = "Mathematics"
-  description = "Mechanistic ODE modeling of cell signaling dynamics and regulatory networks."
+  description = "Mechanistic modeling of cell signaling dynamics and regulatory networks."
 
 [[feature]]
   icon = "microchip"
