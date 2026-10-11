@@ -124,3 +124,36 @@ html {
     font-size: 0.75rem;
   }
 }
+
+
+/* --- Balanced 2x2 Layout for Projects Section --- */
+.projects-container,
+.isotope {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+
+  /* Target each project card item */
+  .project-item,
+  .isotope-item {
+    position: static !important; // Disables awkward absolute pixel offsets from isotope
+    transform: none !important;
+    padding: 15px !important;
+
+    /* 1 per line on mobile, 2 per line on tablets & desktop */
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+
+    @media (min-width: 768px) {
+      flex: 0 0 50% !important;
+      max-width: 50% !important;
+    }
+  }
+
+  /* Make sure internal cards fill their container evenly */
+  .card {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
