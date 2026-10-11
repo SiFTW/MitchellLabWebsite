@@ -1,5 +1,5 @@
-{{/* Standard Wowchemy widget variables */}}
-{{ $page := . }}
+{{ $page := .page | default .root | default . }}
+{{ $params := $page.Params }}
 
 <!-- Full-bleed background video layer -->
 <div class="hero-video-bg-container">
@@ -11,38 +11,43 @@
 
 <div class="row align-items-center hero-content-row" style="position: relative; z-index: 5;">
   <div class="col-12 col-md-6 text-center text-md-left">
-    {{ with $page.Title }}
-      <h1 class="hero-title">{{ . | markdownify | emojify }}</h1>
+
+    {{/* 1. Title */}}
+    <h1 class="hero-title">{{ $page.Title | default $params.title | markdownify }}</h1>
+
+    {{/* 2. Subtitle */}}
+    {{ with $params.subtitle }}
+      <p class="hero-lead">{{ . | markdownify }}</p>
     {{ end }}
 
-    {{ with $page.Params.subtitle }}
-      <p class="hero-lead">{{ . | markdownify | emojify }}</p>
-    {{ end }}
-
+    {{/* 3. Markdown content body (if any) */}}
     {{ with $page.Content }}
       <div class="hero-lead">{{ . }}</div>
     {{ end }}
 
-    <div class="hero-cta">
-      {{ with $page.Params.cta }}
-        <a href="{{ .url }}" class="btn btn-primary btn-lg">
-          {{ with .icon }}<i class="{{ .icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-          {{ .label }}
+    {{/* 4. Action Buttons */}}
+    <div class="hero-cta mt-4">
+      {{ if $params.cta }}
+        <a href="{{ $params.cta.url }}" class="btn btn-primary btn-lg">
+          {{ if $params.cta.icon }}<i class="{{ $params.cta.icon_pack | default "fas" }} fa-{{ $params.cta.icon }} me-2"></i>{{ end }}
+          {{ $params.cta.label }}
         </a>
       {{ end }}
 
-      {{ with $page.Params.cta_alt }}
-        <a href="{{ .url }}" class="btn btn-outline-light btn-lg ms-3">
-          {{ with .icon }}<i class="{{ .icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-          {{ .label }}
+      {{ if $params.cta_alt }}
+        <a href="{{ $params.cta_alt.url }}" class="btn btn-outline-light btn-lg ms-3">
+          {{ if $params.cta_alt.icon }}<i class="{{ $params.cta_alt.icon_pack | default "fas" }} fa-{{ $params.cta_alt.icon }} me-2"></i>{{ end }}
+          {{ $params.cta_alt.label }}
         </a>
       {{ end }}
     </div>
+
   </div>
 
-  {{ with $page.Params.hero_media }}
-  <div class="col-12 mx-auto col-md-6 hero-media text-center mt-4 mt-md-0">
-    <img src="{{ printf "media/%s" . | relURL }}" alt="Mitchell Lab" class="img-fluid rounded shadow-lg" style="max-height: 420px; object-fit: cover;">
+  {{/* 5. Team Media Image */}}
+  {{ with $params.hero_media }}
+  <div class="col-12 col-md-6 hero-media text-center mt-4 mt-md-0">
+    <img src="/media/{{ . }}" alt="Mitchell Lab" class="img-fluid rounded shadow-lg" style="max-height: 420px; object-fit: cover;">
   </div>
   {{ end }}
 </div>
