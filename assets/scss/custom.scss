@@ -171,3 +171,54 @@ html {
   object-fit: cover !important;
   object-position: center !important;
 }
+
+/* --- Hero Background Video Styling --- */
+.wg-hero {
+  position: relative !important;
+  overflow: hidden !important;
+  color: #ffffff !important; // Ensures crisp text over dark video overlay
+}
+
+/* Ensure hero text content stays above video layer */
+.wg-hero .container,
+.wg-hero .hero-title,
+.wg-hero .hero-lead,
+.wg-hero .hero-cta,
+.wg-hero p {
+  position: relative;
+  z-index: 2;
+  color: #ffffff !important;
+}
+
+/* Video wrapper & canvas fitting */
+.hero-video-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hero-bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; // Fills entire area regardless of screen aspect ratio
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; // Disables accidental right-click/pause interactions
+}
+
+/* Semi-transparent dark overlay for high text contrast */
+.hero-video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 15, 25, 0.65); // Dark tint ensures white text pops
+  z-index: 1;
+}
