@@ -1,10 +1,10 @@
-{{ $page := .page }}
-{{ $block := .block }}
+{{ $ := . }}
+{{ $page := . }}
 
-<!-- Full-bleed background video layer placed directly at section root -->
+<!-- Full-bleed background video layer -->
 <div class="hero-video-bg-container">
-  <video autoplay loop muted playsinline poster="/media/genericBackgroundLarge.jpg" class="hero-video-bg-element">
-    <source src="/media/featured.mp4" type="video/mp4">
+  <video autoplay loop muted playsinline class="hero-video-bg-element">
+    <source src="{{ "media/featured.mp4" | relURL }}" type="video/mp4">
   </video>
   <div class="hero-video-bg-overlay"></div>
 </div>
@@ -12,38 +12,37 @@
 <div class="container hero-content-container">
   <div class="row align-items-center">
     <div class="col-12 col-md-6 text-center text-md-left">
-      {{ with $block.Title }}
+      {{ with .Title }}
         <h1 class="hero-title">{{ . | markdownify }}</h1>
       {{ end }}
 
-      {{ with $block.Params.subtitle }}
+      {{ with .Params.subtitle }}
         <p class="hero-lead">{{ . | markdownify }}</p>
       {{ end }}
 
-      {{ with $block.Content }}
+      {{ with .Content }}
         <div class="hero-lead">{{ . }}</div>
       {{ end }}
 
-      {{ if $block.Params.cta.url }}
+      {{ if .Params.cta.url }}
         <div class="hero-cta">
-          <a href="{{ $block.Params.cta.url }}" class="btn btn-primary btn-lg">
-            {{ with $block.Params.cta.icon }}<i class="{{ $block.Params.cta.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-            {{ $block.Params.cta.label }}
+          <a href="{{ .Params.cta.url }}" class="btn btn-primary btn-lg">
+            {{ with .Params.cta.icon }}<i class="{{ $.Params.cta.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
+            {{ .Params.cta.label }}
           </a>
-          {{ if $block.Params.cta_alt.url }}
-            <a href="{{ $block.Params.cta_alt.url }}" class="btn btn-outline-light btn-lg ms-3">
-              {{ with $block.Params.cta_alt.icon }}<i class="{{ $block.Params.cta_alt.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-              {{ $block.Params.cta_alt.label }}
+          {{ if .Params.cta_alt.url }}
+            <a href="{{ .Params.cta_alt.url }}" class="btn btn-outline-light btn-lg ms-3">
+              {{ with .Params.cta_alt.icon }}<i class="{{ $.Params.cta_alt.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
+              {{ .Params.cta_alt.label }}
             </a>
           {{ end }}
         </div>
       {{ end }}
     </div>
 
-    {{ with $block.Params.hero_media }}
+    {{ with .Params.hero_media }}
     <div class="col-12 mx-auto col-md-6 hero-media text-center">
-      {{ $img := resources.Get (printf "media/%s" .) | default (printf "/media/%s" .) }}
-      <img src="/media/{{ . }}" alt="Mitchell Lab" class="img-fluid rounded shadow-lg" style="max-height: 420px; object-fit: cover;">
+      <img src="{{ printf "media/%s" . | relURL }}" alt="Mitchell Lab" class="img-fluid rounded shadow-lg" style="max-height: 420px; object-fit: cover;">
     </div>
     {{ end }}
   </div>
