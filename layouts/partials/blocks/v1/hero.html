@@ -1,42 +1,58 @@
-<!-- Full-bleed background video layer covering the entire section -->
+{{/* Extract page context whether passed directly or as a dict */}}
+{{ $page := . }}
+{{ if .page }}
+  {{ $page = .page }}
+{{ else if .root }}
+  {{ $page = .root }}
+{{ end }}
+
+{{ $params := $page.Params }}
+{{ $title := $page.Title }}
+
+<!-- Full-bleed background video layer -->
 <div class="hero-video-bg-container">
-  <video autoplay loop muted playsinline poster="/media/genericBackgroundLarge.jpg" class="hero-video-bg-element">
-    <source src="/media/featured.mp4" type="video/mp4">
+  <video autoplay loop muted playsinline poster="{{ "media/genericBackgroundLarge.jpg" | relURL }}" class="hero-video-bg-element">
+    <source src="{{ "media/featured.mp4" | relURL }}" type="video/mp4">
   </video>
   <div class="hero-video-bg-overlay"></div>
 </div>
 
 <div class="row align-items-center hero-content-row">
   <div class="col-12 col-md-6 text-center text-md-left">
-    <h1 class="hero-title">{{ .Title | markdownify | emojify }}</h1>
+    {{ with $title }}
+      <h1 class="hero-title">{{ . | markdownify | emojify }}</h1>
+    {{ end }}
 
-    {{ with .Params.subtitle }}
+    {{ with $params.subtitle }}
       <p class="hero-lead">{{ . | markdownify | emojify }}</p>
     {{ end }}
 
-    {{ with .Content }}
+    {{ with $page.Content }}
       <div class="hero-lead">{{ . }}</div>
     {{ end }}
 
-    {{ if .Params.cta.url }}
+    {{ if $params.cta }}
       <div class="hero-cta">
-        <a href="{{ .Params.cta.url }}" class="btn btn-primary btn-lg">
-          {{ with .Params.cta.icon }}<i class="{{ $.Params.cta.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-          {{ .Params.cta.label }}
-        </a>
-        {{ if .Params.cta_alt.url }}
-          <a href="{{ .Params.cta_alt.url }}" class="btn btn-outline-light btn-lg ms-3">
-            {{ with .Params.cta_alt.icon }}<i class="{{ $.Params.cta_alt.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-            {{ .Params.cta_alt.label }}
+        {{ with $params.cta }}
+          <a href="{{ .url }}" class="btn btn-primary btn-lg">
+            {{ with .icon }}<i class="{{ $.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
+            {{ .label }}
+          </a>
+        {{ end }}
+
+        {{ with $params.cta_alt }}
+          <a href="{{ .url }}" class="btn btn-outline-light btn-lg ms-3">
+            {{ with .icon }}<i class="{{ $.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
+            {{ .label }}
           </a>
         {{ end }}
       </div>
     {{ end }}
   </div>
 
-  {{ with .Params.hero_media }}
+  {{ with $params.hero_media }}
   <div class="col-12 mx-auto col-md-6 hero-media text-center mt-4 mt-md-0">
-    <img src="/media/{{ . }}" alt="Mitchell Lab" class="img-fluid rounded shadow-lg" style="max-height: 420px; object-fit: cover;">
+    <img src="{{ printf "media/%s" . | relURL }}" alt="Mitchell Lab" class="img-fluid rounded shadow-lg" style="max-height: 420px; object-fit: cover;">
   </div>
   {{ end }}
 </div>
