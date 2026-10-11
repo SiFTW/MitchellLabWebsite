@@ -163,3 +163,11 @@ html {
     margin-bottom: 0 !important;
   }
 }
+
+.projects-container .card-img-top,
+.projects-container .card img {
+  height: 220px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
