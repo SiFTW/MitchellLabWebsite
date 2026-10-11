@@ -61,12 +61,15 @@ hero_media = "2023Photo.png"
 #[cta_note]
  # label = 'We believe a good group is a diverse group, so applications are particularly welcome from those under-represented in computational biology.'
 +++
-<!-- Looping Background Video & Dark Overlay -->
+
+
 <div class="hero-video-wrapper">
-  <video autoplay loop muted playsinline poster="/media/genericBackground Large.png" class="hero-bg-video">
+  <video autoplay loop muted playsinline poster="/media/genericBackgroundLarge.jpg" class="hero-bg-video">
     <source src="/media/featured.mp4" type="video/mp4">
   </video>
   <div class="hero-video-overlay"></div>
 </div>
 
+<p class="hero-mission-statement">
 Bridging mechanistic mathematical modeling and wet-lab biology to tailor cancer therapies at Brighton and Sussex Medical School.
+</p>
