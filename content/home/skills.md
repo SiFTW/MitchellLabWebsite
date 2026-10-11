@@ -1,5 +1,5 @@
 +++
-widget = "featurette"
+widget = "featurette4"
 headless = true
 weight = 10
 active = true
