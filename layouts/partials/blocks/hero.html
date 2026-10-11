@@ -1,13 +1,5 @@
-{{/* Extract page context whether passed directly or as a dict */}}
+{{/* Standard Wowchemy widget variables */}}
 {{ $page := . }}
-{{ if .page }}
-  {{ $page = .page }}
-{{ else if .root }}
-  {{ $page = .root }}
-{{ end }}
-
-{{ $params := $page.Params }}
-{{ $title := $page.Title }}
 
 <!-- Full-bleed background video layer -->
 <div class="hero-video-bg-container">
@@ -17,13 +9,13 @@
   <div class="hero-video-bg-overlay"></div>
 </div>
 
-<div class="row align-items-center hero-content-row">
+<div class="row align-items-center hero-content-row" style="position: relative; z-index: 5;">
   <div class="col-12 col-md-6 text-center text-md-left">
-    {{ with $title }}
+    {{ with $page.Title }}
       <h1 class="hero-title">{{ . | markdownify | emojify }}</h1>
     {{ end }}
 
-    {{ with $params.subtitle }}
+    {{ with $page.Params.subtitle }}
       <p class="hero-lead">{{ . | markdownify | emojify }}</p>
     {{ end }}
 
@@ -31,26 +23,24 @@
       <div class="hero-lead">{{ . }}</div>
     {{ end }}
 
-    {{ if $params.cta }}
-      <div class="hero-cta">
-        {{ with $params.cta }}
-          <a href="{{ .url }}" class="btn btn-primary btn-lg">
-            {{ with .icon }}<i class="{{ $.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-            {{ .label }}
-          </a>
-        {{ end }}
+    <div class="hero-cta">
+      {{ with $page.Params.cta }}
+        <a href="{{ .url }}" class="btn btn-primary btn-lg">
+          {{ with .icon }}<i class="{{ .icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
+          {{ .label }}
+        </a>
+      {{ end }}
 
-        {{ with $params.cta_alt }}
-          <a href="{{ .url }}" class="btn btn-outline-light btn-lg ms-3">
-            {{ with .icon }}<i class="{{ $.icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
-            {{ .label }}
-          </a>
-        {{ end }}
-      </div>
-    {{ end }}
+      {{ with $page.Params.cta_alt }}
+        <a href="{{ .url }}" class="btn btn-outline-light btn-lg ms-3">
+          {{ with .icon }}<i class="{{ .icon_pack | default "fas" }} fa-{{ . }} me-2"></i>{{ end }}
+          {{ .label }}
+        </a>
+      {{ end }}
+    </div>
   </div>
 
-  {{ with $params.hero_media }}
+  {{ with $page.Params.hero_media }}
   <div class="col-12 mx-auto col-md-6 hero-media text-center mt-4 mt-md-0">
     <img src="{{ printf "media/%s" . | relURL }}" alt="Mitchell Lab" class="img-fluid rounded shadow-lg" style="max-height: 420px; object-fit: cover;">
   </div>
