@@ -3,12 +3,22 @@
 {{ $block := .wcBlock }}
 
 <!-- Full-bleed background video layer -->
+<!-- Full-bleed background video layer -->
 <div class="hero-video-bg-container">
-  <video autoplay loop muted playsinline poster="{{ "media/genericBackgroundLarge.png" | relURL }}" class="hero-video-bg-element">
+  <video id="hero-bg-video" autoplay loop muted playsinline poster="{{ "media/genericBackgroundLarge.png" | relURL }}" class="hero-video-bg-element">
     <source src="{{ "media/featured.mp4" | relURL }}" type="video/mp4">
   </video>
   <div class="hero-video-bg-overlay"></div>
 </div>
+
+<script>
+  (function() {
+    var video = document.getElementById('hero-bg-video');
+    if (video) {
+      video.playbackRate = 0.6; // 60% speed
+    }
+  })();
+</script>
 
 <div class="row align-items-center hero-content-row" style="position: relative; z-index: 5;">
   <div class="col-12 col-md-6 text-center text-md-left">
