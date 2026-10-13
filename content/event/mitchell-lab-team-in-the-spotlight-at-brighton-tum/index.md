@@ -7,11 +7,6 @@ summary: 'The Mitchell Lab had a fantastic showing at the **Brighton Tumour Micr
 authors:
 - admin
 all_day: false
-links:
-- icon: globe
-  icon_pack: fas
-  name: Read More
-  url: https://blogs.brighton.ac.uk/brightontme2026/programme/
 image:
   caption: ''
   focal_point: Smart
