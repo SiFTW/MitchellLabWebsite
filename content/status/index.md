@@ -560,7 +560,7 @@ type: page
       const syncSectionHtml = isNas ? `
         <div style="margin-top: 14px; border-top: 1px solid rgba(229, 231, 235, 0.6); padding-top: 10px;">
           <div class="metric-label" style="margin-bottom: 4px;">
-            <span>Cloud Sync:</span>
+            <span>Offsite Backup:</span>
             <span id="nas-sync-status" style="font-weight: 700; color: #64748b;">Checking...</span>
           </div>
           <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: #475569;">
