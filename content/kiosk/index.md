@@ -1039,7 +1039,12 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
           <div style="font-size:0.64rem; font-weight:700; color:#10b981;" id="nas-sync-state-txt">BACKUP: SUCCESSFUL</div>
           <div id="nas-sync-time" style="font-size:0.65rem; color:#94a3b8; text-align:right; white-space:nowrap;">Last: --</div>
         </div>
-      ` : "";
+      ` : `
+        <div class="cloudsync-hud" id="backup-banner-${n.id}">
+          <div style="font-size:0.64rem; font-weight:700; color:#94a3b8;" id="backup-state-${n.id}">BACKUP: CHECKING</div>
+          <div id="backup-time-${n.id}" style="font-size:0.65rem; color:#94a3b8; text-align:right; white-space:nowrap;">Last: --</div>
+        </div>
+      `;
 
       const jupyterSnippet = n.hasJupyter ? `
         <div class="service-status-bar">
@@ -1355,9 +1360,38 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
       }
     } catch(e) {}
   }
+  async function updateNodeBackups() {
+    try {
+      const res = await fetch(`${GIST_BASE}/backups.json?t=${Date.now()}`);
+      if (!res.ok) return;
+      const backups = await res.json();
+
+      ["simon", "jlp", "priti"].forEach(id => {
+        const info = backups[id];
+        const banner = document.getElementById(`backup-banner-${id}`);
+        const stateTxt = document.getElementById(`backup-state-${id}`);
+        const timeEl = document.getElementById(`backup-time-${id}`);
+        if (!info || !banner || !stateTxt || !timeEl) return;
+
+        if (info.state === "success") {
+          banner.style.borderColor = "rgba(16, 185, 129, 0.4)";
+          banner.style.background = "rgba(16, 185, 129, 0.08)";
+          stateTxt.innerText = "BACKUP: SUCCESSFUL";
+          stateTxt.style.color = "#10b981";
+        } else {
+          banner.style.borderColor = "rgba(244, 63, 94, 0.4)";
+          banner.style.background = "rgba(244, 63, 94, 0.08)";
+          stateTxt.innerText = "BACKUP: FAILED";
+          stateTxt.style.color = "#f43f5e";
+        }
+        timeEl.innerText = `Last: ${info.last_run || "--"}`;
+      });
+    } catch (e) {}
+  }
 
   async function initKiosk() {
     renderKioskCards();
+    
 
     try {
       const res = await fetch(`${GIST_BASE}/endpoints.json?t=${Date.now()}`);
@@ -1375,9 +1409,12 @@ summary: "Widescreen telemetry HUD for Mitchell Lab cluster compute."
 
     refreshAll();
     updateCloudSync();
+    updateNodeBackups();
+    updateTelemetry();
 
-    setInterval(refreshAll, 2500);
+    setInterval(updateTelemetry, 3000);
     setInterval(updateCloudSync, 20000);
+    setInterval(updateNodeBackups, 20000);
   }
 
   window.addEventListener("DOMContentLoaded", initKiosk);
