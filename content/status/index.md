@@ -527,21 +527,33 @@ type: page
       card.id = `card-${node.id}`;
 
       const isNas = node.id === "nas";
-      const syncSectionHtml = isNas ? `
-        <div style="margin-top: 14px; border-top: 1px solid rgba(229, 231, 235, 0.6); padding-top: 10px;">
-          <div class="metric-label" style="margin-bottom: 4px;">
-            <span>Cloud Sync:</span>
-            <span id="nas-sync-status" style="font-weight: 700; color: #64748b;">Checking...</span>
-          </div>
-          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: #475569;">
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <span id="nas-sync-pill" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; transition: background 0.3s ease;"></span>
-              <span id="nas-sync-time">Last synced: --</span>
-            </div>
-            <span id="nas-sync-file" style="color: #6b7280; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.72rem; overflow: hidden; text-overflow: ellipsis; max-width: 140px; white-space: nowrap;"></span>
-          </div>
-        </div>
-      ` : "";
+      const isNas = node.id === "nas";
+   const syncSectionHtml = isNas ? `
+     <div style="margin-top: 14px; border-top: 1px solid rgba(229, 231, 235, 0.6); padding-top: 10px;">
+       <div class="metric-label" style="margin-bottom: 4px;">
+         <span>Cloud Sync:</span>
+         <span id="nas-sync-status" style="font-weight: 700; color: #64748b;">Checking...</span>
+       </div>
+       <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: #475569;">
+         <div style="display: flex; align-items: center; gap: 6px;">
+           <span id="nas-sync-pill" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; transition: background 0.3s ease;"></span>
+           <span id="nas-sync-time">Last synced: --</span>
+         </div>
+         <span id="nas-sync-file" style="color: #6b7280; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.72rem; overflow: hidden; text-overflow: ellipsis; max-width: 140px; white-space: nowrap;"></span>
+       </div>
+     </div>
+   ` : `
+     <div style="margin-top: 14px; border-top: 1px solid rgba(229, 231, 235, 0.6); padding-top: 10px;">
+       <div class="metric-label" style="margin-bottom: 4px;">
+         <span>Nightly Backup:</span>
+         <span id="backup-status-${node.id}" style="font-weight: 700; color: #64748b;">Checking...</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #475569;">
+         <span id="backup-pill-${node.id}" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; transition: background 0.3s ease;"></span>
+         <span id="backup-time-${node.id}">Last run: --</span>
+       </div>
+     </div>
+   `;
 
       card.innerHTML = `
         <span class="card-hint">Inspect ↗</span>
