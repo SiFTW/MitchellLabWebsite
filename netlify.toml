@@ -19,3 +19,17 @@
   package = "netlify-plugin-hugo-cache-resources"
   [plugins.inputs]
     debug = true
+    
+# Reverse-proxy the interactive Julia ODE Jupyter Book from SiFTW/interactivetutorials
+# Replace `mitchell-lab-tutorials.netlify.app` with your actual Netlify site subdomain from Step 1.
+[[redirects]]
+  from = "/tutorials"
+  to = "/tutorials/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tutorials/*"
+  to = "https://mitchell-lab-tutorials.netlify.app/tutorials/:splat"
+  status = 200
+  force = true
