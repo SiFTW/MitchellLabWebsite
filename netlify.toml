@@ -21,11 +21,12 @@
     debug = true
     
 # Reverse-proxy the interactive Julia ODE Jupyter Book from SiFTW/interactivetutorials
-# Replace `mitchell-lab-tutorials.netlify.app` with your actual Netlify site subdomain from Step 1.
+# Make sure `mitchell-lab-tutorials.netlify.app` matches your actual Netlify site URL
+# and that both sites are in the same Netlify team.
 [[redirects]]
   from = "/tutorials"
-  to = "/tutorials/"
-  status = 301
+  to = "https://mitchell-lab-tutorials.netlify.app/tutorials/"
+  status = 200
   force = true
 
 [[redirects]]
