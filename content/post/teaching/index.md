@@ -16,7 +16,6 @@ image:
 aliases:
   - /teaching
   - /Teaching
-  - /ssc
 ---
 
 (Link to teaching server)[http://139.184.170.218:9001/]. This link will only work on campus.
