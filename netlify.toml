@@ -34,3 +34,14 @@
   to = "https://mitchell-lab-tutorials.netlify.app/tutorials/:splat"
   status = 200
   force = true
+[[redirects]]
+  from = "/ssc"
+  to = "https://mitchell-lab-tutorials.netlify.app/ssc/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/ssc/*"
+  to = "https://mitchell-lab-tutorials.netlify.app/ssc/:splat"
+  status = 200
+  force = true
