@@ -17,11 +17,14 @@ main:
     url: '#talks'
     weight: 40
   - name: Videos & Talks
-    url: '#videos'
+    url: '/videos/'
     weight: 45
   - name: Publications
     url: '#featured'
     weight: 50
+  - name: Teaching
+    url: '/teaching/'
+    weight: 55
   - name: Funding
     url: '/funding'
     weight: 60
