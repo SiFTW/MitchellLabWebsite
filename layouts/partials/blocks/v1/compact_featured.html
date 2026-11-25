@@ -1,4 +1,4 @@
-{{/* Wowchemy Blocks: Compact Side-by-Side Featured Publications */}}
+{{/* Wowchemy Blocks: Compact Side-by-Side Featured Publications (Portrait-friendly horizontal cards) */}}
 {{ $page := .wcPage }}
 {{ $block := .wcBlock }}
 
@@ -24,62 +24,65 @@
       {{ $img := (.Resources.ByType "image").GetMatch "*featured*" }}
       {{ $pdf := (.Resources.Match "*.pdf") }}
       {{ $venue := $item.Params.publication_short | default $item.Params.publication }}
-      <div class="col-12 col-md-6 mb-4">
+      {{ $clean_title := trim $item.Title " " }}
+      <div class="col-12 col-lg-6 mb-4">
         <article class="card compact-featured-card w-100">
-          {{ if $img }}
-            {{ $thumb := $img.Fit "720x260" }}
-            <a href="{{ $item.RelPermalink }}" class="compact-featured-img-link">
-              <img src="{{ $thumb.RelPermalink }}" alt="{{ $item.Title }}" class="compact-featured-img" loading="lazy">
-            </a>
-          {{ end }}
-
-          <div class="card-body d-flex flex-column">
-            <div class="compact-featured-meta mb-2">
-              {{ with $venue }}<span class="compact-featured-venue">{{ . | markdownify }}</span>{{ end }}
-              <span class="compact-featured-date">{{ $item.Date.Format "Jan 2006" }}</span>
-            </div>
-
-            <h3 class="card-title compact-featured-title">
-              <a href="{{ $item.RelPermalink }}">{{ trim $item.Title " " }}</a>
-            </h3>
-
-            {{ with $item.Params.authors }}
-              <div class="compact-featured-authors mb-2">
-                {{ delimit . ", " }}
-              </div>
-            {{ end }}
-
-            {{ with $item.Params.abstract }}
-            <details class="compact-featured-abstract mt-1 mb-3">
-              <summary class="compact-featured-abstract-toggle">
-                <span class="abstract-show-label"><i class="fas fa-chevron-right mr-1" aria-hidden="true"></i>Show abstract</span>
-                <span class="abstract-hide-label"><i class="fas fa-chevron-down mr-1" aria-hidden="true"></i>Hide abstract</span>
-              </summary>
-              <p class="compact-featured-abstract-text mt-2 mb-0">{{ . | markdownify | plainify | htmlUnescape }}</p>
-            </details>
-            {{ end }}
-
-            <div class="compact-featured-actions mt-auto pt-2">
-              <a href="{{ $item.RelPermalink }}" class="btn btn-outline-primary btn-sm mr-2 mb-1">
-                <i class="far fa-file-alt mr-1" aria-hidden="true"></i>Details
+          <div class="compact-featured-top">
+            {{ if $img }}
+              {{ $thumb := $img.Fit "420x560" }}
+              <a href="{{ $item.RelPermalink }}" class="compact-featured-img-link" aria-label="{{ $clean_title }}">
+                <img src="{{ $thumb.RelPermalink }}" alt="{{ $clean_title }}" class="compact-featured-img" loading="lazy">
               </a>
-              {{ if gt (len $pdf) 0 }}
-                {{ $pdf_res := index $pdf 0 }}
-                <a href="{{ $pdf_res.RelPermalink }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm mr-2 mb-1">
-                  <i class="far fa-file-pdf mr-1" aria-hidden="true"></i>PDF
-                </a>
+            {{ end }}
+
+            <div class="compact-featured-content d-flex flex-column">
+              <div class="compact-featured-meta mb-2">
+                {{ with $venue }}<span class="compact-featured-venue">{{ . | markdownify }}</span>{{ end }}
+                <span class="compact-featured-date">{{ $item.Date.Format "Jan 2006" }}</span>
+              </div>
+
+              <h3 class="card-title compact-featured-title">
+                <a href="{{ $item.RelPermalink }}">{{ $clean_title }}</a>
+              </h3>
+
+              {{ with $item.Params.authors }}
+                <div class="compact-featured-authors mb-3">
+                  {{ delimit . ", " }}
+                </div>
               {{ end }}
-              {{ with $item.Params.doi }}
-                {{ $doi_url := . }}
-                {{ if not (hasPrefix $doi_url "http") }}
-                  {{ $doi_url = printf "https://doi.org/%s" $doi_url }}
+
+              <div class="compact-featured-actions mt-auto">
+                <a href="{{ $item.RelPermalink }}" class="btn btn-outline-primary btn-sm mr-2 mb-1">
+                  <i class="far fa-file-alt mr-1" aria-hidden="true"></i>Details
+                </a>
+                {{ if gt (len $pdf) 0 }}
+                  {{ $pdf_res := index $pdf 0 }}
+                  <a href="{{ $pdf_res.RelPermalink }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm mr-2 mb-1">
+                    <i class="far fa-file-pdf mr-1" aria-hidden="true"></i>PDF
+                  </a>
                 {{ end }}
-                <a href="{{ $doi_url }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm mb-1">
-                  <i class="fas fa-external-link-alt mr-1" aria-hidden="true"></i>DOI
-                </a>
-              {{ end }}
+                {{ with $item.Params.doi }}
+                  {{ $doi_url := . }}
+                  {{ if not (hasPrefix $doi_url "http") }}
+                    {{ $doi_url = printf "https://doi.org/%s" $doi_url }}
+                  {{ end }}
+                  <a href="{{ $doi_url }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm mb-1">
+                    <i class="fas fa-external-link-alt mr-1" aria-hidden="true"></i>DOI
+                  </a>
+                {{ end }}
+              </div>
             </div>
           </div>
+
+          {{ with $item.Params.abstract }}
+          <details class="compact-featured-abstract">
+            <summary class="compact-featured-abstract-toggle">
+              <span class="abstract-show-label"><i class="fas fa-chevron-right mr-1" aria-hidden="true"></i>Show abstract</span>
+              <span class="abstract-hide-label"><i class="fas fa-chevron-down mr-1" aria-hidden="true"></i>Hide abstract</span>
+            </summary>
+            <p class="compact-featured-abstract-text mb-0">{{ . | markdownify | plainify | htmlUnescape }}</p>
+          </details>
+          {{ end }}
         </article>
       </div>
     {{ end }}
