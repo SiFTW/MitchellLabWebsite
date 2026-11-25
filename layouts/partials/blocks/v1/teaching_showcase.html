@@ -1,0 +1,90 @@
+{{/* Wowchemy Blocks: Teaching Showcase */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+
+<div class="teaching-showcase">
+  <div class="row justify-content-center">
+    {{ with $block.Title }}
+    <div class="section-heading col-12 mb-5 text-center">
+      <h1 class="mb-0">{{ . | markdownify | emojify }}</h1>
+      {{ with $block.Params.subtitle }}
+        <p class="mt-2 teaching-subtitle">{{ . | markdownify | emojify }}</p>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+
+  {{ range $block.Params.group }}
+    {{ $cols := .columns | default 2 }}
+    {{ $col_class := "col-12 col-lg-6" }}
+    {{ if eq $cols 3 }}
+      {{ $col_class = "col-12 col-md-6 col-lg-4" }}
+    {{ else if eq $cols 1 }}
+      {{ $col_class = "col-12" }}
+    {{ end }}
+    {{ $is_featured := .featured | default false }}
+
+    <div class="teaching-group mb-5">
+      {{ with .heading }}
+      <div class="teaching-group-header mb-2">
+        <h2 class="teaching-group-title mb-1">{{ . | markdownify }}</h2>
+      </div>
+      {{ end }}
+      {{ with .description }}
+        <p class="teaching-group-desc mb-4">{{ . | markdownify }}</p>
+      {{ else }}
+        <div class="mb-3"></div>
+      {{ end }}
+
+      <div class="row">
+        {{ range .item }}
+        {{ $item := . }}
+        <div class="{{ $col_class }} mb-4 d-flex">
+          <article class="card teaching-card{{ if $is_featured }} teaching-card--featured{{ end }} w-100">
+            <div class="card-body d-flex flex-column">
+              <div class="teaching-card-top mb-3">
+                {{ with $item.icon }}
+                <div class="teaching-icon">
+                  <i class="{{ $item.icon_pack | default "fas" }} fa-{{ . }}" aria-hidden="true"></i>
+                </div>
+                {{ end }}
+                <div class="teaching-badges">
+                  {{ with $item.badge }}
+                    <span class="teaching-badge">{{ . }}</span>
+                  {{ end }}
+                  {{ with $item.tag }}
+                    <span class="teaching-badge teaching-badge--accent">{{ . }}</span>
+                  {{ end }}
+                </div>
+              </div>
+
+              <h3 class="card-title teaching-card-title">{{ $item.title | markdownify }}</h3>
+
+              {{ with $item.meta }}
+                <div class="teaching-card-meta mb-2">{{ . | markdownify }}</div>
+              {{ end }}
+
+              {{ with $item.description }}
+                <p class="card-text teaching-card-desc">{{ . | markdownify }}</p>
+              {{ end }}
+
+              {{ with $item.links }}
+              <div class="teaching-card-actions mt-auto pt-3">
+                {{ range . }}
+                  {{ $link := . }}
+                  {{ $ext := hasPrefix $link.url "http" }}
+                  {{ $btn_style := cond ($link.primary | default false) "btn-primary" "btn-outline-primary" }}
+                  <a href="{{ $link.url }}" class="btn {{ $btn_style }} btn-sm mr-2 mb-1"{{ if $ext }} target="_blank" rel="noopener"{{ end }}>
+                    {{ with $link.icon }}<i class="{{ $link.icon_pack | default "fas" }} fa-{{ . }} mr-1" aria-hidden="true"></i>{{ end }}{{ $link.label }}
+                  </a>
+                {{ end }}
+              </div>
+              {{ end }}
+            </div>
+          </article>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  {{ end }}
+</div>
