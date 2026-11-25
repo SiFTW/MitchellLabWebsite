@@ -1,0 +1,46 @@
+{{/* Wowchemy Blocks: Compact News (title + date only) */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+
+{{ $page_type := $block.Params.content.page_type | default "event" }}
+{{ $count := $block.Params.content.count | default 5 }}
+{{ $items := where site.RegularPages "Type" $page_type }}
+{{ $items = $items.ByDate.Reverse }}
+{{ $total := len $items }}
+{{ if gt $count 0 }}
+  {{ $items = first $count $items }}
+{{ end }}
+
+{{ $date_format := site.Params.locale.date_format | default "2 Jan 2006" }}
+
+<div class="row compact-news-section">
+  <div class="section-heading col-12 col-lg-4 mb-3 mb-lg-0 d-flex flex-column align-items-center align-items-lg-start">
+    {{ with $block.Title }}<h1 class="mb-0">{{ . | markdownify | emojify }}</h1>{{ end }}
+    {{ with $block.Params.subtitle }}<p class="mt-1">{{ . | markdownify | emojify }}</p>{{ end }}
+  </div>
+
+  <div class="col-12 col-lg-8">
+    <ul class="compact-news-list list-unstyled mb-0">
+      {{ range $items }}
+      <li class="compact-news-item">
+        <time class="compact-news-date" datetime="{{ .Date.Format "2006-01-02" }}">
+          {{ .Date.Format $date_format }}
+        </time>
+        <a class="compact-news-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+      </li>
+      {{ end }}
+    </ul>
+
+    {{ if gt $total $count }}
+      {{ $archive_page := site.GetPage "section" $page_type }}
+      {{ with $archive_page }}
+      <div class="see-all mt-3">
+        <a href="{{ .RelPermalink }}">
+          See all news
+          <i class="fas fa-angle-right" aria-hidden="true"></i>
+        </a>
+      </div>
+      {{ end }}
+    {{ end }}
+  </div>
+</div>

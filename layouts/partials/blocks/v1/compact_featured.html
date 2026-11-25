@@ -1,0 +1,87 @@
+{{/* Wowchemy Blocks: Compact Side-by-Side Featured Publications */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+
+{{ $page_type := $block.Params.content.page_type | default "publication" }}
+{{ $count := $block.Params.content.count | default 2 }}
+{{ $items := where (where site.RegularPages "Type" $page_type) "Params.featured" true }}
+{{ $items = $items.ByDate.Reverse }}
+{{ if gt $count 0 }}
+  {{ $items = first $count $items }}
+{{ end }}
+
+<div class="compact-featured-section">
+  <div class="row mb-4">
+    <div class="section-heading col-12 d-flex flex-column align-items-center align-items-lg-start">
+      {{ with $block.Title }}<h1 class="mb-0">{{ . | markdownify | emojify }}</h1>{{ end }}
+      {{ with $block.Params.subtitle }}<p class="mt-1">{{ . | markdownify | emojify }}</p>{{ end }}
+    </div>
+  </div>
+
+  <div class="row compact-featured-grid align-items-start">
+    {{ range $items }}
+      {{ $item := . }}
+      {{ $img := (.Resources.ByType "image").GetMatch "*featured*" }}
+      {{ $pdf := (.Resources.Match "*.pdf") }}
+      {{ $venue := $item.Params.publication_short | default $item.Params.publication }}
+      <div class="col-12 col-md-6 mb-4">
+        <article class="card compact-featured-card w-100">
+          {{ if $img }}
+            {{ $thumb := $img.Fit "720x260" }}
+            <a href="{{ $item.RelPermalink }}" class="compact-featured-img-link">
+              <img src="{{ $thumb.RelPermalink }}" alt="{{ $item.Title }}" class="compact-featured-img" loading="lazy">
+            </a>
+          {{ end }}
+
+          <div class="card-body d-flex flex-column">
+            <div class="compact-featured-meta mb-2">
+              {{ with $venue }}<span class="compact-featured-venue">{{ . | markdownify }}</span>{{ end }}
+              <span class="compact-featured-date">{{ $item.Date.Format "Jan 2006" }}</span>
+            </div>
+
+            <h3 class="card-title compact-featured-title">
+              <a href="{{ $item.RelPermalink }}">{{ trim $item.Title " " }}</a>
+            </h3>
+
+            {{ with $item.Params.authors }}
+              <div class="compact-featured-authors mb-2">
+                {{ delimit . ", " }}
+              </div>
+            {{ end }}
+
+            {{ with $item.Params.abstract }}
+            <details class="compact-featured-abstract mt-1 mb-3">
+              <summary class="compact-featured-abstract-toggle">
+                <span class="abstract-show-label"><i class="fas fa-chevron-right mr-1" aria-hidden="true"></i>Show abstract</span>
+                <span class="abstract-hide-label"><i class="fas fa-chevron-down mr-1" aria-hidden="true"></i>Hide abstract</span>
+              </summary>
+              <p class="compact-featured-abstract-text mt-2 mb-0">{{ . | markdownify | plainify | htmlUnescape }}</p>
+            </details>
+            {{ end }}
+
+            <div class="compact-featured-actions mt-auto pt-2">
+              <a href="{{ $item.RelPermalink }}" class="btn btn-outline-primary btn-sm mr-2 mb-1">
+                <i class="far fa-file-alt mr-1" aria-hidden="true"></i>Details
+              </a>
+              {{ if gt (len $pdf) 0 }}
+                {{ $pdf_res := index $pdf 0 }}
+                <a href="{{ $pdf_res.RelPermalink }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm mr-2 mb-1">
+                  <i class="far fa-file-pdf mr-1" aria-hidden="true"></i>PDF
+                </a>
+              {{ end }}
+              {{ with $item.Params.doi }}
+                {{ $doi_url := . }}
+                {{ if not (hasPrefix $doi_url "http") }}
+                  {{ $doi_url = printf "https://doi.org/%s" $doi_url }}
+                {{ end }}
+                <a href="{{ $doi_url }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm mb-1">
+                  <i class="fas fa-external-link-alt mr-1" aria-hidden="true"></i>DOI
+                </a>
+              {{ end }}
+            </div>
+          </div>
+        </article>
+      </div>
+    {{ end }}
+  </div>
+</div>

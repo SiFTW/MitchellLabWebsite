@@ -476,4 +476,385 @@ section#hero,
   }
 }
 
+/* ==========================================================================
+   7. COMPACT LATEST NEWS
+   ========================================================================== */
+
+.compact-news-section {
+  .compact-news-list {
+    border-top: 1px solid rgba(15, 23, 42, 0.1);
+  }
+
+  .compact-news-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+
+    @media (min-width: 576px) {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 1.25rem;
+    }
+  }
+
+  .compact-news-date {
+    flex: 0 0 6.75rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  .compact-news-title {
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--bs-primary, #1565c0);
+      text-decoration: underline;
+    }
+  }
+}
+
+.dark .compact-news-section {
+  .compact-news-list {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .compact-news-item {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .compact-news-date {
+    color: #94a3b8;
+  }
+}
+
+/* ==========================================================================
+   8. MEET THE TEAM — COMPACT ALUMNI FOOTER LINK
+   ========================================================================== */
+
+.people-footer-link {
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+
+  .people-alumni-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1565c0;
+    text-decoration: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      background: rgba(21, 101, 192, 0.08);
+      transform: translateX(2px);
+    }
+  }
+}
+
+.dark .people-footer-link {
+  border-top-color: rgba(255, 255, 255, 0.1);
+
+  .people-alumni-link {
+    color: #93c5fd;
+
+    &:hover {
+      background: rgba(147, 197, 253, 0.12);
+    }
+  }
+}
+
+/* ==========================================================================
+   9. COMPACT EXPANDABLE PROJECTS
+   ========================================================================== */
+
+.compact-projects-section {
+  .compact-projects-toggle-all {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #64748b;
+
+    &:hover {
+      color: #1565c0;
+    }
+  }
+
+  .compact-project-card {
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    &[open] .compact-project-chevron {
+      transform: rotate(180deg);
+    }
+  }
+
+  .compact-project-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  .compact-project-thumb {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .compact-project-head {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .compact-project-title {
+    font-size: 0.97rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .compact-project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .compact-project-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.12rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(21, 101, 192, 0.1);
+    color: #1565c0;
+  }
+
+  .compact-project-chevron {
+    flex-shrink: 0;
+    color: #64748b;
+    font-size: 0.85rem;
+    transition: transform 0.2s ease;
+    padding: 0 0.25rem;
+  }
+
+  .compact-project-body {
+    padding: 0.9rem 1rem 1rem 1rem;
+    border-top: 1px solid rgba(15, 23, 42, 0.07);
+  }
+
+  .compact-project-banner {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .compact-project-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    border-left: none !important;
+  }
+}
+
+.dark .compact-projects-section {
+  .compact-projects-toggle-all {
+    color: #94a3b8;
+
+    &:hover {
+      color: #93c5fd;
+    }
+  }
+
+  .compact-project-card {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  .compact-project-tag {
+    background: rgba(96, 165, 250, 0.16);
+    color: #93c5fd;
+  }
+
+  .compact-project-chevron {
+    color: #94a3b8;
+  }
+
+  .compact-project-body {
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* ==========================================================================
+   10. COMPACT SIDE-BY-SIDE FEATURED PUBLICATIONS
+   ========================================================================== */
+
+.compact-featured-section {
+  .compact-featured-card {
+    border: 1px solid rgba(15, 23, 42, 0.09);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-body {
+      padding: 1.2rem 1.35rem;
+    }
+  }
+
+  .compact-featured-img-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #ffffff;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    padding: 0.5rem;
+  }
+
+  .compact-featured-img {
+    width: 100%;
+    height: 145px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .compact-featured-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  .compact-featured-venue {
+    color: #1565c0;
+  }
+
+  .compact-featured-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 0.45rem;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        color: #1565c0;
+      }
+    }
+  }
+
+  .compact-featured-authors {
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: #64748b;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .compact-featured-abstract {
+    margin-bottom: 0.5rem !important;
+
+    .compact-featured-abstract-toggle {
+      cursor: pointer;
+      list-style: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #1565c0;
+      user-select: none;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      .abstract-hide-label {
+        display: none;
+      }
+    }
+
+    &[open] .compact-featured-abstract-toggle {
+      .abstract-show-label {
+        display: none;
+      }
+
+      .abstract-hide-label {
+        display: inline;
+      }
+    }
+
+    .compact-featured-abstract-text {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      margin-left: 0 !important;
+      border-left: none !important;
+      padding: 0.65rem 0.8rem !important;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.04);
+    }
+  }
+}
+
+.dark .compact-featured-section {
+  .compact-featured-card {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  }
+
+  .compact-featured-img-link {
+    background: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .compact-featured-meta,
+  .compact-featured-authors {
+    color: #94a3b8;
+  }
+
+  .compact-featured-venue,
+  .compact-featured-abstract .compact-featured-abstract-toggle {
+    color: #93c5fd;
+  }
+
+  .compact-featured-abstract .compact-featured-abstract-text {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+
 
