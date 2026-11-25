@@ -1,0 +1,126 @@
+{{/* Wowchemy Blocks: Compact Expandable Projects */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+
+{{ $page_type := $block.Params.content.page_type | default "project" }}
+{{ $items := (where site.RegularPages "Type" $page_type).ByDate.Reverse }}
+
+<div class="compact-projects-section">
+  <div class="row align-items-end mb-4">
+    <div class="section-heading col-12 col-lg-4 mb-3 mb-lg-0 d-flex flex-column align-items-center align-items-lg-start">
+      {{ with $block.Title }}<h1 class="mb-0">{{ . | markdownify | emojify }}</h1>{{ end }}
+      {{ with $block.Params.subtitle }}<p class="mt-1">{{ . | markdownify | emojify }}</p>{{ end }}
+    </div>
+
+    <div class="col-12 col-lg-8 d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end compact-projects-toolbar">
+      {{ with $block.Params.content.filter_button }}
+      <div class="btn-group btn-group-sm flex-wrap mr-2 mb-2" role="group" aria-label="Filter projects">
+        {{ range $idx, $btn := . }}
+        <button type="button"
+                class="btn btn-outline-primary compact-project-filter{{ if eq $idx 0 }} active{{ end }}"
+                data-project-filter="{{ $btn.tag | lower }}">
+          {{ $btn.name }}
+        </button>
+        {{ end }}
+      </div>
+      {{ end }}
+
+      <button type="button" class="btn btn-sm btn-link compact-projects-toggle-all mb-2" data-expanded="false">
+        <i class="fas fa-expand-alt mr-1" aria-hidden="true"></i><span>Expand all</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row compact-projects-grid">
+    {{ range $items }}
+      {{ $item := . }}
+      {{ $tags_lower := slice }}
+      {{ range .Params.tags }}
+        {{ $tags_lower = $tags_lower | append (. | lower) }}
+      {{ end }}
+      {{ $img := (.Resources.ByType "image").GetMatch "*featured*" }}
+      {{ $thumb := "" }}
+      {{ $banner := "" }}
+      {{ if $img }}
+        {{ $thumb = ($img.Fill "120x120 Smart").RelPermalink }}
+        {{ $banner = ($img.Fill "640x240 Smart").RelPermalink }}
+      {{ end }}
+      <div class="col-12 col-md-6 mb-3 compact-project-col" data-project-tags="{{ delimit $tags_lower "," }}">
+        <details class="card compact-project-card">
+          <summary class="compact-project-summary">
+            {{ if $thumb }}
+              <img src="{{ $thumb }}" alt="{{ $item.Title }}" class="compact-project-thumb" loading="lazy">
+            {{ end }}
+            <div class="compact-project-head">
+              <div class="compact-project-title">{{ $item.Title }}</div>
+              {{ with $item.Params.tags }}
+              <div class="compact-project-tags mt-1">
+                {{ range . }}<span class="compact-project-tag">{{ . }}</span>{{ end }}
+              </div>
+              {{ end }}
+            </div>
+            <span class="compact-project-chevron" aria-hidden="true">
+              <i class="fas fa-chevron-down"></i>
+            </span>
+          </summary>
+
+          <div class="compact-project-body">
+            {{ if $banner }}
+              <a href="{{ $item.RelPermalink }}" class="d-block mb-3">
+                <img src="{{ $banner }}" alt="{{ $item.Title }}" class="compact-project-banner" loading="lazy">
+              </a>
+            {{ end }}
+            {{ $desc := $item.Params.summary | default ($item.Summary | plainify) }}
+            {{ with $desc }}
+              <p class="compact-project-desc mb-3">{{ . | htmlUnescape }}</p>
+            {{ end }}
+            <a href="{{ $item.RelPermalink }}" class="btn btn-outline-primary btn-sm">
+              View project <i class="fas fa-arrow-right ml-1" aria-hidden="true"></i>
+            </a>
+          </div>
+        </details>
+      </div>
+    {{ end }}
+  </div>
+</div>
+
+<script>
+(function() {
+  var root = document.querySelector('.compact-projects-section');
+  if (!root) return;
+  var filterBtns = root.querySelectorAll('.compact-project-filter');
+  var cols = root.querySelectorAll('.compact-project-col');
+  var toggleAllBtn = root.querySelector('.compact-projects-toggle-all');
+
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var filter = btn.getAttribute('data-project-filter');
+      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      cols.forEach(function(col) {
+        if (filter === '*') {
+          col.style.display = '';
+        } else {
+          var tags = (col.getAttribute('data-project-tags') || '').split(',');
+          col.style.display = tags.indexOf(filter) !== -1 ? '' : 'none';
+        }
+      });
+    });
+  });
+
+  if (toggleAllBtn) {
+    toggleAllBtn.addEventListener('click', function() {
+      var expanded = toggleAllBtn.getAttribute('data-expanded') === 'true';
+      var next = !expanded;
+      root.querySelectorAll('.compact-project-card').forEach(function(d) {
+        d.open = next;
+      });
+      toggleAllBtn.setAttribute('data-expanded', next ? 'true' : 'false');
+      var span = toggleAllBtn.querySelector('span');
+      var icon = toggleAllBtn.querySelector('i');
+      if (span) span.textContent = next ? 'Collapse all' : 'Expand all';
+      if (icon) icon.className = next ? 'fas fa-compress-alt mr-1' : 'fas fa-expand-alt mr-1';
+    });
+  }
+})();
+</script>

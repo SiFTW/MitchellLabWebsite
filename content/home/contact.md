@@ -41,6 +41,10 @@ content:
   office_hours:
   appointment_url: ''
   contact_links:
+    - icon: linkedin
+      icon_pack: fab
+      name: LinkedIn
+      link: 'https://www.linkedin.com/in/simonmitchellbio/'
     - icon: twitter
       icon_pack: fab
       name: Twitter
