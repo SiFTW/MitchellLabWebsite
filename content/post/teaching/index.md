@@ -13,9 +13,6 @@ image:
   focal_point: Smart
   preview_only: false
   caption: ""
-aliases:
-  - /teaching
-  - /Teaching
 ---
 
 (Link to teaching server)[http://139.184.170.218:9001/]. This link will only work on campus.
