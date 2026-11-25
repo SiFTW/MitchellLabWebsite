@@ -500,11 +500,15 @@ section#hero,
   }
 
   .compact-news-date {
-    flex: 0 0 6.75rem;
+    flex: 0 0 auto;
     font-size: 0.82rem;
     font-weight: 500;
     color: #64748b;
     white-space: nowrap;
+
+    @media (min-width: 576px) {
+      flex: 0 0 6.75rem;
+    }
   }
 
   .compact-news-title {
