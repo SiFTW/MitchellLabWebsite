@@ -1,0 +1,97 @@
+{{/* Wowchemy Blocks: Video Talks */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+
+{{ $all_items := slice }}
+{{ range (where site.RegularPages "Section" "event").ByDate.Reverse }}
+  {{ if .Params.youtube_id }}
+    {{ $all_items = $all_items | append . }}
+  {{ end }}
+{{ end }}
+
+{{ $count := 0 }}
+{{ with $block.Params.content.count }}
+  {{ $count = int . }}
+{{ end }}
+
+{{ $items := $all_items }}
+{{ if and (gt $count 0) (gt (len $all_items) $count) }}
+  {{ $items = first $count $all_items }}
+{{ end }}
+
+{{ $date_format := site.Params.locale.date_format | default "2 Jan 2006" }}
+
+<div class="row justify-content-center">
+  {{ with $block.Title }}
+  <div class="section-heading col-12 mb-4 text-center">
+    <h1 class="mb-0">{{ . | markdownify | emojify }}</h1>
+    {{ with $block.Params.subtitle }}
+      <p class="mt-2">{{ . | markdownify | emojify }}</p>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  {{ with $block.Content }}
+  <div class="col-12 mb-4 text-center">
+    {{ . }}
+  </div>
+  {{ end }}
+</div>
+
+<div class="row video-talks-grid">
+  {{ range $items }}
+    {{ $yt := .Params.youtube_id }}
+    {{ $desc := .Params.summary | default .Params.abstract }}
+    <div class="col-12 col-lg-6 mb-4 d-flex">
+      <article class="card video-talk-card w-100">
+        <div class="video-talk-embed">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/{{ $yt }}"
+            title="{{ .Title }}"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <div class="video-talk-meta mb-2">
+            <span class="video-talk-date">
+              <i class="far fa-calendar-alt mr-1" aria-hidden="true"></i>{{ .Date.Format $date_format }}
+            </span>
+            {{ with .Params.location }}
+              <span class="video-talk-location">
+                <i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i>{{ . }}
+              </span>
+            {{ end }}
+          </div>
+          <h3 class="card-title video-talk-title">
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          </h3>
+          {{ with $desc }}
+            <p class="card-text video-talk-summary">{{ . | markdownify | plainify | htmlUnescape | truncate 200 }}</p>
+          {{ end }}
+          <div class="video-talk-actions mt-auto pt-3">
+            <a href="{{ .RelPermalink }}" class="btn btn-outline-primary btn-sm mr-2 mb-1">
+              <i class="fas fa-newspaper mr-1" aria-hidden="true"></i>Read more
+            </a>
+            <a href="https://www.youtube.com/watch?v={{ $yt }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm mb-1">
+              <i class="fab fa-youtube mr-1" aria-hidden="true"></i>Watch on YouTube
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  {{ end }}
+</div>
+
+{{ if and (gt $count 0) (gt (len $all_items) $count) }}
+  {{ with $block.Params.content.archive_url }}
+  <div class="row">
+    <div class="col-12 text-center mt-2">
+      <a href="{{ . | relURL }}" class="btn btn-outline-primary">
+        See all videos &amp; talks <i class="fas fa-angle-right ml-1" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+  {{ end }}
+{{ end }}
