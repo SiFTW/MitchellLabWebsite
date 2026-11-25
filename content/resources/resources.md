@@ -5,15 +5,15 @@ active: true
 weight: 10
 
 title: "Resources"
-subtitle: "Open-source code for reproducible research, our guide to starting a research centre, and free browser-based interactive modelling courses"
+subtitle: "Open-source models and code for reproducible research, free interactive e-learning modules, and research leadership guides"
 
 design:
   columns: '1'
 
 group:
-  - heading: "Open Code & Research Leadership"
-    description: "Publicly available code repositories and open-access leadership guides created by the Mitchell Lab."
-    columns: 2
+  - heading: "Open Models & Code"
+    description: "Publicly available computational models and analysis code from the Mitchell Lab."
+    columns: 1
     featured: true
     item:
       - title: "Mitchell Lab GitHub — Reproducible Research Code"
@@ -29,21 +29,6 @@ group:
             icon: "github"
             icon_pack: "fab"
             primary: true
-
-      - title: "Starting a Research Centre — A Guide for FLFs"
-        badge: "FLF Development Network"
-        tag: "Open Guide"
-        icon: "compass"
-        description: >-
-          A practical guide to conceiving, launching, and leading a new research centre from idea to launch and beyond. Produced by Prof Simon Mitchell based on founding the Sussex Cancer Research Centre and co-developed with the Future Leaders Fellows Development Network.
-        links:
-          - label: "Read the Guide"
-            url: "/guide/centre/"
-            icon: "book-open"
-            primary: true
-          - label: "FLF Development Network"
-            url: "https://www.flfdevnet.com/"
-            icon: "external-link-alt"
 
   - heading: "Interactive E-Learning Modules"
     description: "Free, browser-based computational modelling courses that anyone can run interactively with no software installation, logins, or prior coding background required."
@@ -73,4 +58,24 @@ group:
             url: "https://mitchell.science/ssc/intro.html"
             icon: "external-link-alt"
             primary: true
+
+  - heading: "Leadership Guides"
+    description: "Practical, open-access guides on academic leadership and building interdisciplinary research initiatives."
+    columns: 1
+    featured: true
+    item:
+      - title: "Starting a Research Centre — A Guide for FLFs"
+        badge: "FLF Development Network"
+        tag: "Open Guide"
+        icon: "compass"
+        description: >-
+          A practical guide to conceiving, launching, and leading a new research centre from idea to launch and beyond. Produced by Prof Simon Mitchell based on founding the Sussex Cancer Research Centre and co-developed with the Future Leaders Fellows Development Network.
+        links:
+          - label: "Read the Guide"
+            url: "/guide/centre/"
+            icon: "book-open"
+            primary: true
+          - label: "FLF Development Network"
+            url: "https://www.flfdevnet.com/"
+            icon: "external-link-alt"
 ---
