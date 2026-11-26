@@ -4,7 +4,7 @@ headless: true
 active: true
 weight: 10
 
-title: "Resources"
+title: "Resources for researchers"
 subtitle: "Open-source models and code for reproducible research, free interactive e-learning modules, and research leadership guides"
 
 design:

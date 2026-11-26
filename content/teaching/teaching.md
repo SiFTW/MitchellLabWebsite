@@ -4,7 +4,7 @@ headless: true
 active: true
 weight: 10
 
-title: "Teaching & Open Resources"
+title: "Teaching and Educational Resources"
 subtitle: "Undergraduate medical teaching, postgraduate systems biology, and free interactive computational modelling courses"
 
 design:
